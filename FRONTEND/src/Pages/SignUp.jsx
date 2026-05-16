@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
+    const navigate = useNavigate();
 
-    const navigate=useNavigate()
+        const [passwordHide, setPasswordHide] = useState(false);
+    
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
@@ -62,11 +65,20 @@ const SignUp = () => {
                         Password
                     </label>
 
-                    <input
-                        type="password"
-                        placeholder="At least 6 characters"
-                        className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
-                    />
+                    <div className="flex items-center gap-2">
+                        <input
+                            type={`${passwordHide ? "password" : "text"}`}
+                            placeholder="At least 6 characters"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
+                        />
+                        <div onClick={() => setPasswordHide(!passwordHide)}>
+                            {passwordHide ? (
+                                <FaEyeSlash size={25} />
+                            ) : (
+                                <FaEye size={22} />
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 <button className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300">
@@ -75,7 +87,10 @@ const SignUp = () => {
 
                 <p className="text-center text-sm text-gray-500 mt-5">
                     Already have an account?{" "}
-                    <span className="text-orange-400 font-medium cursor-pointer hover:underline" onClick={()=>navigate('/login')}>
+                    <span
+                        className="text-orange-400 font-medium cursor-pointer hover:underline"
+                        onClick={() => navigate("/login")}
+                    >
                         Log in
                     </span>
                 </p>
