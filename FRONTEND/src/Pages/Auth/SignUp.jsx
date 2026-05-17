@@ -7,8 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const SignUp = () => {
     const navigate = useNavigate();
 
-        const [passwordHide, setPasswordHide] = useState(false);
-    
+    const [passwordHide, setPasswordHide] = useState(false);
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
