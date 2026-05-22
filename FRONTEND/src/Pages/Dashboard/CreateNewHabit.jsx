@@ -1,7 +1,7 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 
-const CreateNewHabit = ({setOpenNewHabitModel}) => {
+const CreateNewHabit = ({ setOpenNewHabitModel }) => {
     const emojis = [
         "💪",
         "❤️",
@@ -18,12 +18,12 @@ const CreateNewHabit = ({setOpenNewHabitModel}) => {
     ];
 
     const colors = [
-        "#f59e0b", // amber
-        "#ef4444", // red
-        "#3b82f6", // blue
-        "#22c55e", // green
-        "#a855f7", // purple
-        "#ec4899", // pink
+        "#f59e0b",
+        "#ef4444",
+        "#3b82f6",
+        "#22c55e",
+        "#a855f7",
+        "#ec4899",
     ];
 
     return (
@@ -34,7 +34,7 @@ const CreateNewHabit = ({setOpenNewHabitModel}) => {
 
                     <FaTimes
                         className="cursor-pointer "
-                        onClick={()=>setOpenNewHabitModel(false)}
+                        onClick={() => setOpenNewHabitModel(false)}
                     />
                 </div>
 
@@ -77,7 +77,7 @@ const CreateNewHabit = ({setOpenNewHabitModel}) => {
                         {emojis.map((emoji, idx) => (
                             <div
                                 key={idx}
-                                className="border-2 border-black rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 cursor-pointer transition"
+                                className="border-2 border-black rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 hover:bg-amber-50 cursor-pointer transition"
                             >
                                 {emoji}
                             </div>
@@ -98,7 +98,10 @@ const CreateNewHabit = ({setOpenNewHabitModel}) => {
                 </div>
 
                 <div className="flex justify-end gap-3 mt-4">
-                    <button className="px-4 py-2 rounded-lg bg-orange-400 font-medium text-white" onClick={()=>setOpenNewHabitModel(false)}>
+                    <button
+                        className="px-4 py-2 rounded-lg bg-orange-400 font-medium text-white"
+                        onClick={() => setOpenNewHabitModel(false)}
+                    >
                         Create
                     </button>
                 </div>
