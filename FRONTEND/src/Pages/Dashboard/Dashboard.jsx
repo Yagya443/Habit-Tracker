@@ -11,12 +11,15 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoIosTrendingUp } from "react-icons/io";
 import { RiTodoLine } from "react-icons/ri";
 import { FaRegHeart } from "react-icons/fa";
-import HabitsList from "./HabitsList";import { MdOutlineCampaign } from "react-icons/md";
+import HabitsList from "./HabitsList";
+import { MdOutlineCampaign } from "react-icons/md";
+import CreateNewHabit from "./CreateNewHabit";
 
 const Dashboard = () => {
     const [message1, setMessage1] = useState(true);
     const [message2, setMessage2] = useState(true);
     const [message3, setMessage3] = useState(false);
+    const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
 
     return (
         <>
@@ -31,12 +34,16 @@ const Dashboard = () => {
                         <button className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white">
                             <BsStars /> Suggest A Habit
                         </button>
-                        <button className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-400 text-white"
-                        onClick={()=><CreateNewHabit/>}>
-                            <FaPlus /> New Habit
-                        </button>
+                            <button
+                                className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-400 text-white"
+                                onClick={() =>setOpenNewHabitModel(true)}
+                            >
+                                <FaPlus /> New Habit
+                            </button>
+              
                     </div>
                 </div>
+                {openNewHabitModel && <CreateNewHabit setOpenNewHabitModel={setOpenNewHabitModel} />}
 
                 {message1 && (
                     <div className="bg-yellow-200 flex items-center gap-4 py-2 px-4 mt-8 relative rounded-2xl">

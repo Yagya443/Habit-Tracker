@@ -1,0 +1,110 @@
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+
+const CreateNewHabit = ({setOpenNewHabitModel}) => {
+    const emojis = [
+        "💪",
+        "❤️",
+        "📚",
+        "🧘",
+        "🫂",
+        "⚡",
+        "💰",
+        "🎨",
+        "✈️",
+        "🍎",
+        "🎵",
+        "🌟",
+    ];
+
+    const colors = [
+        "#f59e0b", // amber
+        "#ef4444", // red
+        "#3b82f6", // blue
+        "#22c55e", // green
+        "#a855f7", // purple
+        "#ec4899", // pink
+    ];
+
+    return (
+        <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
+            <div className="bg-white w-112 rounded-2xl p-6 shadow-xl">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold ">New Habit</h1>
+
+                    <FaTimes
+                        className="cursor-pointer "
+                        onClick={()=>setOpenNewHabitModel(false)}
+                    />
+                </div>
+
+                {/* Input */}
+                <div className="mt-6">
+                    <label className="text-md font-medium ">Habit Name</label>
+                    <input
+                        type="text"
+                        placeholder="Enter habit..."
+                        className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
+                    />
+
+                    <label className="text-md font-medium">Description</label>
+                    <input
+                        type="text"
+                        placeholder="What does this habit matter to you?"
+                        className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
+                    />
+
+                    <div className="flex flex-col mt-2">
+                        <label className="text-md font-medium ">Category</label>
+
+                        <select className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none">
+                            <option value="Fitness">Fitness</option>
+                            <option value="Health">Health</option>
+                            <option value="Learning">Learning</option>
+                            <option value="Mindfullness">Mindfullness</option>
+                            <option value="Social">Social</option>
+                            <option value="Productivity">Productivity</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Creativity">Creativity</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="mt-2">
+                    <h1 className="text-md font-medium">Icon</h1>
+                    <div className="flex flex-wrap gap-2 bg-white ">
+                        {emojis.map((emoji, idx) => (
+                            <div
+                                key={idx}
+                                className="border-2 border-black rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 cursor-pointer transition"
+                            >
+                                {emoji}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="mt-2">
+                    <h1 className="text-md font-medium">Colours</h1>
+                    <div className="flex flex-wrap gap-2 bg-white ">
+                        {colors.map((color, idx) => (
+                            <div
+                                key={idx}
+                                className={`h-8 w-8 rounded-full hover:-translate-y-1 cursor-pointer transition  `}
+                                style={{ backgroundColor: color }}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="flex justify-end gap-3 mt-4">
+                    <button className="px-4 py-2 rounded-lg bg-orange-400 font-medium text-white" onClick={()=>setOpenNewHabitModel(false)}>
+                        Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default CreateNewHabit;
