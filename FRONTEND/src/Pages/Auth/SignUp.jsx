@@ -3,6 +3,7 @@ import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { CiDark } from "react-icons/ci";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -11,6 +12,11 @@ const SignUp = () => {
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
+            <CiDark
+                size={45}
+                className="absolute bg-white rounded right-6 top-6"
+            />
+
             <div className="flex items-center gap-2 mb-6">
                 <div className="bg-orange-400 p-2 rounded-xl shadow-md">
                     <Sparkles className="text-white w-5 h-5" />
