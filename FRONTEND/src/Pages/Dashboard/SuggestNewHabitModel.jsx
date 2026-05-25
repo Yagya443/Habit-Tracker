@@ -38,7 +38,7 @@ const SuggestNewHabitModel = ({ setSuggestNewHabitModel }) => {
                     ))}
                     <input
                         type="text"
-                        placeholder="Enter habit..."
+                        placeholder=""
                         className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
                     />
                 </div>

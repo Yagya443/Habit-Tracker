@@ -5,6 +5,7 @@ import { FaFire } from "react-icons/fa";
 
 import { BsStars } from "react-icons/bs";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
+import { AiOutlineFire } from "react-icons/ai";
 
 const HabitsList = () => {
     const completed = 4;
@@ -68,7 +69,7 @@ const HabitsList = () => {
 
                     <div className="flex items-center gap-6">
                         <div className="flex items-center">
-                            <FaFire fill="oklch(76.9% 0.188 70.08)" size={25} />
+                            <AiOutlineFire fill="oklch(76.9% 0.188 70.08)" size={25} />
                             15
                         </div>
                         <BsThreeDots size={30} />

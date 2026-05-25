@@ -124,7 +124,7 @@ const NavBar = () => {
                             </h1>
 
                             <p className="text-xs text-gray-500 truncate w-32">
-                                alex@timetoprogram...
+                                alex@timetoprogramvas 
                             </p>
                         </div>
                     </div>

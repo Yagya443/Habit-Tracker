@@ -40,7 +40,7 @@ const Dashboard = () => {
                             <BsStars /> Suggest A Habit
                         </button>
                         <button
-                            className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-400 text-white"
+                            className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-500 text-white"
                             onClick={() => setOpenNewHabitModel(true)}
                         >
                             <FaPlus /> New Habit
