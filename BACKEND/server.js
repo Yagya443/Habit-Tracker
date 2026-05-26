@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const userRoutes = require("./src/routes/User.routes.js");
+const habitRoutes = require("./src/routes/Habit.routes.js");
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRoutes);
+app.use("/habit", habitRoutes);
 
 const connectDB = async () => {
     const conn = await mongoose.connect(process.env.SRV);
