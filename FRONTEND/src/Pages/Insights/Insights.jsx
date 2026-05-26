@@ -116,7 +116,6 @@ const Insights = () => {
                             <div className="bg-sky-100 p-2 rounded-xl text-xl">
                                 💧
                             </div>
-
                             <div>
                                 <h1 className="font-semibold text-gray-800">
                                     Drink 2L of water
