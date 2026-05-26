@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../../Components/NavBar";
 import { SlCalender } from "react-icons/sl";
+import WeeklyHabitTracker from "./WeeklyHabitTracker";
 
 const Weekly = () => {
     return (
@@ -50,8 +51,8 @@ const Weekly = () => {
                     </div>
                 </div>
 
-              <div className="bg-white mt-6 ">
-                hel
+              <div className="bg-white mt-6 rounded-xl py-4 px-6">
+                {/* <WeeklyHabitTracker /> */}
               </div>
 
             </div>
