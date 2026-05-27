@@ -73,4 +73,4 @@ const habitSchema = new mongoose.Schema(
     },
 );
 
-module.exports = mongoose.model("Habit", habitSchema);
+module.exports = mongoose.model("Habit", habitSchema);  

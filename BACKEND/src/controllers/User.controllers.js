@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 
 const signup = async (req, res) => {
@@ -43,8 +44,20 @@ const login = async (req, res) => {
             });
         }
 
+        const token = jwt.sign(
+            {
+                _id: existUser._id,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d",
+            },
+        );
+
+
         res.status(200).json({
             message: "Login successful",
+            token,
             user: existUser,
         });
     } catch (error) {
@@ -52,4 +65,4 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { signup,login };
+module.exports = { signup, login };

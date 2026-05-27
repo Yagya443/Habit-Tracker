@@ -12,6 +12,7 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
+
 app.use("/user", userRoutes);
 app.use("/habit", habitRoutes);
 
@@ -22,8 +23,6 @@ const connectDB = async () => {
 connectDB();
 
 const PORT = process.env.PORT || 3000;
-
-
 
 app.listen(PORT, () => {
     console.log(`App is Listening at ${PORT}`);
