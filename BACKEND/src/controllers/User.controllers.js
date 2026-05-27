@@ -54,7 +54,6 @@ const login = async (req, res) => {
             },
         );
 
-
         res.status(200).json({
             message: "Login successful",
             token,
@@ -65,4 +64,16 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { signup, login };
+const getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password");
+
+        res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+};
+
+module.exports = { signup, login,getMe };

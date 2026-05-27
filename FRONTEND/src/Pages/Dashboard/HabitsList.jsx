@@ -7,7 +7,24 @@ import { BsStars } from "react-icons/bs";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import { AiOutlineFire } from "react-icons/ai";
 
-const HabitsList = () => {
+const HabitsList = ({ habitdata, setHabitdata }) => {
+    function handlecompleted(id) {
+        const updatedHabits = habitdata.map((habit) => {
+            if (habit._id === id) {
+                return {
+                    ...habit,
+                    streak: habit.completed
+                        ? habit.streak - 1
+                        : habit.streak + 1,
+                    completed: !habit.completed,
+                };
+            }
+            return habit;
+        });
+
+        setHabitdata(updatedHabits);
+    }
+
     const completed = 4;
     const total = 8;
 
@@ -51,36 +68,51 @@ const HabitsList = () => {
             </div>
 
             <div className="px-2 flex flex-col gap-2">
-                <div className=" rounded-xl mx-4 px-4 flex items-center justify-between bg-amber-50 py-2">
-                    <div className="flex items-center gap-6">
-                        <div className="bg-blue-300 rounded p-1 text-2xl">👁️</div>
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-4">
-                                <h1 className="text-xl">Drink Water</h1>
-                                <p className="bg-gray-300 rounded-2xl px-2">
-                                    Health
+                {habitdata.map((habits, idx) => (
+                    <div
+                        className={`rounded-xl mx-4 px-4 flex items-center justify-between py-2 ${
+                            habits.completed ? "bg-amber-50" : "bg-amber-100"
+                        }`}
+                        key={habits._id}
+                    >
+                        <div className="flex items-center gap-6">
+                            <div
+                                className={` rounded p-1 text-2xl `}
+                                style={{ backgroundColor: habits.colour }}
+                            >
+                                {habits.icon}
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="flex items-center gap-4">
+                                    <h1 className="text-xl">{habits.title}</h1>
+                                    <p className="bg-gray-300 rounded-2xl px-2">
+                                        {habits.category}
+                                    </p>
+                                </div>
+                                <p className="font-light">
+                                    {habits.description}
                                 </p>
                             </div>
-                            <p className="font-light">
-                                Stay Hydrated Thrughtout The day{" "}
-                            </p>
                         </div>
-                    </div>
 
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center">
-                            <AiOutlineFire fill="oklch(76.9% 0.188 70.08)" size={25} />
-                            15
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center">
+                                <AiOutlineFire
+                                    fill="oklch(76.9% 0.188 70.08)"
+                                    size={25}
+                                />
+                                {habits.streak}
+                            </div>
+                            <BsThreeDots size={30} />
+                            <MdDone
+                                fill="#fff"
+                                className="bg-amber-500 rounded-full p-1"
+                                size={50}
+                                onClick={() => handlecompleted(habits._id)}
+                            />
                         </div>
-                        <BsThreeDots size={30} />
-                        <MdDone
-                            fill="#fff"
-                            className="bg-amber-500 rounded-full p-1"
-                            size={50}
-                        />
                     </div>
-                </div>
-                
+                ))}
             </div>
         </>
     );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { FaPlus } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
@@ -15,6 +15,7 @@ import HabitsList from "./HabitsList";
 import { MdOutlineCampaign } from "react-icons/md";
 import CreateNewHabit from "./CreateNewHabit";
 import SuggestNewHabitModel from "./SuggestNewHabitModel";
+import axios from "axios";
 
 const Dashboard = () => {
     const [message1, setMessage1] = useState(true);
@@ -22,6 +23,47 @@ const Dashboard = () => {
     const [message3, setMessage3] = useState(false);
     const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
+    const [habitdata, setHabitdata] = useState([]);
+    const [user, setUser] = useState(null);
+
+    const fetchUserInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "http://localhost:5000/habit/getHabit",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            console.log(response.data);
+            setHabitdata(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    // const fetchUser = async () => {
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const response = await axios.get("http://localhost:5000/user/me", {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //         });
+    //         setUser(response.data);
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         console.log(error.response?.data || error.message);
+    //     }
+    // };
+
+    useEffect(() => {
+        fetchUserInfo();
+        // fetchUser();
+    }, []);
 
     return (
         <>
@@ -29,7 +71,7 @@ const Dashboard = () => {
             <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-5xl font-semibold">Hey Alex</h1>
+                        <h1 className="text-5xl font-semibold">Hey {user?.name},</h1>
                         <h3 className="mt-2">Saturday 23 April</h3>
                     </div>
                     <div className="flex gap-4">
@@ -115,7 +157,9 @@ const Dashboard = () => {
                             <h2 className="text-gray-400 text-lg">
                                 Total Habits
                             </h2>
-                            <h2 className="text-xl font-semibold">8</h2>
+                            <h2 className="text-xl font-semibold">
+                                {habitdata.length}
+                            </h2>
                         </div>
                     </div>
                     <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
@@ -155,7 +199,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="min-h-48 bg-white mt-12 pb-4 rounded-3xl">
-                    <HabitsList />
+                    <HabitsList habitdata={habitdata} setHabitdata={setHabitdata} />
                 </div>
 
                 <div

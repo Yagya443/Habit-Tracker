@@ -67,6 +67,10 @@ const habitSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        completed: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
