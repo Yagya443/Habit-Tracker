@@ -2,7 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-const SuggestNewHabitModel = ({ setSuggestNewHabitModel }) => {
+const SuggestNewHabitModel = ({
+    setSuggestNewHabitModel
+}) => {
     const questions = [
         "What are your goal right now?",
         "When are you most productive during the day?",
@@ -23,12 +25,12 @@ const SuggestNewHabitModel = ({ setSuggestNewHabitModel }) => {
                     />
                 </div>
 
-                
-                    <p className={`font-light text-xs mt-2 ${currQuestion == 0 ? 'opacity-100' : 'opacity-0' }`}>
-                        Answer 3 quick question and I'll suggest you 3
-                        personalized habits.
-                    </p>
-               
+                <p
+                    className={`font-light text-xs mt-2 ${currQuestion == 0 ? "opacity-100" : "opacity-0"}`}
+                >
+                    Answer 3 quick question and I'll suggest you 3 personalized
+                    habits.
+                </p>
 
                 <div className="mt-2">
                     {questions.map((question, idx) => (

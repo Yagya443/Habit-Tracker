@@ -24,6 +24,7 @@ const Dashboard = () => {
     const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
     const [habitdata, setHabitdata] = useState([]);
+    const [createHabit, setCreateHabit] = useState([]);
     const [user, setUser] = useState(null);
 
     const fetchUserInfo = async () => {
@@ -45,20 +46,33 @@ const Dashboard = () => {
         }
     };
 
-    // const fetchUser = async () => {
-    //     try {
-    //         const token = localStorage.getItem("token");
-    //         const response = await axios.get("http://localhost:5000/user/me", {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //         setUser(response.data);
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         console.log(error.response?.data || error.message);
-    //     }
-    // };
+    async function handleCreateHabit() {
+        try {
+            const token = localStorage.getItem("token");
+            
+            const response = await axios.post(
+                "http://localhost:5000/habit/createHabit",
+                {
+                    title,
+                    description,
+                    category,
+                    icon,
+                    colour,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            
+            setCreateHabit(response.data);
+            console.log(response.data);
+            setOpenNewHabitModel(false)
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    }
 
     useEffect(() => {
         fetchUserInfo();
@@ -71,7 +85,9 @@ const Dashboard = () => {
             <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-5xl font-semibold">Hey {user?.name},</h1>
+                        <h1 className="text-5xl font-semibold">
+                            Hey {user?.name},
+                        </h1>
                         <h3 className="mt-2">Saturday 23 April</h3>
                     </div>
                     <div className="flex gap-4">
@@ -92,6 +108,7 @@ const Dashboard = () => {
                 {openNewHabitModel && (
                     <CreateNewHabit
                         setOpenNewHabitModel={setOpenNewHabitModel}
+                        handleCreateHabit={handleCreateHabit}
                     />
                 )}
                 {suggestNewHabitModel && (
@@ -199,7 +216,10 @@ const Dashboard = () => {
                 </div>
 
                 <div className="min-h-48 bg-white mt-12 pb-4 rounded-3xl">
-                    <HabitsList habitdata={habitdata} setHabitdata={setHabitdata} />
+                    <HabitsList
+                        habitdata={habitdata}
+                        setHabitdata={setHabitdata}
+                    />
                 </div>
 
                 <div

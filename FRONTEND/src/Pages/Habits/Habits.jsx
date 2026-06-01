@@ -71,9 +71,9 @@ const Habits = () => {
                     </select>
                     <div className="flex  gap-2 rounded-xl items-center border">
                         <div className="bg-amber-200 text-amber-600 rounded-bl-xl rounded-tl-xl px-4 py-1">
-                            Active.11
+                            Active-11
                         </div>
-                        <div className="px-4">Archived.0</div>
+                        <div className="px-4">Archived-0</div>
                     </div>
                 </div>
 

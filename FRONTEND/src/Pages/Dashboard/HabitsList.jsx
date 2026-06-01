@@ -25,6 +25,7 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
         setHabitdata(updatedHabits);
     }
 
+
     const completed = 4;
     const total = 8;
 

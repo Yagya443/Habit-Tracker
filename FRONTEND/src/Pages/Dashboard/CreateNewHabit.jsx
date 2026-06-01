@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-const CreateNewHabit = ({ setOpenNewHabitModel }) => {
+const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
     const emojis = [
         "💪",
         "❤️",
@@ -26,6 +26,12 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
         "#ec4899",
     ];
 
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [category, setCategory] = useState("");
+    const [icon, setIcon] = useState("");
+    const [colour, setColour] = useState("");
+
     return (
         <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
             <div className="bg-white w-112 rounded-2xl p-6 shadow-xl">
@@ -44,12 +50,14 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
                     <input
                         type="text"
                         placeholder="Enter habit..."
+                        onChange={(e) => setTitle(e.target.value)}
                         className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
                     />
 
                     <label className="text-md font-medium">Description</label>
                     <input
                         type="text"
+                        onChange={(e) => setDescription(e.target.value)}
                         placeholder="What does this habit matter to you?"
                         className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
                     />
@@ -57,7 +65,11 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
                     <div className="flex flex-col mt-2">
                         <label className="text-md font-medium ">Category</label>
 
-                        <select className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none">
+                        <select
+                            className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                        >
                             <option value="Fitness">Fitness</option>
                             <option value="Health">Health</option>
                             <option value="Learning">Learning</option>
@@ -77,6 +89,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
                         {emojis.map((emoji, idx) => (
                             <div
                                 key={idx}
+                                onClick={() => setIcon(emoji)}
                                 className="border-2 border-black rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 hover:bg-amber-50 cursor-pointer transition"
                             >
                                 {emoji}
@@ -90,6 +103,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
                         {colors.map((color, idx) => (
                             <div
                                 key={idx}
+                                onClick={() => setColour(colour)}
                                 className={`h-8 w-8 rounded-full hover:-translate-y-1 cursor-pointer transition  `}
                                 style={{ backgroundColor: color }}
                             />
@@ -100,7 +114,15 @@ const CreateNewHabit = ({ setOpenNewHabitModel }) => {
                 <div className="flex justify-end gap-3 mt-4">
                     <button
                         className="px-4 py-2 rounded-lg bg-orange-400 font-medium text-white"
-                        onClick={() => setOpenNewHabitModel(false)}
+                        onClick={() =>
+                            handleCreateHabit(
+                                title,
+                                description,
+                                category,
+                                icon,
+                                colour,
+                            )
+                        }
                     >
                         Create
                     </button>
