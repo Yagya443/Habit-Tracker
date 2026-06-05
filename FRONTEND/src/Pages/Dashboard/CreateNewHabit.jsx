@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
+const CreateNewHabit = ({
+    setModeldata,
+    handleCreateHabit,
+    handleSaveEditHabit,
+    modeldata,
+}) => {
     const emojis = [
         "💪",
         "❤️",
@@ -26,21 +31,33 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
         "#ec4899",
     ];
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("Fitness");
-    const [icon, setIcon] = useState("");
-    const [color, setColor] = useState("");
+    const [title, setTitle] = useState(modeldata?.habit?.title || "");
+    const [description, setDescription] = useState(
+        modeldata?.habit?.description || "",
+    );
+    const [category, setCategory] = useState(
+        modeldata?.habit?.category || "Fitness",
+    );
+    const [icon, setIcon] = useState(modeldata?.habit?.icon || "");
+    const [color, setColor] = useState(modeldata?.habit?.color || "");
 
     return (
         <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
             <div className="bg-white w-112 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold ">New Habit</h1>
+                    <h1 className="text-2xl font-bold ">
+                        {modeldata.mode === "edit" ? "Edit Habit" : "New Habit"}
+                    </h1>
 
                     <FaTimes
                         className="cursor-pointer "
-                        onClick={() => setOpenNewHabitModel(false)}
+                        onClick={() =>
+                            setModeldata({
+                                isOpen: false,
+                                habit: null,
+                                mode: "create",
+                            })
+                        }
                     />
                 </div>
 
@@ -49,6 +66,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
                     <label className="text-md font-medium ">Habit Name</label>
                     <input
                         type="text"
+                        value={title}
                         placeholder="Enter habit..."
                         onChange={(e) => setTitle(e.target.value)}
                         className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
@@ -57,6 +75,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
                     <label className="text-md font-medium">Description</label>
                     <input
                         type="text"
+                        value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="What does this habit matter to you?"
                         className="w-full mt-1 border border-gray-300 rounded-xl px-2 py-2 outline-none"
@@ -114,17 +133,34 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
                 <div className="flex justify-end gap-3 mt-4">
                     <button
                         className="px-4 py-2 rounded-lg bg-orange-400 font-medium text-white"
-                        onClick={() =>
-                            handleCreateHabit(
-                                title,
-                                description,
-                                category,
-                                icon,
-                                color,
-                            )
-                        }
+                        onClick={() => {
+                            if (modeldata.mode == "edit") {
+                                handleSaveEditHabit(
+                                    modeldata.habit._id,
+                                    title,
+                                    description,
+                                    category,
+                                    icon,
+                                    color,
+                                );
+                            } else {
+                                handleCreateHabit(
+                                    title,
+                                    description,
+                                    category,
+                                    icon,
+                                    color,
+                                );
+                            }
+
+                            setModeldata({
+                                isOpen: false,
+                                habit: null,
+                                mode: "create",
+                            });
+                        }}
                     >
-                        Create
+                        {modeldata.mode === "edit" ? "Update" : "Create"}
                     </button>
                 </div>
             </div>

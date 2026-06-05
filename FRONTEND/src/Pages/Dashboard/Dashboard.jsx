@@ -73,7 +73,6 @@ const Dashboard = () => {
             );
 
             setCreateHabit(response.data);
-            console.log(response.data);
             setOpenNewHabitModel(false);
         } catch (error) {
             console.log(error.response?.data || error.message);

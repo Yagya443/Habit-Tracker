@@ -12,9 +12,14 @@ import SuggestNewHabitModel from "../Dashboard/SuggestNewHabitModel";
 import axios from "axios";
 
 const Habits = () => {
-    const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
+    // const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
     const [habitdata, setHabitdata] = useState([]);
+    const [modeldata, setModeldata] = useState({
+        isOpen: false,
+        mode: "create",
+        habit: null,
+    });
     const [archivedActive, setArchivedActive] = useState(false);
 
     const fetchHabitInfo = async () => {
@@ -57,20 +62,26 @@ const Habits = () => {
         }
     };
 
-    const handleEditHabit = async (id) => {
+    const handleSaveEditHabit = async (
+        id,
+        title,
+        description,
+        category,
+        icon,
+        color,
+    ) => {
         try {
             const token = localStorage.getItem("token");
 
-                
             const response = await axios.put(
                 `http://localhost:5000/habit/editHabit/${id}`,
-              {
-                title,
-                description,
-                category,
-                color,
-                icon,
-             },
+                {
+                    title,
+                    description,
+                    category,
+                    color,
+                    icon,
+                },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -78,12 +89,26 @@ const Habits = () => {
                 },
             );
 
+            setModeldata({
+                isOpen: false,
+                habit: null,
+                mode: "create",
+            });
+
             setHabitdata((prev) =>
                 prev.map((habit) => (habit._id === id ? response.data : habit)),
             );
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
+    };
+
+    const handleEditHabit = (habit) => {
+        setModeldata({
+            isOpen: true,
+            habit,
+            mode: "edit",
+        });
     };
 
     const handleDeleteHabit = async (id) => {
@@ -136,16 +161,25 @@ const Habits = () => {
                         </button>
                         <button
                             className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-500 text-white"
-                            onClick={() => setOpenNewHabitModel(true)}
+                            // onClick={() => setOpenNewHabitModel(true)}
+                            onClick={() =>
+                                setModeldata({
+                                    isOpen: true,
+                                    habit: null,
+                                    mode: "create",
+                                })
+                            }
                         >
                             <FaPlus /> New Habit
                         </button>
                     </div>
                 </div>
 
-                {openNewHabitModel && (
+                {modeldata.isOpen && (
                     <CreateNewHabit
-                        setOpenNewHabitModel={setOpenNewHabitModel}
+                        setModeldata={setModeldata}
+                        handleSaveEditHabit={handleSaveEditHabit}
+                        modeldata={modeldata}
                     />
                 )}
                 {suggestNewHabitModel && (
@@ -229,7 +263,7 @@ const Habits = () => {
                                 </div>
                                 <FaPencilAlt
                                     size={20}
-                                    onClick={() => handleEditHabit()}
+                                    onClick={() => handleEditHabit(habit)}
                                 />
                                 <FaArchive
                                     className="cursor-pointer"
