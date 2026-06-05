@@ -79,7 +79,7 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                         <div className="flex items-center gap-6">
                             <div
                                 className={` rounded p-1 text-2xl `}
-                                style={{ backgroundColor: habits.colour }}
+                                style={{ backgroundColor: habits.color }}
                             >
                                 {habits.icon}
                             </div>

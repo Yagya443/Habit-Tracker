@@ -27,7 +27,7 @@ const Dashboard = () => {
     const [createHabit, setCreateHabit] = useState([]);
     const [user, setUser] = useState(null);
 
-    const fetchUserInfo = async () => {
+    const fetchHabitInfo = async () => {
         try {
             const token = localStorage.getItem("token");
 
@@ -46,10 +46,16 @@ const Dashboard = () => {
         }
     };
 
-    async function handleCreateHabit() {
+    async function handleCreateHabit(
+        title,
+        description,
+        category,
+        icon,
+        color,
+    ) {
         try {
             const token = localStorage.getItem("token");
-            
+
             const response = await axios.post(
                 "http://localhost:5000/habit/createHabit",
                 {
@@ -57,7 +63,7 @@ const Dashboard = () => {
                     description,
                     category,
                     icon,
-                    colour,
+                    color,
                 },
                 {
                     headers: {
@@ -65,17 +71,17 @@ const Dashboard = () => {
                     },
                 },
             );
-            
+
             setCreateHabit(response.data);
             console.log(response.data);
-            setOpenNewHabitModel(false)
+            setOpenNewHabitModel(false);
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
     }
 
     useEffect(() => {
-        fetchUserInfo();
+        fetchHabitInfo();
         // fetchUser();
     }, []);
 

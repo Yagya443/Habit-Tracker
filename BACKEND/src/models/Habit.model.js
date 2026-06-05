@@ -47,9 +47,8 @@ const habitSchema = new mongoose.Schema(
                 "🌟",
             ],
         },
-        colour: {
+        color: {
             type: String,
-            required: true,
             enum: [
                 "#f59e0b",
                 "#ef4444",

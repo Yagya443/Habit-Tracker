@@ -28,9 +28,9 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("Fitness");
     const [icon, setIcon] = useState("");
-    const [colour, setColour] = useState("");
+    const [color, setColor] = useState("");
 
     return (
         <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
@@ -103,7 +103,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
                         {colors.map((color, idx) => (
                             <div
                                 key={idx}
-                                onClick={() => setColour(colour)}
+                                onClick={() => setColor(color)}
                                 className={`h-8 w-8 rounded-full hover:-translate-y-1 cursor-pointer transition  `}
                                 style={{ backgroundColor: color }}
                             />
@@ -120,7 +120,7 @@ const CreateNewHabit = ({ setOpenNewHabitModel, handleCreateHabit }) => {
                                 description,
                                 category,
                                 icon,
-                                colour,
+                                color,
                             )
                         }
                     >
