@@ -57,6 +57,35 @@ const Habits = () => {
         }
     };
 
+    const handleEditHabit = async (id) => {
+        try {
+            const token = localStorage.getItem("token");
+
+                
+            const response = await axios.put(
+                `http://localhost:5000/habit/editHabit/${id}`,
+              {
+                title,
+                description,
+                category,
+                color,
+                icon,
+             },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setHabitdata((prev) =>
+                prev.map((habit) => (habit._id === id ? response.data : habit)),
+            );
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
     const handleDeleteHabit = async (id) => {
         try {
             const token = localStorage.getItem("token");
@@ -76,14 +105,12 @@ const Habits = () => {
         }
     };
 
-    const activeCount = habitdata.filter((habit) => !habit.archive).length;
-    const archivedCount = habitdata.filter((habit) => habit.archive).length;
+    const activeCount = habitdata.filter((habit) => !habit.archived).length;
+    const archivedCount = habitdata.filter((habit) => habit.archived).length;
 
     const filteredHabits = habitdata.filter((habit) =>
-        archivedActive ? habit.archive : !habit.archive,
+        archivedActive ? habit.archived : !habit.archived,
     );
-
-    console.log(filteredHabits)
 
     useEffect(() => {
         fetchHabitInfo();
@@ -200,8 +227,12 @@ const Habits = () => {
                                     />
                                     15
                                 </div>
-                                <FaPencilAlt size={20} />
+                                <FaPencilAlt
+                                    size={20}
+                                    onClick={() => handleEditHabit()}
+                                />
                                 <FaArchive
+                                    className="cursor-pointer"
                                     size={20}
                                     onClick={() =>
                                         handleArchiveHabit(habit._id)
