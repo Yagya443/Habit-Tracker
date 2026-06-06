@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsStars } from "react-icons/bs";
 import { FaChevronDown, FaGripfire, FaPlus, FaTrophy } from "react-icons/fa";
 import NavBar from "../../Components/NavBar";
@@ -10,6 +10,7 @@ import { TbActivityHeartbeat } from "react-icons/tb";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { CiTrophy } from "react-icons/ci";
 import { FaCalendarAlt } from "react-icons/fa";
+import axios from "axios";
 
 import BarGraph from "./BarGraph";
 import BarGraph2 from "./BarGraph2";
@@ -17,6 +18,34 @@ import PieChart from "./PieChart";
 import Analysis from "./Analysis";
 
 const Insights = () => {
+    const [habitdata, setHabitdata] = useState([]);
+
+    const fetchHabitInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "http://localhost:5000/habit/getHabit",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            setHabitdata(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const totalHabit = habitdata.length;
+    const totalStreak = habitdata.filter((habit) => habit.streak > 0).length;
+
+    useEffect(() => {
+        fetchHabitInfo();
+    }, []);
+
     return (
         <>
             <NavBar />
@@ -60,8 +89,8 @@ const Insights = () => {
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <TbActivityHeartbeat /> Completions
                         </p>
-                        <h2 className="text-4xl font-bold">56%</h2>
-                        <h2 className="text-sm">39 of 70</h2>
+                        <h2 className="text-4xl font-bold">{((totalStreak/totalHabit)*100).toFixed(2)}%</h2>
+                        <h2 className="text-sm">{totalStreak} of {totalHabit}</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
@@ -109,23 +138,27 @@ const Insights = () => {
                 <div className="bg-white mt-8 py-4 px-8 rounded-2xl">
                     <div className="flex items-center justify-between">
                         <p className="font-bold">Active Streak</p>
-                        <p className="font-light">10/10</p>
+                        <p className="font-light">
+                            {totalStreak}/{totalHabit}
+                        </p>
                     </div>
                     <div className="grid grid-cols-4 gap-4 mt-4">
-                        <div className="min-w-48 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-                            <div className="bg-sky-100 p-2 rounded-xl text-xl">
-                                💧
-                            </div>
-                            <div>
-                                <h1 className="font-semibold text-gray-800">
-                                    Drink 2L of water
-                                </h1>
+                        {habitdata.map((habit, idx) => (
+                            <div className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3">
+                                <div className="bg-sky-100 p-2 rounded-xl text-xl">
+                                    {habit.icon}
+                                </div>
+                                <div>
+                                    <h1 className="font-semibold text-gray-800 ">
+                                        {habit.description}
+                                    </h1>
 
-                                <p className="text-sm text-orange-500 font-medium">
-                                    🔥 13 days
-                                </p>
+                                    <p className="text-sm text-orange-500 font-medium">
+                                        🔥 {habit.streak} days
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

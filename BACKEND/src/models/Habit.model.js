@@ -74,10 +74,19 @@ const habitSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        lastCompletedDate: {
+            type: Date,
+            default: null,
+        },
+        completedDates: [
+            {
+                type: Date,
+            },
+        ],
     },
     {
         timestamps: true,
     },
 );
 
-module.exports = mongoose.model("Habit", habitSchema);  
+module.exports = mongoose.model("Habit", habitSchema);

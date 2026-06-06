@@ -3,31 +3,37 @@ import { BsThreeDots } from "react-icons/bs";
 import { MdDone } from "react-icons/md";
 import { FaFire } from "react-icons/fa";
 
+import axios from "axios";
 import { BsStars } from "react-icons/bs";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import { AiOutlineFire } from "react-icons/ai";
 
 const HabitsList = ({ habitdata, setHabitdata }) => {
-    function handlecompleted(id) {
-        const updatedHabits = habitdata.map((habit) => {
-            if (habit._id === id) {
-                return {
-                    ...habit,
-                    streak: habit.completed
-                        ? habit.streak - 1
-                        : habit.streak + 1,
-                    completed: !habit.completed,
-                };
-            }
-            return habit;
-        });
+    const handlecompleted = async (id) => {
 
-        setHabitdata(updatedHabits);
-    }
+        try {
+            const token = localStorage.getItem("token");
 
+            const response = await axios.put(
+                `http://localhost:5000/habit/completeHabit/${id}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
 
-    const completed = 4;
-    const total = 8;
+            setHabitdata((prev) =>
+                prev.map((habit) => (habit._id === id ? response.data : habit)),
+            );
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const completed = 0.5;
+    const total = habitdata.length;
 
     const percentage = (completed / total) * 100;
 
@@ -43,15 +49,17 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
             <div className="pt-4  flex items-center justify-between px-6">
                 <div className="">
                     <h1 className="text-2xl font-semibold">Today's Habits</h1>
-                    <p className="font-light">4 of 8 Completed</p>
+                    <p className="font-light">
+                        {completed} of {total} Completed
+                    </p>
                 </div>
-                <div className="h-20 w-20">
-                    <PieChart>
+                <div className="pb-4">
+                    <PieChart width={60} height={60}>
                         <Pie
                             data={data}
                             innerRadius={20}
-                            outerRadius={25}
-                            paddingAngle={1}
+                            outerRadius={30}
+                            paddingAngle={0}
                             dataKey="value"
                         >
                             {data.map((entry, index) => (
@@ -59,9 +67,11 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                             ))}
 
                             <Label
-                                value={`${percentage}%`}
+                                value={`${Math.round(percentage)}%`}
                                 position="center"
-                                className="text-black text-md font-bold"
+                                fill="black"
+                                fontSize={14}
+                                fontWeight="bold"
                             />
                         </Pie>
                     </PieChart>

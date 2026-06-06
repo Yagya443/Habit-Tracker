@@ -1,9 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../Components/NavBar";
 import { SlCalender } from "react-icons/sl";
 import WeeklyHabitTracker from "./WeeklyHabitTracker";
+import { GrPrevious } from "react-icons/gr";
+import { GrNext } from "react-icons/gr";
+import axios from "axios";
 
 const Weekly = () => {
+    const [habitdata, setHabitdata] = useState([]);
+
+    const [currentWeek, setCurrentWeek] = useState(() => {
+        const today = new Date();
+
+        const day = today.getDay();
+        const diff = day === 0 ? -6 : 1 - day;
+
+        const monday = new Date(today);
+        monday.setDate(today.getDate() + diff);
+
+        return monday;
+    });
+
+    const handlePreviousWeek = () => {
+        setCurrentWeek((prev) => {
+            const newDate = new Date(prev);
+            newDate.setDate(newDate.getDate() - 7);
+            return newDate;
+        });
+    };
+
+    const handleNextWeek = () => {
+        setCurrentWeek((prev) => {
+            const newDate = new Date(prev);
+            newDate.setDate(newDate.getDate() + 7);
+            return newDate;
+        });
+    };
+
+    const weekEnd = new Date(currentWeek);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    const formatDate = (date) =>
+        date.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+        });
+
+    const fetchHabitInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "http://localhost:5000/habit/getHabit",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            setHabitdata(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchHabitInfo();
+    }, []);
+
     return (
         <>
             <NavBar />
@@ -19,12 +83,24 @@ const Weekly = () => {
                     </div>
 
                     <div className="flex gap-4">
-                        <button>{"<"}</button>
-                        <button>
-                            <SlCalender />
-                            Date
+                        <button
+                            className="bg-white px-3 rounded-xl"
+                            onClick={handlePreviousWeek}
+                        >
+                            <GrPrevious />
                         </button>
-                        <button>{">"}</button>
+
+                        <button className="bg-white flex items-center gap-2 px-4 py-2 rounded-xl">
+                            <SlCalender />
+                            {formatDate(currentWeek)} - {formatDate(weekEnd)}
+                        </button>
+
+                        <button
+                            className="bg-white px-3 rounded-xl"
+                            onClick={handleNextWeek}
+                        >
+                            <GrNext />
+                        </button>
                     </div>
                 </div>
 
@@ -35,7 +111,9 @@ const Weekly = () => {
                         <h2 className="text-sm">39 of 70</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold ">Total Completions</p>
+                        <p className="text-sm font-semibold ">
+                            Total Completions
+                        </p>
                         <h2 className="text-4xl font-bold">39%</h2>
                         <h2 className="text-sm">this week</h2>
                     </div>
@@ -46,15 +124,19 @@ const Weekly = () => {
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold ">Top Habit</p>
-                        <h2 className="text-2xl font-bold">Drint 2L of water</h2>
+                        <h2 className="text-2xl font-bold">
+                            Drint 2L of water
+                        </h2>
                         <h2 className="text-sm">6/7 days</h2>
                     </div>
                 </div>
 
-              <div className="bg-white mt-6 rounded-xl py-4 px-6">
-                {/* <WeeklyHabitTracker /> */}
-              </div>
-
+                <div className="bg-white mt-6 rounded-xl py-4 px-6">
+                    <WeeklyHabitTracker
+                        currentWeek={currentWeek}
+                        habitdata={habitdata}
+                    />
+                </div>
             </div>
         </>
     );

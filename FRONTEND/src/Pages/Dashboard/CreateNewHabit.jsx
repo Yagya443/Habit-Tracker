@@ -7,6 +7,8 @@ const CreateNewHabit = ({
     handleSaveEditHabit,
     modeldata,
 }) => {
+
+    
     const emojis = [
         "💪",
         "❤️",
@@ -43,7 +45,7 @@ const CreateNewHabit = ({
 
     return (
         <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
-            <div className="bg-white w-112 rounded-2xl p-6 shadow-xl">
+            <div className="bg-white w-md rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-bold ">
                         {modeldata.mode === "edit" ? "Edit Habit" : "New Habit"}
@@ -109,7 +111,7 @@ const CreateNewHabit = ({
                             <div
                                 key={idx}
                                 onClick={() => setIcon(emoji)}
-                                className="border-2 border-black rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 hover:bg-amber-50 cursor-pointer transition"
+                                className={`border-2 rounded p-1 text-xl hover:border-amber-500 hover:-translate-y-1 hover:bg-amber-50 cursor-pointer transition ${emoji===icon && 'bg-amber-50 border-amber-500' }`}
                             >
                                 {emoji}
                             </div>
@@ -119,12 +121,12 @@ const CreateNewHabit = ({
                 <div className="mt-2">
                     <h1 className="text-md font-medium">Colours</h1>
                     <div className="flex flex-wrap gap-2 bg-white ">
-                        {colors.map((color, idx) => (
+                        {colors.map((colors, idx) => (
                             <div
                                 key={idx}
-                                onClick={() => setColor(color)}
-                                className={`h-8 w-8 rounded-full hover:-translate-y-1 cursor-pointer transition  `}
-                                style={{ backgroundColor: color }}
+                                onClick={() => setColor(colors)}
+                                className={`h-8 w-8 rounded-full hover:-translate-y-1 cursor-pointer transition  ${colors===color && 'border-2 border-black ' } `}
+                                style={{ backgroundColor: colors }}
                             />
                         ))}
                     </div>

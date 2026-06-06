@@ -107,27 +107,47 @@ const archiveHabit = async (req, res) => {
         });
     }
 };
-const increseStreak = async (req, res) => {
-    try {
-        const habit = await Habit.findById(req.params.id);
 
-        if (!habit) {
-            return res.status(404).json({
-                message: "Habit not found",
-            });
-        }
+const completeHabit = async (req, res) => {
+    const habit = await Habit.findById(req.params.id);
 
-        habit.streak=habit.streak+1
-        habit.maxStreak=Math.max(habit.streak+1,habit.maxStreak)
-
-        await habit.save();
-
-        res.status(200).json(habit);
-    } catch (error) {
-        res.status(500).json({
-            message: error.message,
+    if (!habit) {
+        return res.status(404).json({
+            message: "Habit not found",
         });
     }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const lastDate = habit.lastCompletedDate
+        ? new Date(habit.lastCompletedDate)
+        : null;
+
+    if (lastDate) {
+        lastDate.setHours(0, 0, 0, 0);
+    }
+
+    if (lastDate && lastDate.getTime() === today.getTime()) {
+        return res.status(400).json({
+            message: "Already completed today",
+        });
+    }
+
+    if (habit.completed) {
+        habit.completed = false;
+        habit.streak = 0;
+    } else {
+        habit.completed = true;
+        habit.streak += 1;
+    }
+    habit.maxStreak = Math.max(habit.maxStreak, habit.streak);
+    habit.lastCompletedDate = today;
+    habit.completedDates.push(today)
+
+    await habit.save();
+
+    res.status(200).json(habit);
 };
 
 module.exports = {
@@ -136,5 +156,5 @@ module.exports = {
     editHabit,
     deleteHabit,
     archiveHabit,
-    increseStreak
+    completeHabit,
 };

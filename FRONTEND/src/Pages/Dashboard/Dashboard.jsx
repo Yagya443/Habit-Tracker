@@ -21,7 +21,13 @@ const Dashboard = () => {
     const [message1, setMessage1] = useState(true);
     const [message2, setMessage2] = useState(true);
     const [message3, setMessage3] = useState(false);
-    const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
+    // const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
+    const [modeldata, setModeldata] = useState({
+        isOpen: false,
+        mode: "create",
+        habit: null,
+    });
+
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
     const [habitdata, setHabitdata] = useState([]);
     const [createHabit, setCreateHabit] = useState([]);
@@ -73,7 +79,11 @@ const Dashboard = () => {
             );
 
             setCreateHabit(response.data);
-            setOpenNewHabitModel(false);
+            setModeldata({
+                isOpen: false,
+                habit: null,
+                mode: "create",
+            });
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -104,16 +114,23 @@ const Dashboard = () => {
                         </button>
                         <button
                             className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-500 text-white"
-                            onClick={() => setOpenNewHabitModel(true)}
+                            onClick={() =>
+                                setModeldata({
+                                    isOpen: true,
+                                    habit: null,
+                                    mode: "create",
+                                })
+                            }
                         >
                             <FaPlus /> New Habit
                         </button>
                     </div>
                 </div>
-                {openNewHabitModel && (
+                {modeldata.isOpen && (
                     <CreateNewHabit
-                        setOpenNewHabitModel={setOpenNewHabitModel}
+                        setModeldata={setModeldata}
                         handleCreateHabit={handleCreateHabit}
+                        modeldata={modeldata}
                     />
                 )}
                 {suggestNewHabitModel && (

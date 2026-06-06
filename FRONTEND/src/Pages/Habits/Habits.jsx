@@ -17,6 +17,7 @@ const Habits = () => {
     const [searchVal, setSearchVal] = useState("");
     const [habitdata, setHabitdata] = useState([]);
     const [filters, setFilters] = useState("");
+    const [createHabit, setCreateHabit] = useState([]);
     const [modeldata, setModeldata] = useState({
         isOpen: false,
         mode: "create",
@@ -151,6 +152,43 @@ const Habits = () => {
         }
     };
 
+    async function handleCreateHabit(
+        title,
+        description,
+        category,
+        icon,
+        color,
+    ) {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.post(
+                "http://localhost:5000/habit/createHabit",
+                {
+                    title,
+                    description,
+                    category,
+                    icon,
+                    color,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setCreateHabit(response.data);
+            setModeldata({
+                isOpen: false,
+                habit: null,
+                mode: "create",
+            });
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    }
+
     const activeCount = habitdata.filter((habit) => !habit.archived).length;
     const archivedCount = habitdata.filter((habit) => habit.archived).length;
 
@@ -159,11 +197,11 @@ const Habits = () => {
 
         const filterSearch =
             habit.title.toLowerCase().includes(searchVal.toLowerCase()) ||
-            habit.description.toLowerCase().includes(searchVal.toLowerCase());
+            habit.description.toLowerCase().includes(searchVal.toLowerCase()) || '';
 
-        const filterCategory=habit.category === filters || filters === "";
+        const filterCategory = habit.category === filters || filters === "";
 
-        return filterArchive && filterSearch && filterCategory
+        return filterArchive && filterSearch && filterCategory;
     });
 
     useEffect(() => {
@@ -207,6 +245,7 @@ const Habits = () => {
                 {modeldata.isOpen && (
                     <CreateNewHabit
                         setModeldata={setModeldata}
+                        handleCreateHabit={handleCreateHabit}
                         handleSaveEditHabit={handleSaveEditHabit}
                         modeldata={modeldata}
                     />
@@ -230,7 +269,7 @@ const Habits = () => {
                         value={filters}
                         onChange={(e) => setFilters(e.target.value)}
                     >
-                        <option value=''>All category</option>
+                        <option value="">All category</option>
                         <option value="Fitness">Fitness</option>
                         <option value="Health">Health</option>
                         <option value="Learning">Learning</option>
@@ -265,7 +304,10 @@ const Habits = () => {
                             className=" rounded-xl mx-4 px-4 flex items-center justify-between bg-white py-2"
                         >
                             <div className="flex items-center gap-6">
-                                <div className="bg-blue-300 rounded p-1 text-2xl">
+                                <div
+                                    className={` rounded p-1 text-2xl`}
+                                    style={{ backgroundColor: habit.color }}
+                                >
                                     {habit.icon}
                                 </div>
                                 <div className="flex flex-col">
@@ -295,7 +337,7 @@ const Habits = () => {
                                         size={30}
                                         fill="oklch(76.9% 0.188 70.08)"
                                     />
-                                    15
+                                    {habit.maxStreak}
                                 </div>
                                 <FaPencilAlt
                                     size={20}

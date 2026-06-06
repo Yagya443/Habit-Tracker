@@ -1,36 +1,17 @@
 import React from "react";
 import { Check } from "lucide-react";
 
-const WeeklyTracker = () => {
+const WeeklyTracker = ({ habitdata,currentWeek }) => {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    const habits = [
-        {
-            name: "Drink 2L of water",
-            color: "bg-sky-500",
-            completed: [true, true, true, true, true, true, false],
-        },
-        {
-            name: "Morning run",
-            color: "bg-red-500",
-            completed: [false, true, true, true, true, true, false],
-        },
-        {
-            name: "Meditate",
-            color: "bg-purple-500",
-            completed: [true, false, true, false, true, true, false],
-        },
-        {
-            name: "Journal",
-            color: "bg-pink-500",
-            completed: [false, false, true, false, true, true, false],
-        },
-        {
-            name: "Strength training",
-            color: "bg-orange-500",
-            completed: [true, true, false, false, false, true, false],
-        },
-    ];
+    const weekDays = [];
+
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(currentWeek);
+        day.setDate(currentWeek.getDate() + i);
+
+        weekDays.push(day);
+    }
 
     return (
         <div className="">
@@ -48,34 +29,43 @@ const WeeklyTracker = () => {
                 ))}
             </div>
 
-            {/* Habit Rows */}
             <div className="flex flex-col gap-4">
-                {habits.map((habit, idx) => (
+                {habitdata.map((habit, idx) => (
                     <div
                         key={idx}
                         className="grid grid-cols-8 gap-4 items-center"
                     >
-                        {/* Habit Name */}
                         <div className="font-medium text-gray-700">
-                            {habit.name}
+                            {habit.title}
                         </div>
 
-                        {/* Days */}
-                        {habit.completed.map((done, i) => (
-                            <div
-                                key={i}
-                                className={`
-                                    h-10 w-10 rounded-xl flex items-center justify-center mx-auto
-                                    ${
+                    
+
+                        {/* {weekDays.map((day, i) => {
+                            const done = habit.completedDates?.some(
+                                (date) =>
+                                    new Date(date).toDateString() ===
+                                    day.toDateString(),
+                            );
+
+                            return (
+                                <div
+                                    key={i}
+                                    className={`h-10 w-10 rounded-xl flex items-center justify-center mx-auto ${
                                         done
-                                            ? `${habit.color} text-white shadow-md`
+                                            ? "text-white shadow-md"
                                             : "bg-gray-100"
-                                    }
-                                `}
-                            >
-                                {done && <Check size={18} />}
-                            </div>
-                        ))}
+                                    }`}
+                                    style={{
+                                        backgroundColor: done
+                                            ? habit.color
+                                            : undefined,
+                                    }}
+                                >
+                                    {done && <Check size={18} />}
+                                </div>
+                            );
+                        })} */}
                     </div>
                 ))}
             </div>
