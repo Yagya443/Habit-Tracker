@@ -14,7 +14,9 @@ import axios from "axios";
 const Habits = () => {
     // const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
+    const [searchVal, setSearchVal] = useState("");
     const [habitdata, setHabitdata] = useState([]);
+    const [filters, setFilters] = useState("");
     const [modeldata, setModeldata] = useState({
         isOpen: false,
         mode: "create",
@@ -130,12 +132,39 @@ const Habits = () => {
         }
     };
 
+    const handleIncreaseStreak = async (id) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.put(
+                `http://localhost:5000/habit/increaseStreak/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setHabitData((prev) => prev.filter((habit) => habit._id !== id));
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
     const activeCount = habitdata.filter((habit) => !habit.archived).length;
     const archivedCount = habitdata.filter((habit) => habit.archived).length;
 
-    const filteredHabits = habitdata.filter((habit) =>
-        archivedActive ? habit.archived : !habit.archived,
-    );
+    const filteredHabits = habitdata.filter((habit) => {
+        const filterArchive = archivedActive ? habit.archived : !habit.archived;
+
+        const filterSearch =
+            habit.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+            habit.description.toLowerCase().includes(searchVal.toLowerCase());
+
+        const filterCategory=habit.category === filters || filters === "";
+
+        return filterArchive && filterSearch && filterCategory
+    });
 
     useEffect(() => {
         fetchHabitInfo();
@@ -192,9 +221,16 @@ const Habits = () => {
                     <input
                         className="w-2/3 px-4 py-1 rounded-md border-2"
                         placeholder="Serach Habits..."
+                        onChange={(e) => setSearchVal(e.target.value)}
+                        value={searchVal}
                     />
-                    <select className="border rounded-md py-1 px-4">
-                        <option>All category</option>
+                    <select
+                        className="border rounded-md py-1 px-4"
+                        name="category"
+                        value={filters}
+                        onChange={(e) => setFilters(e.target.value)}
+                    >
+                        <option value=''>All category</option>
                         <option value="Fitness">Fitness</option>
                         <option value="Health">Health</option>
                         <option value="Learning">Learning</option>
@@ -252,7 +288,7 @@ const Habits = () => {
                                         fill="oklch(76.9% 0.188 70.08)"
                                         size={25}
                                     />
-                                    15
+                                    {habit.streak}
                                 </div>
                                 <div className="flex items-center">
                                     <CiTrophy
