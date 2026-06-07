@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsStars, BsThreeDots } from "react-icons/bs";
 import { FaArchive, FaFire, FaPlus } from "react-icons/fa";
+import { BiSolidArchiveIn, BiSolidArchiveOut } from "react-icons/bi";
 import NavBar from "../../Components/NavBar";
 import { MdDone } from "react-icons/md";
 import { CiTrophy } from "react-icons/ci";
@@ -197,7 +198,8 @@ const Habits = () => {
 
         const filterSearch =
             habit.title.toLowerCase().includes(searchVal.toLowerCase()) ||
-            habit.description.toLowerCase().includes(searchVal.toLowerCase()) || '';
+            habit.description.toLowerCase().includes(searchVal.toLowerCase()) ||
+            "";
 
         const filterCategory = habit.category === filters || filters === "";
 
@@ -207,6 +209,8 @@ const Habits = () => {
     useEffect(() => {
         fetchHabitInfo();
     }, []);
+
+    console.log(filteredHabits)
 
     return (
         <>
@@ -343,13 +347,23 @@ const Habits = () => {
                                     size={20}
                                     onClick={() => handleEditHabit(habit)}
                                 />
-                                <FaArchive
-                                    className="cursor-pointer"
-                                    size={20}
-                                    onClick={() =>
-                                        handleArchiveHabit(habit._id)
-                                    }
-                                />
+                                {habit.archived ? (
+                                    <BiSolidArchiveOut
+                                        className="cursor-pointer"
+                                        size={25}
+                                        onClick={() =>
+                                            handleArchiveHabit(habit._id)
+                                        }
+                                    />
+                                ) : (
+                                    <BiSolidArchiveIn
+                                        className="cursor-pointer"
+                                        size={25}
+                                        onClick={() =>
+                                            handleArchiveHabit(habit._id)
+                                        }
+                                    />
+                                )}
 
                                 <MdDeleteOutline
                                     fill="#fff"

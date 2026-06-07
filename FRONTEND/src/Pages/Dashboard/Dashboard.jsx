@@ -45,7 +45,6 @@ const Dashboard = () => {
                     },
                 },
             );
-            console.log(response.data);
             setHabitdata(response.data);
         } catch (error) {
             console.log(error.response?.data || error.message);

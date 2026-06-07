@@ -8,7 +8,8 @@ import axios from "axios";
 
 const Weekly = () => {
     const [habitdata, setHabitdata] = useState([]);
-    const [topHabit, setTopHabit] = useState(null);
+    const [topHabitNumber, setTopHabitNumber] = useState(null);
+    const [topHabitTitle, setTopHabitTitle] = useState(null);
 
     const [currentWeek, setCurrentWeek] = useState(() => {
         const today = new Date();
@@ -71,6 +72,14 @@ const Weekly = () => {
                 );
                 setTopHabit(maxCompletedLength);
             });
+
+            const findTitle = response.data.find(
+                (val) => val.completedDates.length === maxCompletedLength,
+            );
+
+            // setTopHabitTitle(findTitle.title)
+            
+
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -137,9 +146,9 @@ const Weekly = () => {
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold ">Top Habit</p>
                         <h2 className="text-2xl font-bold">
-                            Drint 2L of water
+                            {/* {topHabitTitle} */}
                         </h2>
-                        <h2 className="text-sm">{topHabit} days</h2>
+                        <h2 className="text-sm">{topHabitNumber} days</h2>
                     </div>
                 </div>
 
