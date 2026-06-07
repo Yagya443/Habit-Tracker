@@ -120,12 +120,19 @@ const completeHabit = async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
     const lastDate = habit.lastCompletedDate
         ? new Date(habit.lastCompletedDate)
         : null;
 
     if (lastDate) {
         lastDate.setHours(0, 0, 0, 0);
+        
+        if(lastDate.getTime()!==yesterday.getTime()){
+            habit.streak=0
+        }
     }
 
     if (lastDate && lastDate.getTime() === today.getTime()) {
@@ -134,16 +141,12 @@ const completeHabit = async (req, res) => {
         });
     }
 
-    if (habit.completed) {
-        habit.completed = false;
-        habit.streak = 0;
-    } else {
-        habit.completed = true;
-        habit.streak += 1;
-    }
+    habit.streak += 1;
     habit.maxStreak = Math.max(habit.maxStreak, habit.streak);
+
     habit.lastCompletedDate = today;
-    habit.completedDates.push(today)
+    habit.completedDates.push(today);
+    habit.completed = true;
 
     await habit.save();
 
