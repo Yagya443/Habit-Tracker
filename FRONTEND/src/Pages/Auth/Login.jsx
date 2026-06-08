@@ -3,11 +3,37 @@ import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Login = () => {
     const navigate = useNavigate();
 
     const [passwordHide, setPasswordHide] = useState(false);
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/user/login",
+                {
+                    email,
+                    password,
+                },
+            );
+
+            localStorage.setItem("token", response.data.token);
+
+            console.log(response);
+
+            navigate('/dashboard')
+
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
@@ -66,7 +92,10 @@ const Login = () => {
                     </div>
                 </div>
 
-                <button className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300">
+                <button
+                    className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
+                    onClick={handleLogin}
+                >
                     Sign In
                 </button>
 
@@ -75,6 +104,7 @@ const Login = () => {
                     <span
                         className="text-orange-400 font-medium cursor-pointer hover:underline"
                         onClick={() => navigate("/signup")}
+                        // onClick={handleLogin()}
                     >
                         Create one
                     </span>

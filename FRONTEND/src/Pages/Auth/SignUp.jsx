@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
+import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiDark } from "react-icons/ci";
 
@@ -9,6 +10,32 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const [passwordHide, setPasswordHide] = useState(false);
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+
+    const handleSignIn = async () => {
+        try {
+            //  console.log({ name, email, password });
+
+            const response = await axios.post(
+                "http://localhost:5000/user/signUp",
+                {
+                    name,
+                    email,
+                    password,
+                },
+            );
+
+            console.log(response);
+
+            localStorage.setItem("token", response.data.token);
+
+            navigate('/dashboard')
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
@@ -48,6 +75,8 @@ const SignUp = () => {
                         type="text"
                         placeholder="Your name"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
                 </div>
 
@@ -61,6 +90,8 @@ const SignUp = () => {
                         type="email"
                         placeholder="you@example.com"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
 
@@ -73,6 +104,8 @@ const SignUp = () => {
                     <div className="flex items-center gap-2">
                         <input
                             type={`${passwordHide ? "password" : "text"}`}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="At least 6 characters"
                             className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
                         />
@@ -86,7 +119,10 @@ const SignUp = () => {
                     </div>
                 </div>
 
-                <button className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300">
+                <button
+                    className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
+                    onClick={handleSignIn}
+                >
                     Create account
                 </button>
 

@@ -17,11 +17,23 @@ const signup = async (req, res) => {
         });
 
         await user.save();
-        console.log(req.body);
+
+         const token = jwt.sign(
+            {
+                _id: user._id,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d",
+            },
+        );
+
+        console.log("login successfully");
 
         res.status(201).json({
             message: "Account created successfully",
-            user: existingUser,
+            token,
+            user,
         });
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -31,6 +43,8 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
+        
+        console.log("Email received:", email);
 
         const existUser = await User.findOne({ email });
 
@@ -76,4 +90,4 @@ const getMe = async (req, res) => {
     }
 };
 
-module.exports = { signup, login,getMe };
+module.exports = { signup, login, getMe };
