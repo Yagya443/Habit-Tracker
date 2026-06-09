@@ -43,13 +43,11 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        
-        console.log("Email received:", email);
-
         const existUser = await User.findOne({ email });
 
+
         if (!existUser) {
-            return res.status(201).json({ message: "No User Exist" });
+            return res.status(404).json({ message: "No User Exist" });
         }
 
         if (existUser.password != password) {
@@ -68,11 +66,15 @@ const login = async (req, res) => {
             },
         );
 
+        // console.log(token,existUser)
+
         res.status(200).json({
             message: "Login successful",
             token,
             user: existUser,
         });
+
+
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

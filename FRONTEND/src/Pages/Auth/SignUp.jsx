@@ -27,11 +27,8 @@ const SignUp = () => {
                 },
             );
 
-            console.log(response);
-
             localStorage.setItem("token", response.data.token);
-
-            navigate('/dashboard')
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -43,7 +40,6 @@ const SignUp = () => {
                 size={45}
                 className="absolute bg-white rounded right-6 top-6"
             />
-
             <div className="flex items-center gap-2 mb-6">
                 <div className="bg-orange-400 p-2 rounded-xl shadow-md">
                     <Sparkles className="text-white w-5 h-5" />
@@ -54,7 +50,6 @@ const SignUp = () => {
                 </h1>
             </div>
             <div className="bg-white w-full max-w-md rounded-2xl border border-gray-100 shadow-sm p-8">
-                {/* Heading */}
                 <div>
                     <p className="text-4xl font-bold text-gray-900">
                         Create your account
@@ -65,12 +60,10 @@ const SignUp = () => {
                     </p>
                 </div>
 
-                {/* Name Field */}
                 <div className="flex flex-col mt-6">
                     <label className="text-sm font-medium text-gray-700 mb-2">
                         Name
                     </label>
-
                     <input
                         type="text"
                         placeholder="Your name"
@@ -80,7 +73,6 @@ const SignUp = () => {
                     />
                 </div>
 
-                {/* Email Field */}
                 <div className="flex flex-col mt-4">
                     <label className="text-sm font-medium text-gray-700 mb-2">
                         Email

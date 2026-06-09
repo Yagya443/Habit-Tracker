@@ -27,7 +27,7 @@ const Dashboard = () => {
         mode: "create",
         habit: null,
     });
-
+    const [bestActiveStreak, setBestActiveStreak] = useState(0);
     const [suggestNewHabitModel, setSuggestNewHabitModel] = useState(false);
     const [habitdata, setHabitdata] = useState([]);
     const [createHabit, setCreateHabit] = useState([]);
@@ -88,9 +88,34 @@ const Dashboard = () => {
         }
     }
 
+    const fetchUserInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios(
+                "http://localhost:5000/user/me",
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            setUser(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const activeStreak = habitdata.filter((habit) => habit.streak > 0).length;
+
     useEffect(() => {
+        setBestActiveStreak((prev) => Math.max(prev, activeStreak));
+    }, [activeStreak]);
+
+    useEffect(() => {
+        fetchUserInfo();
         fetchHabitInfo();
-        // fetchUser();
     }, []);
 
     return (
@@ -100,7 +125,8 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-5xl font-semibold">
-                            Hey {user?.name},
+                            {/* Hey {user?.name}, */}
+                            Hey {user?.name?.split(" ")[0]},
                         </h1>
                         <h3 className="mt-2">Saturday 23 April</h3>
                     </div>
@@ -209,7 +235,9 @@ const Dashboard = () => {
                             <h2 className="text-gray-400 text-lg">
                                 Active Streak
                             </h2>
-                            <h2 className="text-xl font-semibold">8</h2>
+                            <h2 className="text-xl font-semibold">
+                                {activeStreak}
+                            </h2>
                         </div>
                     </div>
                     <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
@@ -221,7 +249,9 @@ const Dashboard = () => {
                             <h2 className="text-gray-400 text-lg">
                                 Best Streak
                             </h2>
-                            <h2 className="text-xl font-semibold">8</h2>
+                            <h2 className="text-xl font-semibold">
+                                {bestActiveStreak}
+                            </h2>
                         </div>
                     </div>
                     <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">

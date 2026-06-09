@@ -25,15 +25,11 @@ const Login = () => {
 
             localStorage.setItem("token", response.data.token);
 
-            console.log(response);
-
-            navigate('/dashboard')
-
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
     };
-
 
     return (
         <div className="flex gap-4 items-center justify-center flex-col h-screen bg-[#f6f2ec] ">
@@ -68,6 +64,7 @@ const Login = () => {
                         type="email"
                         placeholder="you@example.com"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
+                        onChange={(e)=>setEmail(e.target.value)}
                     />
                 </div>
 
@@ -81,6 +78,8 @@ const Login = () => {
                             type={`${passwordHide ? "password" : "text"}`}
                             placeholder="At least 6 characters"
                             className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
+                        onChange={(e)=>setPassword(e.target.value)}
+
                         />
                         <div onClick={() => setPasswordHide(!passwordHide)}>
                             {passwordHide ? (
