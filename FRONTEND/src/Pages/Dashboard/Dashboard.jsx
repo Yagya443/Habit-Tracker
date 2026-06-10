@@ -36,6 +36,7 @@ const Dashboard = () => {
     const [recommendation, setRecommendation] = useState([]);
     const [motivation, setMotivation] = useState("");
     const [days, setDays] = useState("");
+    const [report, setReport] = useState("");
 
     const fetchHabitInfo = async () => {
         try {
@@ -149,7 +150,28 @@ const Dashboard = () => {
             );
 
             setDays(response.data.plan);
-            console.log(response.data.plan);
+            // console.log(response.data.plan);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const weeklyreport = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.post(
+                "http://localhost:5000/ai/weeklyreport",
+                { habitdata },
+                {
+                    headers: {
+                        Authorization: `bearer: ${token}`,
+                    },
+                },
+            );
+
+            setReport(response.data.report);
+            console.log(response.data.report);
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -248,7 +270,7 @@ const Dashboard = () => {
                     </div>
                 )}
                 {message2 && (
-                    <div className="bg-[#FFD2E0]  relative rounded-2xl mt-8  pt-2 pb-6" >
+                    <div className="bg-[#FFD2E0]  relative rounded-2xl mt-8  pt-2 pb-6">
                         <div className="flex items-center gap-4  px-4 ">
                             <div className="bg-[#FF0883] rounded-xl p-1">
                                 <FaRegHeart size={30} />
@@ -379,9 +401,15 @@ const Dashboard = () => {
                     </div>
 
                     {message3 && (
-                        <button className="bg-amber-300 py-1 px-4 rounded-xl text-lg mt-2 text-white hover:opacity-70 transition-all hover:cursor-pointer">
-                            Generate A Weekly Report{" "}
-                        </button>
+                        <div>
+                            <button
+                                className="bg-amber-300 py-1 px-4 rounded-xl text-lg mt-2 text-white hover:opacity-70 transition-all hover:cursor-pointer"
+                                onClick={weeklyreport}
+                            >
+                                Generate A Weekly Report{" "}
+                            </button>
+                            <p>{report}</p>
+                        </div>
                     )}
                 </div>
             </div>

@@ -118,4 +118,44 @@ const threeDayPlan = async (req, res) => {
     }
 };
 
-module.exports = { getRecommendations, motivationQuote, threeDayPlan };
+const weeklyReport = async (req, res) => {
+    try {
+        const {habitdata} = req.body;
+
+        const model = genAI.getGenerativeModel({
+            model: "gemini-2.5-flash-lite",
+        });
+
+        const result = await model.generateContent(`
+            You are an expert productivity and habit coach.
+
+            Analyze the following weekly habit report:
+
+            ${JSON.stringify(habitdata, null, 2)}   
+
+            Provide:
+
+            1. What I did well.
+            2. What is going wrong.
+            3. 3 actionable suggestions for improvement.
+            4. One motivational conclusion.
+
+            Keep the response under 200 words.
+            `);
+        
+        const report = result.response.text();
+
+        res.status(200).json({
+            report,
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = {
+    getRecommendations,
+    motivationQuote,
+    threeDayPlan,
+    weeklyReport,
+};
