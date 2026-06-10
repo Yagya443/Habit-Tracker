@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import NavBar from "../../Components/NavBar";
 import { FaGripfire } from "react-icons/fa";
 import { FaTrophy } from "react-icons/fa";
@@ -10,6 +11,48 @@ import PieChart from "../Insights/PieChart";
 import Analysis from "../Insights/Analysis";
 
 const Statistics = () => {
+    const [habitdata, setHabitdata] = useState([]);
+
+    const [bestActiveStreak, setBestActiveStreak] = useState(0);
+
+    const fetchHabitInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "http://localhost:5000/habit/getHabit",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            setHabitdata(response.data);
+            // console.log(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const bestStreak = habitdata
+        .filter((habit) => habit.streak > 0)
+        .toSorted((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    const longestStreak = habitdata.toSorted(
+        (a, b) => b.completedDates.length - a.completedDates.length,
+    );
+
+    const needAttention = habitdata.toSorted(
+        (a, b) => a.completedDates.length - b.completedDates.length,
+    );
+
+    // console.log("longestStreak",longestStreak);
+    // console.log("needAttention",needAttention);
+
+    useEffect(() => {
+        fetchHabitInfo();
+    }, []);
+
     return (
         <>
             <NavBar />
@@ -29,16 +72,21 @@ const Statistics = () => {
                             <FaGripfire fill="#05df72" /> BEST STREAK
                         </p>
                         <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
-                            <div className="bg-sky-100 p-2 rounded-xl text-xl">
-                                💧
+                            <div
+                                className=" p-2 rounded-xl text-xl"
+                                style={{
+                                    backgroundColor: `${longestStreak[0]?.color}`,
+                                }}
+                            >
+                                {bestStreak[0]?.icon}
                             </div>
                             <div>
                                 <h1 className="font-semibold text-gray-800">
-                                    Drink 2L of water
+                                    {bestStreak[0]?.title}
                                 </h1>
 
                                 <p className="text-sm text-orange-500 font-medium">
-                                    13 days
+                                    {bestStreak[0]?.streak} days
                                 </p>
                             </div>
                         </div>
@@ -49,16 +97,22 @@ const Statistics = () => {
                             LONGEST EVER
                         </p>
                         <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
-                            <div className="bg-sky-100 p-2 rounded-xl text-xl">
-                                💧
+                            <div
+                                className="p-2 rounded-xl text-xl"
+                                style={{
+                                    backgroundColor: `${longestStreak[0]?.color}`,
+                                }}
+                            >
+                                {longestStreak[0]?.icon}
                             </div>
                             <div>
                                 <h1 className="font-semibold text-gray-800">
-                                    Drink 2L of water
+                                    {longestStreak[0]?.title}
                                 </h1>
 
                                 <p className="text-sm text-orange-500 font-medium">
-                                    13 days
+                                    {longestStreak[0]?.completedDates.length}{" "}
+                                    days
                                 </p>
                             </div>
                         </div>
@@ -69,16 +123,22 @@ const Statistics = () => {
                             NEEDS ATTENTION
                         </p>
                         <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
-                            <div className="bg-sky-100 p-2 rounded-xl text-xl">
-                                💧
+                            <div
+                                className="bg-sky-100 p-2 rounded-xl text-xl"
+                                style={{
+                                    backgroundColor: `${needAttention[0]?.color}`,
+                                }}
+                            >
+                                {needAttention[0]?.icon}
                             </div>
                             <div>
                                 <h1 className="font-semibold text-gray-800">
-                                    Drink 2L of water
+                                    {needAttention[0]?.title}
                                 </h1>
 
                                 <p className="text-sm text-orange-500 font-medium">
-                                    13 days
+                                    {needAttention[0]?.completedDates.length}{" "}
+                                    days
                                 </p>
                             </div>
                         </div>

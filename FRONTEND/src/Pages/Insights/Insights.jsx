@@ -37,6 +37,7 @@ const Insights = () => {
             console.log(error.response?.data || error.message);
         }
     };
+    
 
     const totalHabit = habitdata.length;
     const totalStreak = habitdata.filter((habit) => habit.streak > 0).length;
@@ -144,7 +145,9 @@ const Insights = () => {
                     <div className="grid grid-cols-4 gap-4 mt-4">
                         {habitdata.map((habit, idx) => (
                             <div className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-                                <div className="bg-sky-100 p-2 rounded-xl text-xl">
+                                <div className="p-2 rounded-xl text-xl"
+                                   style={{ backgroundColor: habit.color }}
+                                >
                                     {habit.icon}
                                 </div>
                                 <div>

@@ -33,6 +33,8 @@ const Dashboard = () => {
     const [createHabit, setCreateHabit] = useState([]);
     const [user, setUser] = useState(null);
 
+    const [recommendation, setRecommendation] = useState("");
+
     const fetchHabitInfo = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -134,6 +136,7 @@ const Dashboard = () => {
                         <button
                             className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white"
                             onClick={() => setSuggestNewHabitModel(true)}
+                            // onClick={getRecommendation}
                         >
                             <BsStars /> Suggest A Habit
                         </button>
@@ -161,6 +164,8 @@ const Dashboard = () => {
                 {suggestNewHabitModel && (
                     <SuggestNewHabitModel
                         setSuggestNewHabitModel={setSuggestNewHabitModel}
+                        setRecommendation={setRecommendation}
+                        recommendation={recommendation}
                     />
                 )}
 

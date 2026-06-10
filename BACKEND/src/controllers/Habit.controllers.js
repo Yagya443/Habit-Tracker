@@ -24,7 +24,6 @@ const createHabit = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 const getHabit = async (req, res) => {
     try {
         const allHabits = await Habit.find({ userId: req.user._id });
@@ -85,7 +84,6 @@ const editHabit = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 const archiveHabit = async (req, res) => {
     try {
         const habit = await Habit.findById(req.params.id);

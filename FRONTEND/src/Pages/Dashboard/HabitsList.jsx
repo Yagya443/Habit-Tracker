@@ -2,7 +2,6 @@ import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { MdDone } from "react-icons/md";
 import { FaFire } from "react-icons/fa";
-
 import axios from "axios";
 import { BsStars } from "react-icons/bs";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
@@ -10,7 +9,6 @@ import { AiOutlineFire } from "react-icons/ai";
 
 const HabitsList = ({ habitdata, setHabitdata }) => {
     const handlecompleted = async (id) => {
-
         try {
             const token = localStorage.getItem("token");
 
@@ -32,7 +30,7 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
         }
     };
 
-    const completed = 0.5;
+    const completed = 1;
     const total = habitdata.length;
 
     const percentage = (completed / total) * 100;
@@ -43,6 +41,16 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
     ];
 
     const COLORS = ["#f97316", "#e5e7eb"];
+
+    function handleCompletedDate(lastCompletedDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const completedDate = new Date(lastCompletedDate);
+        completedDate.setHours(0, 0, 0, 0);
+
+        return completedDate.getTime() === today.getTime();
+    }
 
     return (
         <>
@@ -82,7 +90,9 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                 {habitdata.map((habits, idx) => (
                     <div
                         className={`rounded-xl mx-4 px-4 flex items-center justify-between py-2 ${
-                            habits.completed ? "bg-amber-50" : "bg-amber-100"
+                            handleCompletedDate(habits.lastCompletedDate)
+                                ? "bg-amber-50"
+                                : "bg-amber-100"
                         }`}
                         key={habits._id}
                     >

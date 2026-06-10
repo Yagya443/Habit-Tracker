@@ -134,25 +134,6 @@ const Habits = () => {
         }
     };
 
-    const handleIncreaseStreak = async (id) => {
-        try {
-            const token = localStorage.getItem("token");
-
-            const response = await axios.put(
-                `http://localhost:5000/habit/increaseStreak/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            );
-
-            setHabitData((prev) => prev.filter((habit) => habit._id !== id));
-        } catch (error) {
-            console.log(error.response?.data || error.message);
-        }
-    };
-
     async function handleCreateHabit(
         title,
         description,
@@ -210,7 +191,6 @@ const Habits = () => {
         fetchHabitInfo();
     }, []);
 
-    console.log(filteredHabits)
 
     return (
         <>
