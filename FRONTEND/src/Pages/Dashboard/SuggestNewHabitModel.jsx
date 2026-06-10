@@ -62,7 +62,7 @@ const SuggestNewHabitModel = ({
 
     return (
         <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
-            {!recommendation ? (
+            {recommendation.length === 0 ? (
                 <div className="bg-white w-md min-h-62.5 rounded-2xl p-6 shadow-xl ">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-bold ">New Habit</h1>
@@ -151,9 +151,8 @@ const SuggestNewHabitModel = ({
                             }}
                         />
                     </div>
-
                     <div className="mt-4">
-                        {recommendation.map((habit, idx) => (
+                        {recommendation?.map((habit, idx) => (
                             <div
                                 key={idx}
                                 className="border rounded-xl p-3 mb-3"

@@ -32,8 +32,10 @@ const Dashboard = () => {
     const [habitdata, setHabitdata] = useState([]);
     const [createHabit, setCreateHabit] = useState([]);
     const [user, setUser] = useState(null);
-
-    const [recommendation, setRecommendation] = useState("");
+    const [geminiṂotivation, setGeminiṂotivation] = useState(null);
+    const [recommendation, setRecommendation] = useState([]);
+    const [motivation, setMotivation] = useState("");
+    const [days, setDays] = useState("");
 
     const fetchHabitInfo = async () => {
         try {
@@ -111,6 +113,49 @@ const Dashboard = () => {
 
     const activeStreak = habitdata.filter((habit) => habit.streak > 0).length;
 
+    const getQuote = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.post(
+                "http://localhost:5000/ai/quote",
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setMotivation(response.data.quote);
+            // console.log(response.data.quote);
+
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const threeDayPlan = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.post(
+                "http://localhost:5000/ai/threeDaysPlan",
+                {},
+                {
+                    headers: {
+                        Authorization: `bearer ${token}`,
+                    },
+                },
+            );
+
+            setDays(response.data.plan);
+            console.log(response.data.plan);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
     useEffect(() => {
         setBestActiveStreak((prev) => Math.max(prev, activeStreak));
     }, [activeStreak]);
@@ -118,6 +163,7 @@ const Dashboard = () => {
     useEffect(() => {
         fetchUserInfo();
         fetchHabitInfo();
+        getQuote();
     }, []);
 
     return (
@@ -130,7 +176,14 @@ const Dashboard = () => {
                             {/* Hey {user?.name}, */}
                             Hey {user?.name?.split(" ")[0]},
                         </h1>
-                        <h3 className="mt-2">Saturday 23 April</h3>
+                        <h3 className="mt-2 font-medium">
+                            {new Date().toLocaleDateString("en-IN", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                // year: "numeric",
+                            })}
+                        </h3>
                     </div>
                     <div className="flex gap-4">
                         <button
@@ -176,11 +229,17 @@ const Dashboard = () => {
                         </div>
                         <div>
                             <h2 className="text-xl font-semibold">
-                                GOOD MORNING, Alex
+                                GOOD MORNING, {user?.name}
                             </h2>
-                            <p className="text-md font-semibold">
-                                Thinking of Something Nice To Say...{" "}
-                            </p>
+                            {motivation ? (
+                                <p className="text-md font-semibold">
+                                    {motivation}
+                                </p>
+                            ) : (
+                                <p className="text-md font-semibold">
+                                    Thinking of Something Nice to say...
+                                </p>
+                            )}
                         </div>
                         <RxCross2
                             onClick={() => setMessage1(false)}
@@ -210,7 +269,10 @@ const Dashboard = () => {
                                 className="hover:cursor-pointer absolute top-2 right-2"
                             />
                         </div>
-                        <button className="bg-amber-400 ml-18 text-xl rounded-xl px-4 py-1 mt-2 text-white">
+                        <button
+                            className="bg-amber-400 ml-18 text-xl rounded-xl px-4 py-1 mt-2 text-white"
+                            onClick={threeDayPlan}
+                        >   
                             Go Back on Track
                         </button>
                     </div>
