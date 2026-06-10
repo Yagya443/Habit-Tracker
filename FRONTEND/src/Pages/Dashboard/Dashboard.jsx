@@ -129,7 +129,6 @@ const Dashboard = () => {
 
             setMotivation(response.data.quote);
             // console.log(response.data.quote);
-
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -249,7 +248,7 @@ const Dashboard = () => {
                     </div>
                 )}
                 {message2 && (
-                    <div className="bg-[#FFD2E0]  relative rounded-2xl mt-8 py-2">
+                    <div className="bg-[#FFD2E0]  relative rounded-2xl mt-8  pt-2 pb-6" >
                         <div className="flex items-center gap-4  px-4 ">
                             <div className="bg-[#FF0883] rounded-xl p-1">
                                 <FaRegHeart size={30} />
@@ -269,12 +268,21 @@ const Dashboard = () => {
                                 className="hover:cursor-pointer absolute top-2 right-2"
                             />
                         </div>
-                        <button
-                            className="bg-amber-400 ml-18 text-xl rounded-xl px-4 py-1 mt-2 text-white"
-                            onClick={threeDayPlan}
-                        >   
-                            Go Back on Track
-                        </button>
+
+                        {!days ? (
+                            <button
+                                className="bg-amber-400 ml-18 text-xl rounded-xl px-4 py-1 mt-2 text-white"
+                                onClick={threeDayPlan}
+                            >
+                                Go Back on Track
+                            </button>
+                        ) : (
+                            <div className="ml-18 mr-10 mt-2 bg-white rounded-lg p-4 font-semibold">
+                                {days.split(".").map((ele, idx) => (
+                                    <p key={idx}>{ele}</p>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 

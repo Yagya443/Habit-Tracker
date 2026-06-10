@@ -53,7 +53,7 @@ const getRecommendations = async (req, res) => {
 const motivationQuote = async (req, res) => {
     try {
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-flash-lite",
         });
 
         const result = await model.generateContent(`
@@ -83,12 +83,30 @@ const motivationQuote = async (req, res) => {
 const threeDayPlan = async (req, res) => {
     try {
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-flash-lite",
         });
 
-        const result = await model.generateContent(
-            "Generate me a 3 plan for recovery as i have been insisistent for past 3 days ",
-        );
+        const result = await model.generateContent(`
+                You are a productivity coach.
+
+                Generate a simple 3-day recovery plan for someone who has been inconsistent with their habits for the past 3 days.
+
+                Output format must be EXACTLY:
+
+                Intoduction Message to feel better (Only fullstops at the end)
+
+                Day 1 : Title - Content
+                Day 2 : Title - Content
+                Day 3 : Title - Content
+
+                Rules:
+                    - Give exactly 3 days.
+                    - Each day should have a short title.
+                    - Each day should have 1-2 sentences of actionable advice.
+                    - Do not use markdown.
+                    - Do not use bullet points.
+                    - Do not add any introduction or conclusion.
+                `);
 
         const plan = result.response.text();
 
@@ -100,4 +118,4 @@ const threeDayPlan = async (req, res) => {
     }
 };
 
-module.exports = { getRecommendations, motivationQuote,threeDayPlan };
+module.exports = { getRecommendations, motivationQuote, threeDayPlan };
