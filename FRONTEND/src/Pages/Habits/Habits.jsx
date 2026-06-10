@@ -25,6 +25,8 @@ const Habits = () => {
         habit: null,
     });
     const [archivedActive, setArchivedActive] = useState(false);
+        const [recommendation, setRecommendation] = useState([]);
+    
 
     const fetchHabitInfo = async () => {
         try {
@@ -234,9 +236,11 @@ const Habits = () => {
                         modeldata={modeldata}
                     />
                 )}
-                {suggestNewHabitModel && (
+                 {suggestNewHabitModel && (
                     <SuggestNewHabitModel
                         setSuggestNewHabitModel={setSuggestNewHabitModel}
+                        setRecommendation={setRecommendation}
+                        recommendation={recommendation}
                     />
                 )}
 

@@ -5,7 +5,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const navigate = useNavigate();
-
     const [user, setUser] = useState("");
 
     const fetchUserInfo = async () => {
@@ -26,7 +25,6 @@ const NavBar = () => {
             console.log(error.response?.data || error.message);
         }
     };
-
     const handleLogOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -130,9 +128,11 @@ const NavBar = () => {
             <div>
                 <hr />
                 <div className="flex flex-col gap-1">
-                    <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition">
+                    <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition" 
+                        // onClick={toggleTheme}
+                    >
                         <Moon className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">
+                        <span className="text-gray-700 font-medium" >
                             Dark mode
                         </span>
                     </button>

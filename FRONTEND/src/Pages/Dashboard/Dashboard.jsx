@@ -190,9 +190,9 @@ const Dashboard = () => {
     return (
         <>
             <NavBar />
-            <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
-                <div className="flex items-center justify-between">
-                    <div>
+            <div className="dashboard-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec]">
+                <div className="dashboard-header flex items-center justify-between">
+                    <div className="dashboard-greeting">
                         <h1 className="text-5xl font-semibold">
                             {/* Hey {user?.name}, */}
                             Hey {user?.name?.split(" ")[0]},
@@ -206,7 +206,7 @@ const Dashboard = () => {
                             })}
                         </h3>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="dashboard-actions flex gap-4">
                         <button
                             className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white"
                             onClick={() => setSuggestNewHabitModel(true)}
@@ -244,7 +244,7 @@ const Dashboard = () => {
                 )}
 
                 {message1 && (
-                    <div className="bg-yellow-200 flex items-center gap-4 py-2 px-4 mt-8 relative rounded-2xl">
+                    <div className="morning-message bg-yellow-200 flex items-center gap-4 py-2 px-4 mt-8 relative rounded-2xl">
                         <div className="bg-amber-500 rounded-xl p-1">
                             <RiSunLine size={30} />
                         </div>
@@ -270,7 +270,7 @@ const Dashboard = () => {
                     </div>
                 )}
                 {message2 && (
-                    <div className="bg-[#FFD2E0]  relative rounded-2xl mt-8  pt-2 pb-6">
+                    <div className="streak-warning-card bg-[#FFD2E0]  relative rounded-2xl mt-8  pt-2 pb-6">
                         <div className="flex items-center gap-4  px-4 ">
                             <div className="bg-[#FF0883] rounded-xl p-1">
                                 <FaRegHeart size={30} />
@@ -308,8 +308,8 @@ const Dashboard = () => {
                     </div>
                 )}
 
-                <div className="grid grid-cols-4 gap-8 mt-8">
-                    <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
+                <div className="stats-grid grid grid-cols-4 gap-8 mt-8">
+                    <div className="stats-card bg-white rounded-xl flex gap-4 items-center px-4 py-4">
                         <RiTodoLine
                             size={45}
                             className="border-2 rounded bg-blue-100 border-blue-300 p-1"
@@ -323,7 +323,7 @@ const Dashboard = () => {
                             </h2>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
+                    <div className="stats-card bg-white rounded-xl flex gap-4 items-center px-4 py-4">
                         <FaGripfire
                             size={45}
                             className="border-2 rounded bg-amber-100 border-amber-300 p-1"
@@ -337,7 +337,7 @@ const Dashboard = () => {
                             </h2>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
+                    <div className="stats-card bg-white rounded-xl flex gap-4 items-center px-4 py-4">
                         <FaTrophy
                             size={45}
                             className="border-2 rounded bg-[#FDE5F2] border-[#F7AFBA] p-1"
@@ -351,7 +351,7 @@ const Dashboard = () => {
                             </h2>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl flex gap-4 items-center px-4 py-4">
+                    <div className="stats-card bg-white rounded-xl flex gap-4 items-center px-4 py-4">
                         <IoIosTrendingUp
                             size={45}
                             className="border-2 bg-green-100 rounded border-green-300 p-1"
@@ -363,7 +363,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="min-h-48 bg-white mt-12 pb-4 rounded-3xl">
+                <div className="habits-section min-h-48 bg-white mt-12 pb-4 rounded-3xl">
                     <HabitsList
                         habitdata={habitdata}
                         setHabitdata={setHabitdata}
@@ -371,7 +371,7 @@ const Dashboard = () => {
                 </div>
 
                 <div
-                    className="bg-blue-100  py-2 px-4 mt-8 relative transition-all rounded-2xl"
+                    className="weekly-report-section bg-blue-100  py-2 px-4 mt-8 relative transition-all rounded-2xl"
                     onClick={() => setMessage3(!message3)}
                 >
                     <div className="flex items-center gap-4 ">
