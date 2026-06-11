@@ -5,11 +5,14 @@ import WeeklyHabitTracker from "./WeeklyHabitTracker";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import axios from "axios";
+import { TbActivityHeartbeat } from "react-icons/tb";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import { CiTrophy } from "react-icons/ci";
+import { FaCalendarAlt } from "react-icons/fa";
 
 const Weekly = () => {
     const [habitdata, setHabitdata] = useState([]);
-    const [topHabitNumber, setTopHabitNumber] = useState(null);
-    const [topHabitTitle, setTopHabitTitle] = useState(null);
+    const [topHabit, setTopHabit] = useState(null);
 
     const [currentWeek, setCurrentWeek] = useState(() => {
         const today = new Date();
@@ -61,6 +64,7 @@ const Weekly = () => {
                 },
             );
             setHabitdata(response.data);
+            console.log(response.data);
 
             var maxCompletedLength = 0;
             response.data.forEach((abc) => {
@@ -70,20 +74,86 @@ const Weekly = () => {
                     completedLength,
                     maxCompletedLength,
                 );
-                setTopHabit(maxCompletedLength);
             });
 
-            const findTitle = response.data.find(
-                (val) => val.completedDates.length === maxCompletedLength,
+            setTopHabit(
+                response.data.find(
+                    (val) => val.completedDates.length === maxCompletedLength,
+                ),
             );
-
-            // setTopHabitTitle(findTitle.title)
-            
-
+            console.log(
+                response.data.find(
+                    (val) => val.completedDates.length === maxCompletedLength,
+                ),
+            );
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
     };
+
+    // const createdDate = new Date(topHabit?.createdAt);
+    // const today = new Date();
+
+    // const totalDays =
+    //     Math.floor((today - createdDate) / (1000 * 60 * 60 * 24)) + 1;
+
+    // const completionRate = (topHabit?.completedDates?.length / totalDays) * 100;
+
+    // console.log(completionRate);
+
+    const totalHabit = habitdata.length;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const totalTodayStreak = habitdata.filter((habit) => {
+        const lastDay = new Date(habit.lastCompletedDate);
+        lastDay.setHours(0, 0, 0, 0);
+
+        return lastDay.getTime() === today.getTime();
+    }).length;
+
+    // console.log(totalTodayStreak);
+
+    // const highestStreakHabit =
+    //     habitdata.length > 0
+    //         ? habitdata.reduce((maxHabit, habit) =>
+    //               habit.streak > maxHabit.streak ? habit : maxHabit,
+    //           )
+    //         : null;
+
+    const totalCompletedDates = habitdata.reduce(
+        (prev, curr) => prev + curr.completedDates.length,
+        0,
+    );
+    const totalStreakCount = habitdata.reduce(
+        (prev, curr) => prev + curr.streak,
+        0,
+    );
+
+    // console.log(totalCompletedDates,totalStreakCount);
+
+    const dayCount = {};
+
+    habitdata.forEach((habit) => {
+        habit.completedDates.forEach((date) => {
+            const day = new Date(date).toLocaleDateString("en-US", {
+                weekday: "short",
+            });
+
+            dayCount[day] = (dayCount[day] || 0) + 1;
+        });
+    });
+
+    const bestDay =
+        Object.keys(dayCount).length > 0
+            ? Object.entries(dayCount).reduce((max, curr) =>
+                  curr[1] > max[1] ? curr : max,
+              )
+            : ["N/A", 0];
+
+    // console.log(dayCount);
+    // console.log(bestDay);
+    console.log(topHabit);
 
     useEffect(() => {
         fetchHabitInfo();
@@ -127,28 +197,49 @@ const Weekly = () => {
 
                 <div className="grid grid-cols-4 gap-6 mt-4">
                     <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold ">Weekly Rate</p>
-                        <h2 className="text-4xl font-bold">56%</h2>
-                        <h2 className="text-sm">39 of 70</h2>
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                            <TbActivityHeartbeat /> Completions
+                        </p>
+                        <h2 className="text-4xl font-bold">
+                            {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
+                            {((totalTodayStreak / totalHabit) * 100).toFixed(2)}
+                            %
+                        </h2>
+                        <h2 className="text-sm">
+                            {totalTodayStreak} of {totalHabit}
+                        </h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold ">
-                            Total Completions
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                            <FaArrowTrendUp />
+                            Completions Rate
                         </p>
-                        <h2 className="text-4xl font-bold">39%</h2>
+                        <h2 className="text-4xl font-bold">
+                            {(
+                                (totalStreakCount / totalCompletedDates) *
+                                100
+                            ).toFixed(2)}
+                            %
+                        </h2>
                         <h2 className="text-sm">this week</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold ">Best Day</p>
-                        <h2 className="text-4xl font-bold">Sat</h2>
-                        <h2 className="text-sm">11 habits done</h2>
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                            <FaCalendarAlt />
+                            Best Day
+                        </p>
+                        <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
+                        <h2 className="text-sm">{bestDay[1]} habits done</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold ">Top Habit</p>
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                            <CiTrophy />
+                            Top Habit
+                        </p>
                         <h2 className="text-2xl font-bold">
-                            {/* {topHabitTitle} */}
+                            {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">{topHabitNumber} days</h2>
+                        <h2 className="text-sm">{topHabit?.maxStreak} days</h2>
                     </div>
                 </div>
 

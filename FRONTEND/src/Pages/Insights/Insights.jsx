@@ -19,6 +19,7 @@ import Analysis from "./Analysis";
 
 const Insights = () => {
     const [habitdata, setHabitdata] = useState([]);
+    const [topHabit, setTopHabit] = useState(null);
 
     const fetchHabitInfo = async () => {
         try {
@@ -33,14 +34,86 @@ const Insights = () => {
                 },
             );
             setHabitdata(response.data);
+            console.log(response.data);
+
+            var maxCompletedLength = 0;
+            response.data.forEach((abc) => {
+                var completedLength = abc.completedDates.length;
+
+                maxCompletedLength = Math.max(
+                    completedLength,
+                    maxCompletedLength,
+                );
+            });
+
+            setTopHabit(
+                response.data.find(
+                    (val) => val.completedDates.length === maxCompletedLength,
+                ),
+            );
+            console.log(
+                response.data.find(
+                    (val) => val.completedDates.length === maxCompletedLength,
+                ),
+            );
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
     };
-    
 
     const totalHabit = habitdata.length;
-    const totalStreak = habitdata.filter((habit) => habit.streak > 0).length;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const totalTodayStreak = habitdata.filter((habit) => {
+        const lastDay = new Date(habit.lastCompletedDate);
+        lastDay.setHours(0, 0, 0, 0);
+
+        return lastDay.getTime() === today.getTime();
+    }).length;
+
+    // console.log(totalTodayStreak);
+
+    // const highestStreakHabit =
+    //     habitdata.length > 0
+    //         ? habitdata.reduce((maxHabit, habit) =>
+    //               habit.streak > maxHabit.streak ? habit : maxHabit,
+    //           )
+    //         : null;
+
+    const totalCompletedDates = habitdata.reduce(
+        (prev, curr) => prev + curr.completedDates.length,
+        0,
+    );
+    const totalStreakCount = habitdata.reduce(
+        (prev, curr) => prev + curr.streak,
+        0,
+    );
+
+    // console.log(totalCompletedDates,totalStreakCount);
+
+    const dayCount = {};
+
+    habitdata.forEach((habit) => {
+        habit.completedDates.forEach((date) => {
+            const day = new Date(date).toLocaleDateString("en-US", {
+                weekday: "short",
+            });
+
+            dayCount[day] = (dayCount[day] || 0) + 1;
+        });
+    });
+
+    const bestDay =
+        Object.keys(dayCount).length > 0
+            ? Object.entries(dayCount).reduce((max, curr) =>
+                  curr[1] > max[1] ? curr : max,
+              )
+            : ["N/A", 0];
+
+    // console.log(dayCount);
+    // console.log(bestDay);
+    console.log(topHabit);
 
     useEffect(() => {
         fetchHabitInfo();
@@ -89,15 +162,27 @@ const Insights = () => {
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <TbActivityHeartbeat /> Completions
                         </p>
-                        <h2 className="text-4xl font-bold">{((totalStreak/totalHabit)*100).toFixed(2)}%</h2>
-                        <h2 className="text-sm">{totalStreak} of {totalHabit}</h2>
+                        <h2 className="text-4xl font-bold">
+                            {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
+                            {((totalTodayStreak / totalHabit) * 100).toFixed(2)}
+                            %
+                        </h2>
+                        <h2 className="text-sm">
+                            {totalTodayStreak} of {totalHabit}
+                        </h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <FaArrowTrendUp />
                             Completions Rate
                         </p>
-                        <h2 className="text-4xl font-bold">39%</h2>
+                        <h2 className="text-4xl font-bold">
+                            {(
+                                (totalStreakCount / totalCompletedDates) *
+                                100
+                            ).toFixed(2)}
+                            %
+                        </h2>
                         <h2 className="text-sm">this week</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
@@ -105,8 +190,8 @@ const Insights = () => {
                             <FaCalendarAlt />
                             Best Day
                         </p>
-                        <h2 className="text-4xl font-bold">Sat</h2>
-                        <h2 className="text-sm">11 habits done</h2>
+                        <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
+                        <h2 className="text-sm">{bestDay[1]} habits done</h2>
                     </div>
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
@@ -114,9 +199,9 @@ const Insights = () => {
                             Top Habit
                         </p>
                         <h2 className="text-2xl font-bold">
-                            Drint 2L of water
+                            {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">6/7 days</h2>
+                        <h2 className="text-sm">{topHabit?.maxStreak} days</h2>
                     </div>
                 </div>
 
@@ -139,14 +224,15 @@ const Insights = () => {
                     <div className="flex items-center justify-between">
                         <p className="font-bold">Active Streak</p>
                         <p className="font-light">
-                            {totalStreak}/{totalHabit}
+                            {totalTodayStreak}/{totalHabit}
                         </p>
                     </div>
                     <div className="grid grid-cols-4 gap-4 mt-4">
                         {habitdata.map((habit, idx) => (
                             <div className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-                                <div className="p-2 rounded-xl text-xl"
-                                   style={{ backgroundColor: habit.color }}
+                                <div
+                                    className="p-2 rounded-xl text-xl"
+                                    style={{ backgroundColor: habit.color }}
                                 >
                                     {habit.icon}
                                 </div>

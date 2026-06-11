@@ -197,23 +197,23 @@ const Habits = () => {
     return (
         <>
             <NavBar />
-            <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-5xl font-semibold">Hey Alex</h1>
+            <div className="habits-page ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
+                <div className="habits-header flex items-center justify-between">
+                    <div className="habits-header-content">
+                        <h1 className="text-5xl font-semibold ">Hey Alex</h1>
                         <h3 className="mt-2">
                             Manage Every habit you've created ever.
                         </h3>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="habits-header-actions flex gap-4 habits-page-title">
                         <button
-                            className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white"
+                            className="suggest-habit-btn flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white"
                             onClick={() => setSuggestNewHabitModel(true)}
                         >
                             <BsStars /> Suggest A Habit
                         </button>
                         <button
-                            className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-500 text-white"
+                            className="new-habit-btn flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-amber-500 text-white"
                             // onClick={() => setOpenNewHabitModel(true)}
                             onClick={() =>
                                 setModeldata({
@@ -244,15 +244,15 @@ const Habits = () => {
                     />
                 )}
 
-                <div className="h-12 bg-white mt-12 px-6 rounded-2xl flex items-center justify-between">
+                <div className="habits-toolbar h-12 bg-white mt-12 px-6 rounded-2xl flex items-center justify-between">
                     <input
-                        className="w-2/3 px-4 py-1 rounded-md border-2"
+                        className="habit-search-input w-2/3 px-4 py-1 rounded-md border-2"
                         placeholder="Serach Habits..."
                         onChange={(e) => setSearchVal(e.target.value)}
                         value={searchVal}
                     />
                     <select
-                        className="border rounded-md py-1 px-4"
+                        className="habit-category-filter border rounded-md py-1 px-4"
                         name="category"
                         value={filters}
                         onChange={(e) => setFilters(e.target.value)}
@@ -268,16 +268,16 @@ const Habits = () => {
                         <option value="Creativity">Creativity</option>
                         <option value="Other">Other</option>
                     </select>
-                    <div className="flex  gap-2 rounded-xl items-center border">
+                    <div className="habit-status-toggle flex  gap-2 rounded-xl items-center border">
                         <div
-                            className={`${!archivedActive && "bg-amber-200 text-amber-600"} rounded-bl-xl rounded-tl-xl px-4 py-1 cursor-pointer`}
+                            className={`active-habits-tab ${!archivedActive && "bg-amber-200 text-amber-600"} rounded-bl-xl rounded-tl-xl px-4 py-1 cursor-pointer`}
                             onClick={() => setArchivedActive(false)}
                         >
                             Active(
                             {activeCount})
                         </div>
                         <div
-                            className={`px-4 cursor-pointer ${archivedActive && "bg-amber-200 text-amber-600"} rounded-br-xl rounded-tr-xl px-4 py-1`}
+                            className={`archived-habits-tab px-4 cursor-pointer ${archivedActive && "bg-amber-200 text-amber-600"} rounded-br-xl rounded-tr-xl px-4 py-1`}
                             onClick={() => setArchivedActive(true)}
                         >
                             Archived({archivedCount})
@@ -285,42 +285,42 @@ const Habits = () => {
                     </div>
                 </div>
 
-                <div className="px-2 flex flex-col gap-2 mt-6 min-h-[70vh]">
+                <div className="habits-list px-2 flex flex-col gap-2 mt-6 min-h-[70vh]">
                     {filteredHabits.map((habit, idx) => (
                         <div
                             key={idx}
-                            className=" rounded-xl mx-4 px-4 flex items-center justify-between bg-white py-2"
+                            className="habit-card rounded-xl mx-4 px-4 flex items-center justify-between bg-white py-2"
                         >
-                            <div className="flex items-center gap-6">
+                            <div className="habit-info flex items-center gap-6">
                                 <div
-                                    className={` rounded p-1 text-2xl`}
+                                    className={`habit-icon rounded p-1 text-2xl`}
                                     style={{ backgroundColor: habit.color }}
                                 >
                                     {habit.icon}
                                 </div>
-                                <div className="flex flex-col">
-                                    <div className="flex items-center gap-4">
-                                        <h1 className="text-xl">
+                                <div className="habit-details flex flex-col">
+                                    <div className="habit-header flex items-center gap-4">
+                                        <h1 className=" habit-title habit-headertext-xl">
                                             {habit.title}
                                         </h1>
-                                        <p className="bg-gray-300 rounded-2xl px-2">
+                                        <p className="habit-category bg-gray-300 rounded-2xl px-2">
                                             {habit.category}
                                         </p>
                                     </div>
-                                    <p className="font-light">
+                                    <p className="habit-description font-light">
                                         {habit.description}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-6">
-                                <div className="flex items-center">
+                            <div className="habit-actions flex items-center gap-6">
+                                <div className=" habit-streak flex items-center">
                                     <AiOutlineFire
                                         fill="oklch(76.9% 0.188 70.08)"
                                         size={25}
                                     />
                                     {habit.streak}
                                 </div>
-                                <div className="flex items-center">
+                                <div className=" habit-best-streak flex items-center">
                                     <CiTrophy
                                         size={30}
                                         fill="oklch(76.9% 0.188 70.08)"
@@ -328,12 +328,13 @@ const Habits = () => {
                                     {habit.maxStreak}
                                 </div>
                                 <FaPencilAlt
+                                className="habit-edit-btn"
                                     size={20}
                                     onClick={() => handleEditHabit(habit)}
                                 />
                                 {habit.archived ? (
                                     <BiSolidArchiveOut
-                                        className="cursor-pointer"
+                                        className="habit-archive-btn cursor-pointer"
                                         size={25}
                                         onClick={() =>
                                             handleArchiveHabit(habit._id)
@@ -341,7 +342,7 @@ const Habits = () => {
                                     />
                                 ) : (
                                     <BiSolidArchiveIn
-                                        className="cursor-pointer"
+                                        className="habit-archive-btn cursor-pointer"
                                         size={25}
                                         onClick={() =>
                                             handleArchiveHabit(habit._id)
@@ -351,7 +352,7 @@ const Habits = () => {
 
                                 <MdDeleteOutline
                                     fill="#fff"
-                                    className="bg-red-500 rounded-full p-1"
+                                    className="habit-delete-btn bg-red-500 rounded-full p-1"
                                     size={40}
                                     onClick={() => handleDeleteHabit(habit._id)}
                                 />

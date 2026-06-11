@@ -408,7 +408,7 @@ const Dashboard = () => {
                             >
                                 Generate A Weekly Report{" "}
                             </button>
-                            <p>{report}</p>
+                            <p className="font-semibold">{report}</p>
                         </div>
                     )}
                 </div>

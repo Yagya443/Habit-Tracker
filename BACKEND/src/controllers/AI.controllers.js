@@ -134,13 +134,14 @@ const weeklyReport = async (req, res) => {
             ${JSON.stringify(habitdata, null, 2)}   
 
             Provide:
-
-            1. What I did well.
-            2. What is going wrong.
-            3. 3 actionable suggestions for improvement.
-            4. One motivational conclusion.
-
-            Keep the response under 200 words.
+                1. What I did well.
+                2. What is going wrong.
+                3. 3 actionable suggestions for improvement.
+                4. One motivational conclusion.
+                5. Do not use markdown.
+                6. Do not use bullet points.
+                7. Do not add any introduction or conclusion.
+                8. Keep the response under 100 words.
             `);
         
         const report = result.response.text();
