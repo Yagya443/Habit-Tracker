@@ -59,7 +59,7 @@ const motivationQuote = async (req, res) => {
         const result = await model.generateContent(`
         You are an inspiring motivational coach.
 
-        Give exactly ONE powerful motivational quote from a well-known person such as an athlete, 
+        Give exactly ONE powerful RANDOM motivational quote from a well-known person such as an athlete, 
         entrepreneur, leader, author, or speaker.
 
     Requirements:
@@ -68,6 +68,8 @@ const motivationQuote = async (req, res) => {
         - After the quote, provide a 1-2 sentence explanation of how it helps with self-improvement, discipline, focus, or achieving goals.
         - Keep the total response under 50 words.
         - Do not use markdown.
+
+
         `);
 
         const quote = result.response.text();
@@ -141,7 +143,7 @@ const weeklyReport = async (req, res) => {
                 5. Do not use markdown.
                 6. Do not use bullet points.
                 7. Do not add any introduction or conclusion.
-                8. Keep the response under 100 words.
+                8. Keep the response under 00 words.
             `);
         
         const report = result.response.text();

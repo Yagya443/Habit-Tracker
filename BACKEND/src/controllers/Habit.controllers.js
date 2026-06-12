@@ -28,6 +28,25 @@ const getHabit = async (req, res) => {
     try {
         const allHabits = await Habit.find({ userId: req.user._id });
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        allHabits.forEach((habit) => {
+
+            if (habit.lastCompletedDate) {
+                const lastDate = new Date(habit.lastCompletedDate);
+                lastDate.setHours(0, 0, 0, 0);
+
+                const diffDays = Math.floor(
+                    (today - lastDate) / (1000 * 60 * 60 * 24),
+                );
+
+                if (diffDays > 1) {
+                    habit.streak = 0;
+                }
+            }
+        });
+
         res.status(200).json(allHabits);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -127,9 +146,9 @@ const completeHabit = async (req, res) => {
 
     if (lastDate) {
         lastDate.setHours(0, 0, 0, 0);
-        
-        if(lastDate.getTime()!==yesterday.getTime()){
-            habit.streak=0
+
+        if (lastDate.getTime() !== yesterday.getTime()) {
+            habit.streak = 0;
         }
     }
 

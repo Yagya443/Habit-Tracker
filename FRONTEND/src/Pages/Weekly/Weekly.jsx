@@ -64,7 +64,7 @@ const Weekly = () => {
                 },
             );
             setHabitdata(response.data);
-            console.log(response.data);
+            // console.log(response.data);
 
             var maxCompletedLength = 0;
             response.data.forEach((abc) => {
@@ -81,11 +81,11 @@ const Weekly = () => {
                     (val) => val.completedDates.length === maxCompletedLength,
                 ),
             );
-            console.log(
-                response.data.find(
-                    (val) => val.completedDates.length === maxCompletedLength,
-                ),
-            );
+            // console.log(
+            //     response.data.find(
+            //         (val) => val.completedDates.length === maxCompletedLength,
+            //     ),
+            // );
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -153,7 +153,7 @@ const Weekly = () => {
 
     // console.log(dayCount);
     // console.log(bestDay);
-    console.log(topHabit);
+    // console.log(topHabit);
 
     useEffect(() => {
         fetchHabitInfo();

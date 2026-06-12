@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { MdDone } from "react-icons/md";
 import { FaFire } from "react-icons/fa";
@@ -7,7 +7,23 @@ import { BsStars } from "react-icons/bs";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import { AiOutlineFire } from "react-icons/ai";
 
-const HabitsList = ({ habitdata, setHabitdata }) => {
+const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
+    const [openMenu, setOpenMenu] = useState(null);
+
+    const menuRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpenMenu(null);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const handlecompleted = async (id) => {
         try {
             const token = localStorage.getItem("token");
@@ -22,9 +38,43 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                 },
             );
 
-            setHabitdata((prev) =>
-                prev.map((habit) => (habit._id === id ? response.data : habit)),
+            // setHabitdata((prev) =>
+            //     prev.map((habit) => (habit._id === id ? response.data : habit)),
+            // );
+
+            setHabitData((prev) =>
+                prev.map((habit) =>
+                    habit._id === id
+                        ? {
+                              ...habit,
+                              title,
+                              description,
+                              category,
+                              icon,
+                              color,
+                          }
+                        : habit,
+                ),
             );
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    const handleDeleteHabit = async (id) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.delete(
+                `http://localhost:5000/habit/deleteHabit/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setHabitdata((prev) => prev.filter((habit) => habit._id !== id));
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -51,6 +101,14 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
 
         return completedDate.getTime() === today.getTime();
     }
+
+    const handleEditHabit = (habit) => {
+        setModeldata({
+            isOpen: true,
+            habit,
+            mode: "edit",
+        });
+    };
 
     return (
         <>
@@ -89,12 +147,12 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
             <div className="px-2 flex flex-col gap-2">
                 {habitdata.map((habits, idx) => (
                     <div
+                        key={habits._id}
                         className={`rounded-xl mx-4 px-4 flex items-center justify-between py-2 ${
                             handleCompletedDate(habits.lastCompletedDate)
                                 ? "bg-amber-50"
                                 : "bg-amber-100"
                         }`}
-                        key={habits._id}
                     >
                         <div className="flex items-center gap-6">
                             <div
@@ -124,7 +182,10 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                                 />
                                 {habits.streak}
                             </div>
-                            <BsThreeDots size={30} />
+                            <BsThreeDots
+                                size={30}
+                                onClick={() => setOpenMenu(habits._id)}
+                            />
                             <MdDone
                                 fill="#fff"
                                 className="bg-amber-500 rounded-full p-1"
@@ -132,6 +193,28 @@ const HabitsList = ({ habitdata, setHabitdata }) => {
                                 onClick={() => handlecompleted(habits._id)}
                             />
                         </div>
+                        {openMenu === habits._id && (
+                            <div
+                                ref={menuRef}
+                                className="absolute right-48 mb-24  bg-yellow-200 shadow-md rounded px-6 py-2"
+                            >
+                                <div className="absolute -bottom-2 right-3 w-4 h-4 bg-yellow-200 rotate-45"></div>
+                                <p
+                                    className="cursor-pointer font-semibold "
+                                    onClick={() => handleEditHabit(habits)}
+                                >
+                                    Edit
+                                </p>
+                                <p
+                                    className="cursor-pointer font-semibold"
+                                    onClick={() =>
+                                        handleDeleteHabit(habits._id)
+                                    }
+                                >
+                                    Delete
+                                </p>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

@@ -25,6 +25,7 @@ const NavBar = () => {
             console.log(error.response?.data || error.message);
         }
     };
+    
     const handleLogOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");

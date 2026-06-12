@@ -56,6 +56,58 @@ const Dashboard = () => {
         }
     };
 
+    const handleSaveEditHabit = async (
+        id,
+        title,
+        description,
+        category,
+        icon,
+        color,
+    ) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios.put(
+                `http://localhost:5000/habit/editHabit/${id}`,
+                {
+                    title,
+                    description,
+                    category,
+                    color,
+                    icon,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setModeldata({
+                isOpen: false,
+                habit: null,
+                mode: "create",
+            });
+
+            setHabitdata((prev) =>
+                prev.map((habit) =>
+                    habit._id === id
+                        ? {
+                              ...habit,
+                              title,
+                              description,
+                              category,
+                              icon,
+                              color,
+                          }
+                        : habit,
+                ),
+            );
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
     async function handleCreateHabit(
         title,
         description,
@@ -113,6 +165,14 @@ const Dashboard = () => {
     };
 
     const activeStreak = habitdata.filter((habit) => habit.streak > 0).length;
+
+    const handleEditHabit = (habit) => {
+        setModeldata({
+            isOpen: true,
+            habit,
+            mode: "edit",
+        });
+    };
 
     const getQuote = async () => {
         try {
@@ -232,6 +292,7 @@ const Dashboard = () => {
                     <CreateNewHabit
                         setModeldata={setModeldata}
                         handleCreateHabit={handleCreateHabit}
+                        handleSaveEditHabit={handleSaveEditHabit}
                         modeldata={modeldata}
                     />
                 )}
@@ -367,6 +428,8 @@ const Dashboard = () => {
                     <HabitsList
                         habitdata={habitdata}
                         setHabitdata={setHabitdata}
+                        setModeldata={setModeldata}
+                        modeldata={modeldata}
                     />
                 </div>
 

@@ -25,8 +25,8 @@ const Habits = () => {
         habit: null,
     });
     const [archivedActive, setArchivedActive] = useState(false);
-        const [recommendation, setRecommendation] = useState([]);
-    
+    const [recommendation, setRecommendation] = useState([]);
+    const [user, setUser] = useState("");
 
     const fetchHabitInfo = async () => {
         try {
@@ -189,10 +189,29 @@ const Habits = () => {
         return filterArchive && filterSearch && filterCategory;
     });
 
+    const fetchUserInfo = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await axios(
+                "http://localhost:5000/user/me",
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            setUser(response.data);
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
     useEffect(() => {
         fetchHabitInfo();
+        fetchUserInfo();
     }, []);
-
 
     return (
         <>
@@ -200,7 +219,7 @@ const Habits = () => {
             <div className="habits-page ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
                 <div className="habits-header flex items-center justify-between">
                     <div className="habits-header-content">
-                        <h1 className="text-5xl font-semibold ">Hey Alex</h1>
+                        <h1 className="text-5xl font-semibold ">Hey {user?.name?.split(" ")[0]},</h1>
                         <h3 className="mt-2">
                             Manage Every habit you've created ever.
                         </h3>
@@ -236,7 +255,7 @@ const Habits = () => {
                         modeldata={modeldata}
                     />
                 )}
-                 {suggestNewHabitModel && (
+                {suggestNewHabitModel && (
                     <SuggestNewHabitModel
                         setSuggestNewHabitModel={setSuggestNewHabitModel}
                         setRecommendation={setRecommendation}
@@ -328,7 +347,7 @@ const Habits = () => {
                                     {habit.maxStreak}
                                 </div>
                                 <FaPencilAlt
-                                className="habit-edit-btn"
+                                    className="habit-edit-btn"
                                     size={20}
                                     onClick={() => handleEditHabit(habit)}
                                 />

@@ -34,7 +34,7 @@ const Insights = () => {
                 },
             );
             setHabitdata(response.data);
-            console.log(response.data);
+            // console.log(response.data);
 
             var maxCompletedLength = 0;
             response.data.forEach((abc) => {
@@ -51,11 +51,11 @@ const Insights = () => {
                     (val) => val.completedDates.length === maxCompletedLength,
                 ),
             );
-            console.log(
-                response.data.find(
-                    (val) => val.completedDates.length === maxCompletedLength,
-                ),
-            );
+            // console.log(
+            //     response.data.find(
+            //         (val) => val.completedDates.length === maxCompletedLength,
+            //     ),
+            // );
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -113,7 +113,7 @@ const Insights = () => {
 
     // console.log(dayCount);
     // console.log(bestDay);
-    console.log(topHabit);
+    // console.log(topHabit);
 
     useEffect(() => {
         fetchHabitInfo();
@@ -229,7 +229,10 @@ const Insights = () => {
                     </div>
                     <div className="grid grid-cols-4 gap-4 mt-4">
                         {habitdata.map((habit, idx) => (
-                            <div className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3">
+                            <div
+                                key={idx}
+                                className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3"
+                            >
                                 <div
                                     className="p-2 rounded-xl text-xl"
                                     style={{ backgroundColor: habit.color }}
