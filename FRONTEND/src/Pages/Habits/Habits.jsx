@@ -266,7 +266,7 @@ const Habits = () => {
                 <div className="habits-toolbar h-12 bg-white mt-12 px-6 rounded-2xl flex items-center justify-between">
                     <input
                         className="habit-search-input w-2/3 px-4 py-1 rounded-md border-2"
-                        placeholder="Serach Habits..."
+                        placeholder="Search Habits..."
                         onChange={(e) => setSearchVal(e.target.value)}
                         value={searchVal}
                     />

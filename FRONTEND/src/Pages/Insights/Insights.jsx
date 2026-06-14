@@ -122,7 +122,7 @@ const Insights = () => {
     return (
         <>
             <NavBar />
-            <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+            <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-5xl font-semibold">
@@ -140,8 +140,8 @@ const Insights = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-6 mt-4">
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
+                    <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <TbActivityHeartbeat /> Completions
                         </p>
@@ -150,11 +150,11 @@ const Insights = () => {
                             {((totalTodayStreak / totalHabit) * 100).toFixed(2)}
                             %
                         </h2>
-                        <h2 className="text-sm">
+                        <h2 className="weekly-completion-card__details text-sm">
                             {totalTodayStreak} of {totalHabit}
                         </h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <FaArrowTrendUp />
                             Completions Rate
@@ -166,17 +166,21 @@ const Insights = () => {
                             ).toFixed(2)}
                             %
                         </h2>
-                        <h2 className="text-sm">this week</h2>
+                        <h2 className="weekly-completion-rate-card__details text-sm">
+                            this week
+                        </h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <FaCalendarAlt />
                             Best Day
                         </p>
                         <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
-                        <h2 className="text-sm">{bestDay[1]} habits done</h2>
+                        <h2 className="weekly-best-day-card__details text-sm">
+                            {bestDay[1]} habits done
+                        </h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <CiTrophy />
                             Top Habit
@@ -184,8 +188,9 @@ const Insights = () => {
                         <h2 className="text-2xl font-bold">
                             {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">{topHabit?.completedDates.length} days</h2>
-                        
+                        <h2 className="weekly-top-habit-card__details text-sm">
+                            {topHabit?.completedDates.length} days
+                        </h2>
                     </div>
                 </div>
 
@@ -211,7 +216,7 @@ const Insights = () => {
                             {totalTodayStreak}/{totalHabit}
                         </p>
                     </div>
-                    <div className="grid grid-cols-4 gap-4 mt-4">
+                    <div className="insight-last-grid grid grid-cols-4 gap-4 mt-4">
                         {habitdata.map((habit, idx) => (
                             <div
                                 key={idx}

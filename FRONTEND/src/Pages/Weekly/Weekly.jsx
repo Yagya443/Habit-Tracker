@@ -162,8 +162,8 @@ const Weekly = () => {
     return (
         <>
             <NavBar />
-            <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
-                <div className="flex items-center justify-between">
+            <div className="weekly-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+                <div className="weekly-header flex items-center justify-between">
                     <div>
                         <h1 className="text-5xl font-semibold">
                             Weekly Overview
@@ -173,7 +173,7 @@ const Weekly = () => {
                         </h3>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="weekly-toolbar flex gap-4">
                         <button
                             className="bg-white px-3 rounded-xl"
                             onClick={handlePreviousWeek}
@@ -195,21 +195,21 @@ const Weekly = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-6 mt-4">
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
+                    <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
-                            <TbActivityHeartbeat /> Completions
+                            <TbActivityHeartbeat/> Completions
                         </p>
                         <h2 className="text-4xl font-bold">
                             {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
                             {((totalTodayStreak / totalHabit) * 100).toFixed(2)}
                             %
                         </h2>
-                        <h2 className="text-sm">
+                        <h2 className="weekly-completion-card__details text-sm">
                             {totalTodayStreak} of {totalHabit}
                         </h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <FaArrowTrendUp />
                             Completions Rate
@@ -221,17 +221,17 @@ const Weekly = () => {
                             ).toFixed(2)}
                             %
                         </h2>
-                        <h2 className="text-sm">this week</h2>
+                        <h2 className="weekly-completion-rate-card__details text-sm">this week</h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <FaCalendarAlt />
                             Best Day
                         </p>
                         <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
-                        <h2 className="text-sm">{bestDay[1]} habits done</h2>
+                        <h2 className="weekly-best-day-card__details text-sm">{bestDay[1]} habits done</h2>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
+                    <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
                             <CiTrophy />
                             Top Habit
@@ -239,11 +239,11 @@ const Weekly = () => {
                         <h2 className="text-2xl font-bold">
                             {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">{topHabit?.completedDates.length} days</h2>
+                        <h2 className="weekly-top-habit-card__details text-sm">{topHabit?.completedDates.length} days</h2>
                     </div>
                 </div>
 
-                <div className="bg-white mt-6 rounded-xl py-4 px-6">
+                <div className="weekly-tracker-container bg-white mt-6 rounded-xl py-4 px-6">
                     <WeeklyHabitTracker
                         currentWeek={currentWeek}
                         habitdata={habitdata}

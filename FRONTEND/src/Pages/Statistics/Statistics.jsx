@@ -28,7 +28,7 @@ const Statistics = () => {
                 },
             );
             setHabitdata(response.data);
-            // console.log(response.data);
+            console.log(response.data);
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -42,21 +42,81 @@ const Statistics = () => {
         (a, b) => b.completedDates.length - a.completedDates.length,
     );
 
-    const needAttention = habitdata.toSorted(
-        (a, b) => a.completedDates.length - b.completedDates.length,
-    );
+    // const needAttention = habitdata.toSorted(
+    //     (a, b) => a.completedDates.length - b.completedDates.length,
+    // );
+    // const needAttention = () => {
+    //     const today = new Date();
 
+    //     today.setHours(0, 0, 0, 0);
+
+    //     console.log(today);
+
+    //     const habitWithLowestRatio = habitdata.reduce((lowest, habit) => {
+    //         const createdDate = new Date(habit.createdAt);
+
+    //         createdDate.setHours(0, 0, 0, 0);
+
+    //         console.log(createdDate);
+
+    //         const diffTime = today - createdDate;
+
+    //         const totalDays = Math.max(1, diffTime);
+
+    //         const completedDaysCount = habit.completedDates.length;
+
+    //         const ratio = completedDaysCount / totalDays;
+
+    //         if (!lowest || ratio < lowest.ratio ) {
+    //             return {
+    //                 habit,
+    //                 ratio,
+    //             };
+    //         }
+
+    //         return lowest;
+    //     }, null);
+    //     console.log(habitWithLowestRatio);
+
+    //     return habitWithLowestRatio;
+    // };
+
+    const needAttention = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return habitdata.reduce((lowest, habit) => {
+            const createdDate = new Date(habit.createdAt);
+            createdDate.setHours(0, 0, 0, 0);
+
+            const totalDays = Math.max(
+                1,
+                Math.floor((today - createdDate) / (1000 * 60 * 60 * 24)) + 1,
+            );
+
+            const ratio = habit.completedDates.length / totalDays;
+
+            if (!lowest || ratio < lowest.ratio) {
+                return { habit, totalDays };
+            }
+
+            return lowest;
+        }, null);
+    };
+
+    // console.log(ne);
     // console.log("longestStreak",longestStreak);
-    // console.log("needAttention",needAttention);
+    console.log("needAttention", needAttention());
 
     useEffect(() => {
         fetchHabitInfo();
+        
     }, []);
 
     return (
         <>
             <NavBar />
-            <div className="ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+            <div className="statistics-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-5xl font-semibold">Statistics</h1>
@@ -125,19 +185,22 @@ const Statistics = () => {
                         <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
                             <div
                                 className="bg-sky-100 p-2 rounded-xl text-xl"
-                                style={{
-                                    backgroundColor: `${needAttention[0]?.color}`,
-                                }}
+                                style={
+                                    {
+                                        backgroundColor: `${needAttention()?.habit?.color}`,
+                                    }
+                                }
                             >
-                                {needAttention[0]?.icon}
+                                {needAttention()?.habit?.icon}
                             </div>
                             <div>
                                 <h1 className="font-semibold text-gray-800">
-                                    {needAttention[0]?.title}
+                                    {needAttention()?.habit?.title}
                                 </h1>
 
                                 <p className="text-sm text-orange-500 font-medium">
-                                    {needAttention[0]?.completedDates.length}{" "}
+                                    {needAttention()?.habit.completedDates?.length}/
+                                    {needAttention()?.totalDays}
                                     days
                                 </p>
                             </div>
