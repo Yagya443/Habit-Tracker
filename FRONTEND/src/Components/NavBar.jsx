@@ -25,7 +25,7 @@ const NavBar = () => {
             console.log(error.response?.data || error.message);
         }
     };
-    
+
     const handleLogOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -38,14 +38,14 @@ const NavBar = () => {
     }, []);
 
     return (
-        <div className="w-68 h-screen fixed flex flex-col justify-between">
+        <div className="sidebar-brand w-68 h-screen fixed flex flex-col justify-between">
             <div>
-                <div className="flex items-center gap-3 px-4 py-3">
+                <div className="sidebar-navigation flex items-center gap-3 px-4 py-3">
                     <div className="bg-orange-400 p-3 rounded-2xl shadow-lg">
                         <Sparkles className="text-white w-6 h-6" />
                     </div>
 
-                    <div>
+                    <div className="sidebar-brand">
                         <h1 className="text-xl font-bold text-gray-800">
                             AI Habit Tracker
                         </h1>
@@ -58,7 +58,7 @@ const NavBar = () => {
 
                 <hr />
 
-                <div className="flex flex-col gap-2 p-3">
+                <div className="sidebar-navigation flex flex-col gap-2 p-3">
                     <NavLink
                         to={"/dashboard"}
                         className={({ isActive }) =>
@@ -126,14 +126,15 @@ const NavBar = () => {
                 </div>
             </div>
 
-            <div>
+            <div className="sidebar-footer">
                 <hr />
-                <div className="flex flex-col gap-1">
-                    <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition" 
+                <div className="sidebar-actions flex flex-col gap-1">
+                    <button
+                        className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition"
                         // onClick={toggleTheme}
                     >
                         <Moon className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium" >
+                        <span className="text-gray-700 font-medium">
                             Dark mode
                         </span>
                     </button>
@@ -148,14 +149,13 @@ const NavBar = () => {
 
                 <hr />
 
-                <div className="flex items-center justify-between px-2 py-1">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
-                            {/* {user?.name} */}
+                <div className="sidebar-user flex items-center justify-between px-2 py-1">
+                    <div className="sidebar-user-info flex items-center gap-3">
+                        <div className="sidebar-user-avatar w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
                             {user?.name?.split("")[0]}
                         </div>
 
-                        <div>
+                        <div className="sidebar-user-details">
                             <h1 className="text-sm font-semibold text-gray-800">
                                 {user?.name}
                             </h1>

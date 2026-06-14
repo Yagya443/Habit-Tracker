@@ -125,14 +125,14 @@ const Insights = () => {
             <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-5xl font-semibold">
+                        <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
                             Weekly Insights
                         </h1>
                         <h3 className="mt-2">Apr 27-- May 3, 2026</h3>
                     </div>
                     <div className="flex gap-4">
                         <button
-                            className="flex py-2 items-center gap-2 text-md rounded-xl font-semibold px-4 bg-white"
+                            className=" flex py-2 items-center gap-2 text-md text-nowrap rounded-xl font-semibold px-4 bg-white"
                             // onClick={() => setSuggestNewHabitModel(true)}
                         >
                             <IoReload /> Suggest A Habit

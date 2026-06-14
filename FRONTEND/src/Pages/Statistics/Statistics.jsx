@@ -110,7 +110,6 @@ const Statistics = () => {
 
     useEffect(() => {
         fetchHabitInfo();
-        
     }, []);
 
     return (
@@ -126,21 +125,21 @@ const Statistics = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-6 mt-4">
-                    <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold text-green-400 flex items-center gap-2">
+                <div className="statistics-grid grid grid-cols-3 gap-6 mt-4">
+                    <div className="statistics-best-streak bg-white rounded-xl px-4 py-2 ">
+                        <p className="statistics-best-streak-title text-sm font-semibold text-green-400 flex items-center gap-2">
                             <FaGripfire fill="#05df72" /> BEST STREAK
                         </p>
-                        <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
+                        <div className="statistics-best-streak-content bg-white rounded-2xl py-3 flex items-center gap-3">
                             <div
-                                className=" p-2 rounded-xl text-xl"
+                                className="statistics-best-streak-icon p-2 rounded-xl text-xl"
                                 style={{
                                     backgroundColor: `${longestStreak[0]?.color}`,
                                 }}
                             >
                                 {bestStreak[0]?.icon}
                             </div>
-                            <div>
+                            <div className="statistics-best-streak-details">
                                 <h1 className="font-semibold text-gray-800">
                                     {bestStreak[0]?.title}
                                 </h1>
@@ -151,21 +150,21 @@ const Statistics = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold text-yellow-400 flex items-center gap-2">
+                    <div className="statistics-longest-ever bg-white rounded-xl px-4 py-2 ">
+                        <p className="statistics-longest-ever-title text-sm font-semibold text-yellow-400 flex items-center gap-2">
                             <FaTrophy fill="oklch(85.2% 0.199 91.936) " />
                             LONGEST EVER
                         </p>
-                        <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
+                        <div className="statistics-longest-ever-content bg-white rounded-2xl py-3 flex items-center gap-3">
                             <div
-                                className="p-2 rounded-xl text-xl"
+                                className="statistics-longest-ever-icon p-2 rounded-xl text-xl"
                                 style={{
                                     backgroundColor: `${longestStreak[0]?.color}`,
                                 }}
                             >
                                 {longestStreak[0]?.icon}
                             </div>
-                            <div>
+                            <div className="statistics-longest-ever-details">
                                 <h1 className="font-semibold text-gray-800">
                                     {longestStreak[0]?.title}
                                 </h1>
@@ -177,30 +176,31 @@ const Statistics = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl px-4 py-2 ">
-                        <p className="text-sm font-semibold text-red-400 flex items-center gap-2">
+                    <div className="statistics-needs-attention bg-white rounded-xl px-4 py-2 ">
+                        <p className="statistics-needs-attention-title text-sm font-semibold text-red-400 flex items-center gap-2">
                             <FaArrowTrendDown fill="oklch(70.4% 0.191 22.216)" />
                             NEEDS ATTENTION
                         </p>
-                        <div className="bg-white rounded-2xl py-3 flex items-center gap-3">
+                        <div className="statistics-needs-attention-content bg-white rounded-2xl py-3 flex items-center gap-3">
                             <div
-                                className="bg-sky-100 p-2 rounded-xl text-xl"
-                                style={
-                                    {
-                                        backgroundColor: `${needAttention()?.habit?.color}`,
-                                    }
-                                }
+                                className="statistics-needs-attention-icon p-2 rounded-xl text-xl"
+                                style={{
+                                    backgroundColor: `${needAttention()?.habit?.color}`,
+                                }}
                             >
                                 {needAttention()?.habit?.icon}
                             </div>
-                            <div>
+                            <div className="statistics-needs-attention-details">
                                 <h1 className="font-semibold text-gray-800">
                                     {needAttention()?.habit?.title}
                                 </h1>
 
                                 <p className="text-sm text-orange-500 font-medium">
-                                    {needAttention()?.habit.completedDates?.length}/
-                                    {needAttention()?.totalDays}
+                                    {
+                                        needAttention()?.habit.completedDates
+                                            ?.length
+                                    }
+                                    /{needAttention()?.totalDays}
                                     days
                                 </p>
                             </div>

@@ -7,7 +7,7 @@
     .weekly-container,
     .statistics-container,
     .dashboard-container,
-    insights-container {
+    .insights-container {
         padding-left: 2rem;
         padding-right: 2rem;
     }
@@ -64,13 +64,121 @@
         margin-top: 0.2rem;
     }
 
-    .insight-last-grid{
+    .insight-last-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 768px) {
+    .habits-page,
+    .weekly-container,
+    .statistics-container,
+    .dashboard-container,
+    .insights-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-left: 15rem;
+    }
+
+    /* Dashboard */
+    .dashboard-greeting h1 {
+        font-size: 2rem;
+    }
+    .dashboard-actions button {
+        font-size: 0.875rem;
+    }
+    .dashboard-container .stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    /* Habit */
 
-}
+    .habits-header-content h1 {
+        font-size: 2rem;
+    }
+    .habits-header-content h3 {
+        font-size: 0.875rem;
+    }
 
-@media screen and (min-width: 768px) and (max-width: 1024px){
-    
+    .habits-header-actions button {
+        font-size: 0.875rem;
+        text-wrap: nowrap;
+    }
+
+    .habit-status-toggle,
+    .habit-category-filter,
+    .habit-search-input {
+        font-size: 0.75rem;
+    }
+
+    .habits-list {
+        padding: 0;
+    }
+
+    .habit-card {
+        height: 75px;
+        margin: 5px 0;
+    }
+    .habit-category {
+        font-size: 12px;
+    }
+    .habit-title {
+        width: 4rem;
+    }
+    .habit-description {
+        font-size: 12px;
+        background-color: #f0f0f0;
+        width: 8rem;
+    }
+    .habit-info {
+        gap: 0.25rem;
+    }
+
+    .habit-streak,
+    .habit-best-streak,
+    .habit-delete-btn {
+        font-size: 12px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .habit-archive-btn {
+        height: 25px;
+        width: 25px;
+    }
+
+    /* NavBar */
+
+    .sidebar-brand {
+        width: 15rem;
+    }
+
+    /*Weekly  */
+    .weekly-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .weekly-completion-card p,
+    .weekly-completion-rate-card p,
+    .weekly-best-day-card p,
+    .weekly-top-habit-card p {
+        gap: 0.5rem;
+    }
+
+    /* Insights */
+
+    .statistics-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    .statistics-best-streak-title,
+    .statistics-longest-ever-title,
+    .statistics-needs-attention-title {
+        font-size: 0.875rem;
+    }
+
+    .statistics-best-streak-details,
+    .statistics-longest-ever-details,
+    .statistics-needs-attention-details {
+        font-size: 1.15rem;
+    }
 }
