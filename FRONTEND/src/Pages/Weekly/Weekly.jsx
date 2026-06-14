@@ -239,7 +239,7 @@ const Weekly = () => {
                         <h2 className="text-2xl font-bold">
                             {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">{topHabit?.maxStreak} days</h2>
+                        <h2 className="text-sm">{topHabit?.completedDates.length} days</h2>
                     </div>
                 </div>
 

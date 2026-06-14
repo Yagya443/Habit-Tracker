@@ -59,8 +59,8 @@ const motivationQuote = async (req, res) => {
         const result = await model.generateContent(`
         You are an inspiring motivational coach.
 
-        Give exactly ONE powerful RANDOM motivational quote from a well-known person such as an athlete, 
-        entrepreneur, leader, author, or speaker.
+        Give exactly ONE powerful RANDOM motivational quote every thime different from a well-known person such as an athlete, 
+        entrepreneur, author, or speaker.
 
     Requirements:
         - Start with the person's name once said.

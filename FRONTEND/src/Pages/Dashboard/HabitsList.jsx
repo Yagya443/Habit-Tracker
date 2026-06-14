@@ -38,24 +38,10 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
                 },
             );
 
-            // setHabitdata((prev) =>
-            //     prev.map((habit) => (habit._id === id ? response.data : habit)),
-            // );
-
-            setHabitData((prev) =>
-                prev.map((habit) =>
-                    habit._id === id
-                        ? {
-                              ...habit,
-                              title,
-                              description,
-                              category,
-                              icon,
-                              color,
-                          }
-                        : habit,
-                ),
+            setHabitdata((prev) =>
+                prev.map((habit) => (habit._id === id ? response.data : habit)),
             );
+
         } catch (error) {
             console.log(error.response?.data || error.message);
         }

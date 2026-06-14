@@ -9,6 +9,7 @@ import Insights from "./Pages/Insights/Insights";
 import Habits from "./Pages/Habits/Habits";
 import Weekly from "./Pages/Weekly/Weekly";
 import Statistics from "./Pages/Statistics/Statistics";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
     return (
@@ -17,11 +18,46 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/habits" element={<Habits />} />
-                <Route path="/Insights" element={<Insights />} />
-                <Route path="/weekly" element={<Weekly />} />
-                <Route path="/statistics" element={<Statistics />} />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/habits"
+                    element={
+                        <ProtectedRoute>
+                            <Habits />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/Insights"
+                    element={
+                        <ProtectedRoute>
+                            <Insights />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/weekly"
+                    element={
+                        <ProtectedRoute>
+                            <Weekly />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/statistics"
+                    element={
+                        <ProtectedRoute>
+                            <Statistics />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </>
     );

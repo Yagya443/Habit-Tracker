@@ -140,23 +140,6 @@ const Insights = () => {
                     </div>
                 </div>
 
-                <div className="bg-blue-50  py-2 px-4 mt-8 relative transition-all rounded-2xl">
-                    <div className="flex items-center gap-4 ">
-                        <div className="bg-amber-500 rounded-xl p-1">
-                            <MdOutlineCampaign size={30} />
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-semibold">
-                                AI Weekly Report
-                            </h2>
-                            <p className="text-md font-light">
-                                See patterns and personalised encouragement from
-                                the past 7 days
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="grid grid-cols-4 gap-6 mt-4">
                     <div className="bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
@@ -201,7 +184,8 @@ const Insights = () => {
                         <h2 className="text-2xl font-bold">
                             {topHabit?.title}
                         </h2>
-                        <h2 className="text-sm">{topHabit?.maxStreak} days</h2>
+                        <h2 className="text-sm">{topHabit?.completedDates.length} days</h2>
+                        
                     </div>
                 </div>
 

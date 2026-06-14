@@ -103,6 +103,7 @@ const Dashboard = () => {
                         : habit,
                 ),
             );
+
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -140,6 +141,10 @@ const Dashboard = () => {
                 habit: null,
                 mode: "create",
             });
+
+            setHabitdata((prev) => [...prev, response.data.habit]);
+
+
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
