@@ -51,6 +51,7 @@ const Dashboard = () => {
                 },
             );
             setHabitdata(response.data);
+            console.log(response.data);
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -103,7 +104,6 @@ const Dashboard = () => {
                         : habit,
                 ),
             );
-
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -143,8 +143,6 @@ const Dashboard = () => {
             });
 
             setHabitdata((prev) => [...prev, response.data.habit]);
-
-
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -171,6 +169,8 @@ const Dashboard = () => {
 
     const activeStreak = habitdata.filter((habit) => habit.streak > 0).length;
 
+    // console.log("activeStreak", activeStreak);
+
     const handleEditHabit = (habit) => {
         setModeldata({
             isOpen: true,
@@ -178,6 +178,17 @@ const Dashboard = () => {
             mode: "edit",
         });
     };
+
+    const totalStreakCount = habitdata.reduce((prev, curr) => {
+        return (prev += curr.streak);
+    }, 0);
+
+    const totalCompletedDates = habitdata.reduce(
+        (prev, curr) => prev + curr.completedDates.length,
+        0,
+    );
+
+    // console.log('3', typeof recommendation)
 
     const getQuote = async () => {
         try {
@@ -244,6 +255,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         setBestActiveStreak((prev) => Math.max(prev, activeStreak));
+        // setBestActiveStreak((prev) => console.log(prev, activeStreak));
     }, [activeStreak]);
 
     useEffect(() => {
@@ -306,6 +318,8 @@ const Dashboard = () => {
                         setSuggestNewHabitModel={setSuggestNewHabitModel}
                         setRecommendation={setRecommendation}
                         recommendation={recommendation}
+                        habitdata={habitdata}
+                        setHabitdata={setHabitdata}
                     />
                 )}
 
@@ -424,7 +438,13 @@ const Dashboard = () => {
                         />
                         <div>
                             <h2 className="text-gray-400 text-lg">This Week</h2>
-                            <h2 className="text-xl font-semibold">57%</h2>
+                            <h2 className="text-xl font-semibold">
+                                {(
+                                    (totalStreakCount / totalCompletedDates) *
+                                    100
+                                ).toFixed(2)}
+                                %
+                            </h2>
                         </div>
                     </div>
                 </div>

@@ -21,9 +21,11 @@ const getRecommendations = async (req, res) => {
             
             I want the list of 3 habits in a form of object each should have :-
             1.title(2 words)
-            2.about (25-35 words)
+            2.about (5-10 words)
             3.category of that habit (Fitness,Health,Learning,Mindfullness,Social,Productivity,Finance,Creativity,Other,)
-            4.importantan(30-40 words)
+            4.importantan(20-30 words)
+            5.Select any one of the emoji: "💪","❤️","📚","🧘","🫂","⚡","💰","🎨","✈️","🍎","🎵","🌟",
+            6.Any one of the color:#f59e0b","#ef4444","#3b82f6","#22c55e","#a855f7","#ec4899",
             
             Return ONLY a valid JSON array.
             
@@ -59,7 +61,7 @@ const motivationQuote = async (req, res) => {
         const result = await model.generateContent(`
         You are an inspiring motivational coach.
 
-        Give exactly ONE powerful RANDOM motivational quote every thime different from a well-known person such as an athlete, 
+        Give exactly ONE powerful RANDOM motivational quote every time different from a well-known person of India such as an athlete, 
         entrepreneur, author, or speaker.
 
     Requirements:

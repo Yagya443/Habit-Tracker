@@ -182,3 +182,69 @@
         font-size: 1.15rem;
     }
 }
+
+@media screen and (max-width: 425px) {
+    .habits-page,
+    .weekly-container,
+    .statistics-container,
+    .dashboard-container,
+    .insights-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-left: 0rem;
+    }
+
+    /* Dashboard */
+
+    .dashboard-greeting h1 {
+        font-size: 1.5rem;
+    }
+    .dashboard-actions button {
+        font-size: 0.75rem;
+    }
+    .dashboard-container .stats-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .habit-card {
+        margin: 0.25rem 0;
+        overflow: hidden;
+    }
+
+    .habit-info-section {
+        gap: 0.5rem;
+    }
+
+    .habit-header h1 {
+        font-size: 1rem;
+    }
+    .habit-details p {
+        font-size: 0.75rem;
+    }
+    .habit-actions {
+        gap: 0.5rem;
+    }
+
+    .habit-streak{
+        font-size: 0.75rem;
+        height: 25px;
+        width: 25px;
+    }
+
+    .habit-complete-btn{
+        height: 35px;
+        width: 35px;
+    }
+    .threeDotBtn{
+        height: 25px;
+        width: 25px;
+    }
+
+    /* NAVBAR */
+
+    .sidebar-brand {
+        /* width: 12rem; */
+
+        display: none;
+    }
+}

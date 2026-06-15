@@ -41,7 +41,6 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
             setHabitdata((prev) =>
                 prev.map((habit) => (habit._id === id ? response.data : habit)),
             );
-
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -66,7 +65,13 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
         }
     };
 
-    const completed = 1;
+    const completed = habitdata.reduce((prev, curr) => {
+        if (curr.completed) {
+            return prev + 1;
+        }
+        return prev;
+    }, 0);
+
     const total = habitdata.length;
 
     const percentage = (completed / total) * 100;
@@ -130,25 +135,25 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
                 </div>
             </div>
 
-            <div className="px-2 flex flex-col gap-2">
+            <div className="habit-list-container px-2 flex flex-col gap-2">
                 {habitdata.map((habits, idx) => (
                     <div
                         key={habits._id}
-                        className={`rounded-xl mx-4 px-4 flex items-center justify-between py-2 ${
+                        className={`habit-card rounded-xl mx-4 px-4 flex items-center justify-between py-2 ${
                             handleCompletedDate(habits.lastCompletedDate)
                                 ? "bg-amber-50"
                                 : "bg-amber-100"
                         }`}
                     >
-                        <div className="flex items-center gap-6">
+                        <div className="habit-info-section flex items-center gap-6">
                             <div
-                                className={` rounded p-1 text-2xl `}
+                                className={`habit-icon-container rounded p-1 text-2xl `}
                                 style={{ backgroundColor: habits.color }}
                             >
                                 {habits.icon}
                             </div>
-                            <div className="flex flex-col">
-                                <div className="flex items-center gap-4">
+                            <div className="habit-details flex flex-col">
+                                <div className="habit-header flex items-center gap-4">
                                     <h1 className="text-xl">{habits.title}</h1>
                                     <p className="bg-gray-300 rounded-2xl px-2">
                                         {habits.category}
@@ -160,8 +165,8 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-6">
-                            <div className="flex items-center">
+                        <div className="habit-actions flex items-center gap-6">
+                            <div className="habit-streak flex items-center">
                                 <AiOutlineFire
                                     fill="oklch(76.9% 0.188 70.08)"
                                     size={25}
@@ -170,11 +175,12 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
                             </div>
                             <BsThreeDots
                                 size={30}
+                                className="threeDotBtn cursor-pointer"
                                 onClick={() => setOpenMenu(habits._id)}
                             />
                             <MdDone
                                 fill="#fff"
-                                className="bg-amber-500 rounded-full p-1"
+                                className="habit-complete-btn bg-amber-500 rounded-full p-1 hover:bg-amber-400 cursor-pointer transition duration-200"
                                 size={50}
                                 onClick={() => handlecompleted(habits._id)}
                             />
@@ -182,9 +188,9 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
                         {openMenu === habits._id && (
                             <div
                                 ref={menuRef}
-                                className="absolute right-48 mb-24  bg-yellow-200 shadow-md rounded px-6 py-2"
+                                className="habit-menu absolute right-48 mb-24  bg-yellow-200 shadow-md rounded px-6 py-2"
                             >
-                                <div className="absolute -bottom-2 right-3 w-4 h-4 bg-yellow-200 rotate-45"></div>
+                                <div className="habit-menu-arrow absolute -bottom-2 right-3 w-4 h-4 bg-yellow-200 rotate-45"></div>
                                 <p
                                     className="cursor-pointer font-semibold "
                                     onClick={() => handleEditHabit(habits)}

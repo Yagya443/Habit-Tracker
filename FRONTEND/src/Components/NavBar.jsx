@@ -127,28 +127,7 @@ const NavBar = () => {
             </div>
 
             <div className="sidebar-footer">
-                <hr />
-                <div className="sidebar-actions flex flex-col gap-1">
-                    <button
-                        className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition"
-                        // onClick={toggleTheme}
-                    >
-                        <Moon className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">
-                            Dark mode
-                        </span>
-                    </button>
-
-                    <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition">
-                        <Settings className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">
-                            Settings
-                        </span>
-                    </button>
-                </div>
-
-                <hr />
-
+                <hr /> <hr />
                 <div className="sidebar-user flex items-center justify-between px-2 py-1">
                     <div className="sidebar-user-info flex items-center gap-3">
                         <div className="sidebar-user-avatar w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
@@ -177,3 +156,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+    

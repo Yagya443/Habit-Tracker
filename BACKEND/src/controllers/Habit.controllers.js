@@ -30,9 +30,8 @@ const getHabit = async (req, res) => {
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
-        allHabits.forEach((habit) => {
 
+        allHabits.forEach((habit) => {
             if (habit.lastCompletedDate) {
                 const lastDate = new Date(habit.lastCompletedDate);
                 lastDate.setHours(0, 0, 0, 0);
@@ -150,6 +149,10 @@ const completeHabit = async (req, res) => {
         if (lastDate.getTime() !== yesterday.getTime()) {
             habit.streak = 0;
         }
+    }
+
+    if (lastDate !== today) {
+        habit.completed = false;
     }
 
     if (lastDate && lastDate.getTime() === today.getTime()) {

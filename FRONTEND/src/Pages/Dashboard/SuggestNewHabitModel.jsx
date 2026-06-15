@@ -7,6 +7,8 @@ const SuggestNewHabitModel = ({
     setSuggestNewHabitModel,
     recommendation,
     setRecommendation,
+    setHabitdata,
+    habitdata,
 }) => {
     const questions = [
         {
@@ -22,6 +24,7 @@ const SuggestNewHabitModel = ({
             field: "struggledHabits",
         },
     ];
+    // console.log('1',typeof recommendation);
 
     const [answer, setAnswer] = useState({
         goal: "",
@@ -45,19 +48,49 @@ const SuggestNewHabitModel = ({
                 },
             );
 
-            setRecommendation(response.data.recommendation);
-            console.log(response.data.recommendation);
+            // setRecommendation(response.data.recommendation);
+            // console.log(response.data.recommendation);
 
-            // const habits = JSON.parse(response.data.recommendation);
-
-            // setRecommendation(habits);
-            // console.log(habits);
+            setRecommendation(JSON.parse(response.data.recommendation));
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
     };
 
+    const handleAddToHabit = async (idx) => {
+        try {
+            const token = localStorage.getItem("token");
+            console.log(token);
+
+            console.log(recommendation[idx]);
+
+            const response = await axios.post(
+                "http://localhost:5000/habit/createHabit",
+                {
+                    title: recommendation[idx].title,
+                    category: recommendation[idx].category,
+                    description: recommendation[idx].about,
+                    icon: "🫂",
+                    color: "#f59e0b",
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            setHabitdata((prev) => [ response.data.habit,...prev]);
+            console.log((prev) => [...prev, response.data.habit]);
+        } catch (error) {
+            console.log(error.response?.data);
+            console.log(error.response?.status);
+        }
+    };
+
     // console.log(recommendation)
+    // console.log('2',typeof recommendation);
+
     const [currQuestion, setCurrQuestion] = useState(0);
 
     return (
@@ -147,29 +180,35 @@ const SuggestNewHabitModel = ({
                             className="cursor-pointer"
                             onClick={() => {
                                 setSuggestNewHabitModel(false);
-                                setRecommendation("");
+                                // setRecommendation("");
                             }}
                         />
                     </div>
-                    <div className="mt-4">
-                        {recommendation?.map((habit, idx) => (
+                    <div className="mt-4 max-h-[50vh] overflow-y-scroll scrollbar-none">
+                        {recommendation.map((habit, idx) => (
                             <div
                                 key={idx}
-                                className="border rounded-xl p-3 mb-3"
+                                className="border relative rounded-xl p-3 mb-3"
                             >
                                 <h2 className="font-semibold">{habit.title}</h2>
 
-                                <p className="text-sm text-gray-600">
+                                <p className="text-[10px] text-gray-600">
                                     {habit.about}
                                 </p>
 
-                                <span className="text-xs bg-orange-100 px-2 py-1 rounded">
+                                <span className="text-xs bg-orange-100 px-2 py-1 mt-1 rounded">
                                     {habit.category}
                                 </span>
 
-                                <p className="text-sm mt-2">
+                                <p className="text-[10px] mt-2 mb-4">
                                     {habit.importance}
                                 </p>
+                                <button
+                                    onClick={() => handleAddToHabit(idx)}
+                                    className="text-white bg-amber-500 rounded-lg text-[15px] px-2 absolute bottom-2 right-2"
+                                >
+                                    Add Habit
+                                </button>
                             </div>
                         ))}
                     </div>
