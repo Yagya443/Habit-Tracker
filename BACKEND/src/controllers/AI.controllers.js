@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
 
 const getRecommendations = async (req, res) => {
     try {
@@ -126,7 +126,7 @@ const threeDayPlan = async (req, res) => {
 
 const weeklyReport = async (req, res) => {
     try {
-        const {habitdata} = req.body;
+        const { habitdata } = req.body;
 
         const model = genAI.getGenerativeModel({
             model: "gemini-2.5-flash-lite",
@@ -149,7 +149,7 @@ const weeklyReport = async (req, res) => {
                 7. Do not add any introduction or conclusion.
                 8. Keep the response under 00 words.
             `);
-        
+
         const report = result.response.text();
 
         res.status(200).json({

@@ -12,7 +12,7 @@ const NavBar = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios(
-                `${process.env.RENDER_URL}/user/me`,
+                `${import.meta.env.RENDER_URL}/user/me`,
 
                 {
                     headers: {

@@ -29,7 +29,7 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
             const token = localStorage.getItem("token");
 
             const response = await axios.put(
-                `${process.env.RENDER_URL}/habit/completeHabit/${id}`,
+                `${import.meta.env.RENDER_URL}/habit/completeHabit/${id}`,
                 {},
                 {
                     headers: {
@@ -51,7 +51,7 @@ const HabitsList = ({ habitdata, setHabitdata, modeldata, setModeldata }) => {
             const token = localStorage.getItem("token");
 
             const response = await axios.delete(
-                `${process.env.RENDER_URL}/habit/deleteHabit/${id}`,
+                `${import.meta.env.RENDER_URL}/habit/deleteHabit/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

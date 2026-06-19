@@ -26,7 +26,7 @@ const Insights = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `${process.env.RENDER_URL}/habit/getHabit`,
+                `${import.meta.env.RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

@@ -16,7 +16,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post(
-                `${process.env.RENDER_URL}/user/login`,
+                `${import.meta.env.RENDER_URL}/user/login`,
                 {
                     email,
                     password,

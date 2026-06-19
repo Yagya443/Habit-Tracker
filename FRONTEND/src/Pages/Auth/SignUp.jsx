@@ -19,7 +19,7 @@ const SignUp = () => {
             //  console.log({ name, email, password });
 
             const response = await axios.post(
-                `${process.env.RENDER_URL}/user/signUp`,
+                `${import.meta.env.RENDER_URL}/user/signUp`,
                 {
                     name,
                     email,

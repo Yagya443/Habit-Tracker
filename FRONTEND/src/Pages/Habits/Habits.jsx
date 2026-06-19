@@ -33,7 +33,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `${process.env.RENDER_URL}/habit/getHabit`,
+                `${import.meta.env.RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.put(
-                `${process.env.RENDER_URL}/habit/archiveHabit/${id}`,
+                `${import.meta.env.RENDER_URL}/habit/archiveHabit/${id}`,
                 {},
                 {
                     headers: {
@@ -80,7 +80,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.put(
-                `${process.env.RENDER_URL}/habit/editHabit/${id}`,
+                `${import.meta.env.RENDER_URL}/habit/editHabit/${id}`,
                 {
                     title,
                     description,
@@ -122,7 +122,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.delete(
-                `${process.env.RENDER_URL}/habit/deleteHabit/${id}`,
+                `${import.meta.env.RENDER_URL}/habit/deleteHabit/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -147,7 +147,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "${process.env.RENDER_URL}/habit/createHabit",
+                "${import.meta.env.RENDER_URL}/habit/createHabit",
                 {
                     title,
                     description,
@@ -194,7 +194,7 @@ const Habits = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios(
-                `${process.env.RENDER_URL}/user/me`,
+                `${import.meta.env.RENDER_URL}/user/me`,
 
                 {
                     headers: {

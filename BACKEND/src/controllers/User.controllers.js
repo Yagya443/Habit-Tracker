@@ -18,11 +18,11 @@ const signup = async (req, res) => {
 
         await user.save();
 
-         const token = jwt.sign(
+        const token = jwt.sign(
             {
                 _id: user._id,
             },
-            process.env.JWT_SECRET,
+            import.meta.env.JWT_SECRET,
             {
                 expiresIn: "7d",
             },
@@ -45,7 +45,6 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const existUser = await User.findOne({ email });
 
-
         if (!existUser) {
             return res.status(404).json({ message: "No User Exist" });
         }
@@ -60,7 +59,7 @@ const login = async (req, res) => {
             {
                 _id: existUser._id,
             },
-            process.env.JWT_SECRET,
+            import.meta.env.JWT_SECRET,
             {
                 expiresIn: "7d",
             },
@@ -73,8 +72,6 @@ const login = async (req, res) => {
             token,
             user: existUser,
         });
-
-
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
