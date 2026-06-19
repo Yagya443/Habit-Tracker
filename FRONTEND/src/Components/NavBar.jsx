@@ -12,7 +12,7 @@ const NavBar = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios(
-                "http://localhost:5000/user/me",
+                `${process.env.RENDER_URL}/user/me`,
 
                 {
                     headers: {
@@ -156,4 +156,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-    

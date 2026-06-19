@@ -56,7 +56,7 @@ const Weekly = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "http://localhost:5000/habit/getHabit",
+                `${process.env.RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -198,7 +198,7 @@ const Weekly = () => {
                 <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
                     <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
-                            <TbActivityHeartbeat/> Completions
+                            <TbActivityHeartbeat /> Completions
                         </p>
                         <h2 className="text-4xl font-bold">
                             {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
@@ -221,7 +221,9 @@ const Weekly = () => {
                             ).toFixed(2)}
                             %
                         </h2>
-                        <h2 className="weekly-completion-rate-card__details text-sm">this week</h2>
+                        <h2 className="weekly-completion-rate-card__details text-sm">
+                            this week
+                        </h2>
                     </div>
                     <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
@@ -229,7 +231,9 @@ const Weekly = () => {
                             Best Day
                         </p>
                         <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
-                        <h2 className="weekly-best-day-card__details text-sm">{bestDay[1]} habits done</h2>
+                        <h2 className="weekly-best-day-card__details text-sm">
+                            {bestDay[1]} habits done
+                        </h2>
                     </div>
                     <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
                         <p className="text-sm font-semibold flex items-center gap-2">
@@ -239,7 +243,9 @@ const Weekly = () => {
                         <h2 className="text-2xl font-bold">
                             {topHabit?.title}
                         </h2>
-                        <h2 className="weekly-top-habit-card__details text-sm">{topHabit?.completedDates.length} days</h2>
+                        <h2 className="weekly-top-habit-card__details text-sm">
+                            {topHabit?.completedDates.length} days
+                        </h2>
                     </div>
                 </div>
 
@@ -249,6 +255,9 @@ const Weekly = () => {
                         habitdata={habitdata}
                     />
                 </div>
+                <h1 className="text-4xl text-center mt-12">
+                    This page is still Under Maintance
+                </h1>
             </div>
         </>
     );

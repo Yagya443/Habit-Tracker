@@ -3,7 +3,6 @@ import axios from "axios";
 import NavBar from "../../Components/NavBar";
 import { FaGripfire } from "react-icons/fa";
 import { FaTrophy } from "react-icons/fa";
-
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import BarGraph from "../Insights/BarGraph";
 import BarGraph2 from "../Insights/BarGraph2";
@@ -20,7 +19,7 @@ const Statistics = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "http://localhost:5000/habit/getHabit",
+                `${process.env.RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -37,6 +36,8 @@ const Statistics = () => {
     const bestStreak = habitdata
         .filter((habit) => habit.streak > 0)
         .toSorted((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // console.log("best",bestStreak);
 
     const longestStreak = habitdata.toSorted(
         (a, b) => b.completedDates.length - a.completedDates.length,
@@ -106,7 +107,7 @@ const Statistics = () => {
 
     // console.log(ne);
     // console.log("longestStreak",longestStreak);
-    console.log("needAttention", needAttention());
+    // console.log("needAttention", needAttention());
 
     useEffect(() => {
         fetchHabitInfo();

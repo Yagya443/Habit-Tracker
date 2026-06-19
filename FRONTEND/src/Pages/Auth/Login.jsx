@@ -16,7 +16,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:5000/user/login",
+                `${process.env.RENDER_URL}/user/login`,
                 {
                     email,
                     password,
@@ -64,7 +64,7 @@ const Login = () => {
                         type="email"
                         placeholder="you@example.com"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
-                        onChange={(e)=>setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
 
@@ -78,8 +78,7 @@ const Login = () => {
                             type={`${passwordHide ? "password" : "text"}`}
                             placeholder="At least 6 characters"
                             className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
-                        onChange={(e)=>setPassword(e.target.value)}
-
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <div onClick={() => setPasswordHide(!passwordHide)}>
                             {passwordHide ? (

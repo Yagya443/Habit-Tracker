@@ -37,7 +37,7 @@ const SuggestNewHabitModel = ({
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/ai/recommendations",
+                `${process.env.RENDER_URL}/ai/recommendations`,
                 {
                     answer,
                 },
@@ -60,18 +60,18 @@ const SuggestNewHabitModel = ({
     const handleAddToHabit = async (idx) => {
         try {
             const token = localStorage.getItem("token");
-            console.log(token);
+            // console.log(token);
 
-            console.log(recommendation[idx]);
+            // console.log(recommendation[idx]);
 
             const response = await axios.post(
-                "http://localhost:5000/habit/createHabit",
+                `${process.env.RENDER_URL}/habit/createHabit`,
                 {
                     title: recommendation[idx].title,
                     category: recommendation[idx].category,
                     description: recommendation[idx].about,
-                    icon: "🫂",
-                    color: "#f59e0b",
+                    icon: recommendation[idx].icon,
+                    color: recommendation[idx].color,
                 },
                 {
                     headers: {
@@ -80,7 +80,7 @@ const SuggestNewHabitModel = ({
                 },
             );
 
-            setHabitdata((prev) => [ response.data.habit,...prev]);
+            setHabitdata((prev) => [response.data.habit, ...prev]);
             console.log((prev) => [...prev, response.data.habit]);
         } catch (error) {
             console.log(error.response?.data);
@@ -94,7 +94,7 @@ const SuggestNewHabitModel = ({
     const [currQuestion, setCurrQuestion] = useState(0);
 
     return (
-        <div className="absolute -translate-1/2  z-50 left-1/2 top-1/2">
+        <div className="fixed -translate-1/2  z-50 left-1/2 top-1/2">
             {recommendation.length === 0 ? (
                 <div className="bg-white w-md min-h-62.5 rounded-2xl p-6 shadow-xl ">
                     <div className="flex items-center justify-between">
@@ -190,22 +190,24 @@ const SuggestNewHabitModel = ({
                                 key={idx}
                                 className="border relative rounded-xl p-3 mb-3"
                             >
-                                <h2 className="font-semibold">{habit.title}</h2>
+                                <h2 className=" text-[18px] font-semibold">
+                                    {habit.title}
+                                </h2>
 
-                                <p className="text-[10px] text-gray-600">
+                                <p className="text-[12px] text-gray-600">
                                     {habit.about}
                                 </p>
 
-                                <span className="text-xs bg-orange-100 px-2 py-1 mt-1 rounded">
+                                <span className="text-[12px] bg-orange-100 px-2 py-1 mt-1 rounded">
                                     {habit.category}
                                 </span>
 
-                                <p className="text-[10px] mt-2 mb-4">
+                                <p className="text-[10px] mt-2 mb-8">
                                     {habit.importance}
                                 </p>
                                 <button
                                     onClick={() => handleAddToHabit(idx)}
-                                    className="text-white bg-amber-500 rounded-lg text-[15px] px-2 absolute bottom-2 right-2"
+                                    className="text-white bg-amber-500 rounded-lg text-[18px] px-4 absolute bottom-2 right-2"
                                 >
                                     Add Habit
                                 </button>

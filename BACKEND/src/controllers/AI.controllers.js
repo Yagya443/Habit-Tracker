@@ -21,7 +21,7 @@ const getRecommendations = async (req, res) => {
             
             I want the list of 3 habits in a form of object each should have :-
             1.title(2 words)
-            2.about (5-10 words)
+            2.about (5-7 words)
             3.category of that habit (Fitness,Health,Learning,Mindfullness,Social,Productivity,Finance,Creativity,Other,)
             4.importantan(20-30 words)
             5.Select any one of the emoji: "💪","❤️","📚","🧘","🫂","⚡","💰","🎨","✈️","🍎","🎵","🌟",
@@ -38,7 +38,9 @@ const getRecommendations = async (req, res) => {
                 "title": "",
                 "about": "",
                 "category": "",
-                "importance": ""
+                "importance": "",
+                "icon":'',
+                "color":''
                 }]
                 `);
 

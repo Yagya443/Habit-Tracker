@@ -19,7 +19,7 @@ const SignUp = () => {
             //  console.log({ name, email, password });
 
             const response = await axios.post(
-                "http://localhost:5000/user/signUp",
+                `${process.env.RENDER_URL}/user/signUp`,
                 {
                     name,
                     email,

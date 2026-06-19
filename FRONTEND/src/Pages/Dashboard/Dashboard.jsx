@@ -43,7 +43,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "http://localhost:5000/habit/getHabit",
+                `${process.env.RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.put(
-                `http://localhost:5000/habit/editHabit/${id}`,
+                `${process.env.RENDER_URL}/habit/editHabit/${id}`,
                 {
                     title,
                     description,
@@ -120,7 +120,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/habit/createHabit",
+                `${process.env.RENDER_URL}/habit/createHabit`,
                 {
                     title,
                     description,
@@ -153,7 +153,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios(
-                "http://localhost:5000/user/me",
+                `${process.env.RENDER_URL}/user/me`,
 
                 {
                     headers: {
@@ -195,7 +195,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/ai/quote",
+                `${process.env.RENDER_URL}/ai/quote`,
                 {},
                 {
                     headers: {
@@ -216,7 +216,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/ai/threeDaysPlan",
+                `${process.env.RENDER_URL}/ai/threeDaysPlan`,
                 {},
                 {
                     headers: {
@@ -237,7 +237,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/ai/weeklyreport",
+                `${process.env.RENDER_URL}/ai/weeklyreport`,
                 { habitdata },
                 {
                     headers: {
