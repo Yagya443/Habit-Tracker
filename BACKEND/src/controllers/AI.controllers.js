@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const getRecommendations = async (req, res) => {
     try {

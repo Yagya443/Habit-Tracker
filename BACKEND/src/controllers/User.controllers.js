@@ -22,7 +22,7 @@ const signup = async (req, res) => {
             {
                 _id: user._id,
             },
-            import.meta.env.JWT_SECRET,
+            process.env.JWT_SECRET,
             {
                 expiresIn: "7d",
             },
@@ -59,7 +59,7 @@ const login = async (req, res) => {
             {
                 _id: existUser._id,
             },
-            import.meta.env.JWT_SECRET,
+            process.env.JWT_SECRET,
             {
                 expiresIn: "7d",
             },

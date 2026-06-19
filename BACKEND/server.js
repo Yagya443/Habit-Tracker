@@ -18,7 +18,7 @@ app.use("/ai", aiRoutes);
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(import.meta.env.MONGO_SRV);
+        const conn = await mongoose.connect(process.env.MONGO_SRV);
         console.log("MongoDB Connected");
     } catch (error) {
         console.error(error);
@@ -26,8 +26,8 @@ const connectDB = async () => {
 };
 connectDB();
 
-const PORT = import.meta.env.PORT || 3000;
-// console.log(import.meta.env.OPENAI_API_KEY);
+const PORT = process.env.PORT || 3000;
+// console.log(process.env.OPENAI_API_KEY);
 app.listen(PORT, () => {
     console.log(`App is Listening at ${PORT}`);
 });
