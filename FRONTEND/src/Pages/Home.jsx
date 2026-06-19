@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+    console.log(import.meta.env.VITE_RENDER_URL);
 
-  const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -31,8 +32,9 @@ const Home = () => {
 
                         <div className="mt-10 ">
                             <button
-                              onClick={()=>navigate('/login')}
-                              className="hover:cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg">
+                                onClick={() => navigate("/login")}
+                                className="hover:cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg"
+                            >
                                 Start Tracking
                             </button>
                         </div>

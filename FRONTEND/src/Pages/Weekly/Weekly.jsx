@@ -56,7 +56,7 @@ const Weekly = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `${import.meta.env.RENDER_URL}/habit/getHabit`,
+                `${import.meta.env.VITE_RENDER_URL}/habit/getHabit`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

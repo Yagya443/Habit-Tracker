@@ -37,7 +37,7 @@ const SuggestNewHabitModel = ({
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                `${import.meta.env.RENDER_URL}/ai/recommendations`,
+                `${import.meta.env.VITE_RENDER_URL}/ai/recommendations`,
                 {
                     answer,
                 },
@@ -65,7 +65,7 @@ const SuggestNewHabitModel = ({
             // console.log(recommendation[idx]);
 
             const response = await axios.post(
-                `${import.meta.env.RENDER_URL}/habit/createHabit`,
+                `${import.meta.env.VITE_RENDER_URL}/habit/createHabit`,
                 {
                     title: recommendation[idx].title,
                     category: recommendation[idx].category,
