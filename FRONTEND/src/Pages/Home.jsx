@@ -2,13 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    console.log(import.meta.env.VITE_RENDER_URL);
+
+    console.log("Hello",import.meta.env.VITE_RENDER_URL);
 
     const navigate = useNavigate();
 
     return (
         <div className="min-h-screen bg-black text-white">
-            {/* Hero Section */}
             <section className="min-h-screen bg-[#F5F1EB]">
                 <div className="max-w-7xl mx-auto px-8 py-12 flex flex-col lg:flex-row items-center justify-between">
                     <div className="max-w-2xl">
