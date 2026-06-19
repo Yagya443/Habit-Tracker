@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
