@@ -26,6 +26,10 @@ app.use("/ai", aiRoutes);
 
 const connectDB = async () => {
     try {
+        console.log("MONGO_URI:", process.env.MONGO_URI);
+        console.log("TYPE:", typeof process.env.MONGO_URI);
+        console.log("BOOLEAN:", Boolean(process.env.MONGO_URI));
+
         const conn = await mongoose.connect(process.env.MONGO_SRV);
         console.log("MongoDB Connected");
     } catch (error) {

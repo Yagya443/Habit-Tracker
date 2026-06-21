@@ -39,7 +39,7 @@ const Login = () => {
                 </div>
 
                 <h1 className="text-2xl font-semibold text-gray-800">
-                    AI Habit Tracker
+                    HabitGrid With AI
                 </h1>
             </div>
             <div className="bg-white w-full max-w-md rounded-2xl border border-gray-100 shadow-sm p-8">
