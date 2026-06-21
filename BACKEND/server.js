@@ -9,15 +9,7 @@ const userRoutes = require("./src/routes/User.routes.js");
 const habitRoutes = require("./src/routes/Habit.routes.js");
 const aiRoutes = require("./src/routes/AI.routes.js");
 
-app.use(
-    cors({
-        origin: [
-            "https://habit-tracker-umber-alpha.vercel.app",
-            "http://localhost:5173",
-        ],
-        credentials: true,
-    }),
-);
+app.use(cors({}));
 app.use(express.json());
 
 app.use("/user", userRoutes);
@@ -26,9 +18,9 @@ app.use("/ai", aiRoutes);
 
 const connectDB = async () => {
     try {
-        console.log("MONGO_URI:", process.env.MONGO_URI);
-        console.log("TYPE:", typeof process.env.MONGO_URI);
-        console.log("BOOLEAN:", Boolean(process.env.MONGO_URI));
+        console.log("MONGO_URI:", process.env.MONGO_SRV);
+        console.log("TYPE:", typeof process.env.MONGO_SRV);
+        console.log("BOOLEAN:", Boolean(process.env.MONGO_SRV));
 
         const conn = await mongoose.connect(process.env.MONGO_SRV);
         console.log("MongoDB Connected");
