@@ -12,8 +12,11 @@ const Login = () => {
     const [passwordHide, setPasswordHide] = useState(false);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+        const [loading, setLoading] = useState(false);
+    
 
     const handleLogin = async () => {
+        setLoading(true)
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_RENDER_URL}/user/login`,
@@ -31,6 +34,9 @@ const Login = () => {
             navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data || error.message);
+        }
+        finally{
+            setLoading(false)
         }
     };
 
@@ -97,7 +103,10 @@ const Login = () => {
                     className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
                     onClick={handleLogin}
                 >
-                    Sign In
+                    
+
+                    {loading ? <p>Loading</p> : <p>Sign In</p>}
+
                 </button>
 
                 <p className="text-center text-sm text-gray-500 mt-5">

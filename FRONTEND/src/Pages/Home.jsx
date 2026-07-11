@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
-    console.log("Hello",import.meta.env.VITE_RENDER_URL);
+    // console.log("Hello",import.meta.env.VITE_RENDER_URL);
 
     const navigate = useNavigate();
 

@@ -13,8 +13,11 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSignIn = async () => {
+        setLoading(true);
+
         try {
             //  console.log({ name, email, password });
 
@@ -31,6 +34,8 @@ const SignUp = () => {
             navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data || error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -115,7 +120,7 @@ const SignUp = () => {
                     className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
                     onClick={handleSignIn}
                 >
-                    Create account
+                    {loading ? <p>Loading</p> : <p>Create account</p>}
                 </button>
 
                 <p className="text-center text-sm text-gray-500 mt-5">

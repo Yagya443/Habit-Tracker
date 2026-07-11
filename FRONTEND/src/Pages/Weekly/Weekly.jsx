@@ -162,114 +162,121 @@ const Weekly = () => {
 
     return (
         <>
-            <NavBar />
-
             {!loading ? (
-                <p className="flex items-center justify-center h-screen text-xl font-semibold text-blue-600">
+                <>
+                    <NavBar />
+
+                    <div className="weekly-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+                        <div className="weekly-header flex items-center justify-between">
+                            <div>
+                                <h1 className="text-5xl font-semibold">
+                                    Weekly Overview
+                                </h1>
+                                <h3 className="mt-2">
+                                    See Every Habit Across All 7 Days At A
+                                    Glance
+                                </h3>
+                            </div>
+
+                            <div className="weekly-toolbar flex gap-4">
+                                <button
+                                    className="bg-white px-3 rounded-xl"
+                                    onClick={handlePreviousWeek}
+                                >
+                                    <GrPrevious />
+                                </button>
+
+                                <button className="bg-white flex items-center gap-2 px-4 py-2 rounded-xl">
+                                    <SlCalender />
+                                    {formatDate(currentWeek)} -{" "}
+                                    {formatDate(weekEnd)}
+                                </button>
+
+                                <button
+                                    className="bg-white px-3 rounded-xl"
+                                    onClick={handleNextWeek}
+                                >
+                                    <GrNext />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
+                            <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <TbActivityHeartbeat /> Completions
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
+                                    {(
+                                        (totalTodayStreak / totalHabit) *
+                                        100
+                                    ).toFixed(2)}
+                                    %
+                                </h2>
+                                <h2 className="weekly-completion-card__details text-sm">
+                                    {totalTodayStreak} of {totalHabit}
+                                </h2>
+                            </div>
+                            <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <FaArrowTrendUp />
+                                    Completions Rate
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {(
+                                        (totalStreakCount /
+                                            totalCompletedDates) *
+                                        100
+                                    ).toFixed(2)}
+                                    %
+                                </h2>
+                                <h2 className="weekly-completion-rate-card__details text-sm">
+                                    this week
+                                </h2>
+                            </div>
+                            <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <FaCalendarAlt />
+                                    Best Day
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {bestDay[0]}
+                                </h2>
+                                <h2 className="weekly-best-day-card__details text-sm">
+                                    {bestDay[1]} habits done
+                                </h2>
+                            </div>
+                            <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <CiTrophy />
+                                    Top Habit
+                                </p>
+                                <h2 className="text-2xl font-bold">
+                                    {topHabit?.title}
+                                </h2>
+                                <h2 className="weekly-top-habit-card__details text-sm">
+                                    {topHabit?.completedDates.length} days
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="weekly-tracker-container bg-white mt-6 rounded-xl py-4 px-6">
+                            <WeeklyHabitTracker
+                                currentWeek={currentWeek}
+                                habitdata={habitdata}
+                            />
+                        </div>
+                        <h1 className="text-4xl text-center mt-12">
+                            This page is still Under Maintance
+                        </h1>
+                    </div>
+                </>
+            ) : (
+                <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
+                
                     Loading...
                 </p>
-            ) : (
-                <div className="weekly-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
-                    <div className="weekly-header flex items-center justify-between">
-                        <div>
-                            <h1 className="text-5xl font-semibold">
-                                Weekly Overview
-                            </h1>
-                            <h3 className="mt-2">
-                                See Every Habit Across All 7 Days At A Glance
-                            </h3>
-                        </div>
-
-                        <div className="weekly-toolbar flex gap-4">
-                            <button
-                                className="bg-white px-3 rounded-xl"
-                                onClick={handlePreviousWeek}
-                            >
-                                <GrPrevious />
-                            </button>
-
-                            <button className="bg-white flex items-center gap-2 px-4 py-2 rounded-xl">
-                                <SlCalender />
-                                {formatDate(currentWeek)} -{" "}
-                                {formatDate(weekEnd)}
-                            </button>
-
-                            <button
-                                className="bg-white px-3 rounded-xl"
-                                onClick={handleNextWeek}
-                            >
-                                <GrNext />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
-                        <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <TbActivityHeartbeat /> Completions
-                            </p>
-                            <h2 className="text-4xl font-bold">
-                                {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
-                                {(
-                                    (totalTodayStreak / totalHabit) *
-                                    100
-                                ).toFixed(2)}
-                                %
-                            </h2>
-                            <h2 className="weekly-completion-card__details text-sm">
-                                {totalTodayStreak} of {totalHabit}
-                            </h2>
-                        </div>
-                        <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <FaArrowTrendUp />
-                                Completions Rate
-                            </p>
-                            <h2 className="text-4xl font-bold">
-                                {(
-                                    (totalStreakCount / totalCompletedDates) *
-                                    100
-                                ).toFixed(2)}
-                                %
-                            </h2>
-                            <h2 className="weekly-completion-rate-card__details text-sm">
-                                this week
-                            </h2>
-                        </div>
-                        <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <FaCalendarAlt />
-                                Best Day
-                            </p>
-                            <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
-                            <h2 className="weekly-best-day-card__details text-sm">
-                                {bestDay[1]} habits done
-                            </h2>
-                        </div>
-                        <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <CiTrophy />
-                                Top Habit
-                            </p>
-                            <h2 className="text-2xl font-bold">
-                                {topHabit?.title}
-                            </h2>
-                            <h2 className="weekly-top-habit-card__details text-sm">
-                                {topHabit?.completedDates.length} days
-                            </h2>
-                        </div>
-                    </div>
-
-                    <div className="weekly-tracker-container bg-white mt-6 rounded-xl py-4 px-6">
-                        <WeeklyHabitTracker
-                            currentWeek={currentWeek}
-                            habitdata={habitdata}
-                        />
-                    </div>
-                    <h1 className="text-4xl text-center mt-12">
-                        This page is still Under Maintance
-                    </h1>
-                </div>
             )}
         </>
     );

@@ -294,12 +294,9 @@ const Dashboard = () => {
 
     return (
         <>
-            <NavBar />
             {!loading ? (
-                <p className="flex items-center justify-center h-screen text-xl font-semibold text-blue-600">
-                    Loading...
-                </p>
-            ) : (
+                <>
+                <NavBar />
                 <div className="dashboard-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec]">
                     <div className="dashboard-header flex items-center justify-between">
                         <div className="dashboard-greeting">
@@ -537,6 +534,11 @@ const Dashboard = () => {
                         )}
                     </div>
                 </div>
+                </>
+            ) : (
+                <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
+                    Loading...
+                </p>
             )}
         </>
     );

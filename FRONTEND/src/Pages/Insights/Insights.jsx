@@ -122,135 +122,143 @@ const Insights = () => {
 
     return (
         <>
-            <NavBar />
             {!loading ? (
-                <p className="flex items-center justify-center h-screen text-xl font-semibold text-blue-600">
+                <>
+                    <NavBar />
+                    <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
+                                    Weekly Insights
+                                </h1>
+                                <h3 className="mt-2">Apr 27-- May 3, 2026</h3>
+                            </div>
+                            <div className="flex gap-4">
+                                <button
+                                    className=" flex py-2 items-center gap-2 text-md text-nowrap rounded-xl font-semibold px-4 bg-white"
+                                    // onClick={() => setSuggestNewHabitModel(true)}
+                                >
+                                    <IoReload /> Suggest A Habit
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
+                            <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <TbActivityHeartbeat /> Completions
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
+                                    {(
+                                        (totalTodayStreak / totalHabit) *
+                                        100
+                                    ).toFixed(2)}
+                                    %
+                                </h2>
+                                <h2 className="weekly-completion-card__details text-sm">
+                                    {totalTodayStreak} of {totalHabit}
+                                </h2>
+                            </div>
+                            <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <FaArrowTrendUp />
+                                    Completions Rate
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {(
+                                        (totalStreakCount /
+                                            totalCompletedDates) *
+                                        100
+                                    ).toFixed(2)}
+                                    %
+                                </h2>
+                                <h2 className="weekly-completion-rate-card__details text-sm">
+                                    this week
+                                </h2>
+                            </div>
+                            <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <FaCalendarAlt />
+                                    Best Day
+                                </p>
+                                <h2 className="text-4xl font-bold">
+                                    {bestDay[0]}
+                                </h2>
+                                <h2 className="weekly-best-day-card__details text-sm">
+                                    {bestDay[1]} habits done
+                                </h2>
+                            </div>
+                            <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
+                                <p className="text-sm font-semibold flex items-center gap-2">
+                                    <CiTrophy />
+                                    Top Habit
+                                </p>
+                                <h2 className="text-2xl font-bold">
+                                    {topHabit?.title}
+                                </h2>
+                                <h2 className="weekly-top-habit-card__details text-sm">
+                                    {topHabit?.completedDates.length} days
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6 mt-4">
+                            <div className="bg-blue-200">
+                                <BarGraph />
+                            </div>
+                            <div className="bg-blue-200">
+                                <BarGraph2 />
+                            </div>
+                            <div className="bg-blue-200">
+                                <PieChart />
+                            </div>
+                            <div className="bg-blue-200">
+                                <Analysis />
+                            </div>
+                        </div>
+
+                        <div className="bg-white mt-8 py-4 px-8 rounded-2xl">
+                            <div className="flex items-center justify-between">
+                                <p className="font-bold">Active Streak</p>
+                                <p className="font-light">
+                                    {totalTodayStreak}/{totalHabit}
+                                </p>
+                            </div>
+                            <div className="insight-last-grid grid grid-cols-4 gap-4 mt-4">
+                                {habitdata.map((habit, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3"
+                                    >
+                                        <div
+                                            className="p-2 rounded-xl text-xl"
+                                            style={{
+                                                backgroundColor: habit.color,
+                                            }}
+                                        >
+                                            {habit.icon}
+                                        </div>
+                                        <div>
+                                            <h1 className="font-semibold text-gray-800 ">
+                                                {habit.description}
+                                            </h1>
+
+                                            <p className="text-sm text-orange-500 font-medium">
+                                                🔥 {habit.streak} days
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
+                
                     Loading...
                 </p>
-            ) : (
-                <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
-                                Weekly Insights
-                            </h1>
-                            <h3 className="mt-2">Apr 27-- May 3, 2026</h3>
-                        </div>
-                        <div className="flex gap-4">
-                            <button
-                                className=" flex py-2 items-center gap-2 text-md text-nowrap rounded-xl font-semibold px-4 bg-white"
-                                // onClick={() => setSuggestNewHabitModel(true)}
-                            >
-                                <IoReload /> Suggest A Habit
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
-                        <div className="weekly-completion-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <TbActivityHeartbeat /> Completions
-                            </p>
-                            <h2 className="text-4xl font-bold">
-                                {/* {((totalStreak / totalHabit) * 100).toFixed(2)}% */}
-                                {(
-                                    (totalTodayStreak / totalHabit) *
-                                    100
-                                ).toFixed(2)}
-                                %
-                            </h2>
-                            <h2 className="weekly-completion-card__details text-sm">
-                                {totalTodayStreak} of {totalHabit}
-                            </h2>
-                        </div>
-                        <div className="weekly-completion-rate-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <FaArrowTrendUp />
-                                Completions Rate
-                            </p>
-                            <h2 className="text-4xl font-bold">
-                                {(
-                                    (totalStreakCount / totalCompletedDates) *
-                                    100
-                                ).toFixed(2)}
-                                %
-                            </h2>
-                            <h2 className="weekly-completion-rate-card__details text-sm">
-                                this week
-                            </h2>
-                        </div>
-                        <div className="weekly-best-day-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <FaCalendarAlt />
-                                Best Day
-                            </p>
-                            <h2 className="text-4xl font-bold">{bestDay[0]}</h2>
-                            <h2 className="weekly-best-day-card__details text-sm">
-                                {bestDay[1]} habits done
-                            </h2>
-                        </div>
-                        <div className="weekly-top-habit-card bg-white rounded-xl px-4 py-2 ">
-                            <p className="text-sm font-semibold flex items-center gap-2">
-                                <CiTrophy />
-                                Top Habit
-                            </p>
-                            <h2 className="text-2xl font-bold">
-                                {topHabit?.title}
-                            </h2>
-                            <h2 className="weekly-top-habit-card__details text-sm">
-                                {topHabit?.completedDates.length} days
-                            </h2>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-6 mt-4">
-                        <div className="bg-blue-200">
-                            <BarGraph />
-                        </div>
-                        <div className="bg-blue-200">
-                            <BarGraph2 />
-                        </div>
-                        <div className="bg-blue-200">
-                            <PieChart />
-                        </div>
-                        <div className="bg-blue-200">
-                            <Analysis />
-                        </div>
-                    </div>
-
-                    <div className="bg-white mt-8 py-4 px-8 rounded-2xl">
-                        <div className="flex items-center justify-between">
-                            <p className="font-bold">Active Streak</p>
-                            <p className="font-light">
-                                {totalTodayStreak}/{totalHabit}
-                            </p>
-                        </div>
-                        <div className="insight-last-grid grid grid-cols-4 gap-4 mt-4">
-                            {habitdata.map((habit, idx) => (
-                                <div
-                                    key={idx}
-                                    className="min-w-48 max-h-24 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3"
-                                >
-                                    <div
-                                        className="p-2 rounded-xl text-xl"
-                                        style={{ backgroundColor: habit.color }}
-                                    >
-                                        {habit.icon}
-                                    </div>
-                                    <div>
-                                        <h1 className="font-semibold text-gray-800 ">
-                                            {habit.description}
-                                        </h1>
-
-                                        <p className="text-sm text-orange-500 font-medium">
-                                            🔥 {habit.streak} days
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
             )}
         </>
     );
