@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BsStars, BsThreeDots } from "react-icons/bs";
 import { FaArchive, FaFire, FaPlus } from "react-icons/fa";
 import { BiSolidArchiveIn, BiSolidArchiveOut } from "react-icons/bi";
@@ -11,6 +11,7 @@ import { AiOutlineFire } from "react-icons/ai";
 import CreateNewHabit from "../Dashboard/CreateNewHabit";
 import SuggestNewHabitModel from "../Dashboard/SuggestNewHabitModel";
 import axios from "axios";
+import FilteredHabitList from "./FilteredHabitList";
 
 const Habits = () => {
     // const [openNewHabitModel, setOpenNewHabitModel] = useState(false);
@@ -29,7 +30,7 @@ const Habits = () => {
     const [user, setUser] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const fetchHabitInfo = async () => {
+    const fetchHabitInfo = useCallback(async () => {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
@@ -48,10 +49,10 @@ const Habits = () => {
         } finally {
             setLoading(false);
         }
-    };
+    });
 
-    const handleArchiveHabit = async (id) => {
-        setLoading(true);
+    const handleArchiveHabit = useCallback(async (id) => {
+        // setLoading(true);
         try {
             const token = localStorage.getItem("token");
 
@@ -71,53 +72,50 @@ const Habits = () => {
         } catch (error) {
             console.log(error.response?.data || error.message);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
-    };
+    });
 
-    const handleSaveEditHabit = async (
-        id,
-        title,
-        description,
-        category,
-        icon,
-        color,
-    ) => {
-        setLoading(true);
-        try {
-            const token = localStorage.getItem("token");
+    const handleSaveEditHabit = useCallback(
+        async (id, title, description, category, icon, color) => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem("token");
 
-            const response = await axios.put(
-                `${import.meta.env.VITE_RENDER_URL}/habit/editHabit/${id}`,
-                {
-                    title,
-                    description,
-                    category,
-                    color,
-                    icon,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
+                const response = await axios.put(
+                    `${import.meta.env.VITE_RENDER_URL}/habit/editHabit/${id}`,
+                    {
+                        title,
+                        description,
+                        category,
+                        color,
+                        icon,
                     },
-                },
-            );
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
 
-            setModeldata({
-                isOpen: false,
-                habit: null,
-                mode: "create",
-            });
+                setModeldata({
+                    isOpen: false,
+                    habit: null,
+                    mode: "create",
+                });
 
-            setHabitdata((prev) =>
-                prev.map((habit) => (habit._id === id ? response.data : habit)),
-            );
-        } catch (error) {
-            console.log(error.response?.data || error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+                setHabitdata((prev) =>
+                    prev.map((habit) =>
+                        habit._id === id ? response.data : habit,
+                    ),
+                );
+            } catch (error) {
+                console.log(error.response?.data || error.message);
+            } finally {
+                setLoading(false);
+            }
+        },
+    );
 
     const handleEditHabit = (habit) => {
         setModeldata({
@@ -127,7 +125,7 @@ const Habits = () => {
         });
     };
 
-    const handleDeleteHabit = async (id) => {
+    const handleDeleteHabit = useCallback(async (id) => {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
@@ -145,65 +143,72 @@ const Habits = () => {
         } catch (error) {
             console.log(error.response?.data || error.message);
         } finally {
-            setLoading(true);
-        }
-    };
-
-    async function handleCreateHabit(
-        title,
-        description,
-        category,
-        icon,
-        color,
-    ) {
-        setLoading(true);
-        try {
-            const token = localStorage.getItem("token");
-
-            const response = await axios.post(
-                "${import.meta.env.VITE_RENDER_URL}/habit/createHabit",
-                {
-                    title,
-                    description,
-                    category,
-                    icon,
-                    color,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            );
-
-            setCreateHabit(response.data);
-            setModeldata({
-                isOpen: false,
-                habit: null,
-                mode: "create",
-            });
-        } catch (error) {
-            console.log(error.response?.data || error.message);
-        } finally {
             setLoading(false);
         }
-    }
-
-    const activeCount = habitdata.filter((habit) => !habit.archived).length;
-    const archivedCount = habitdata.filter((habit) => habit.archived).length;
-
-    const filteredHabits = habitdata.filter((habit) => {
-        const filterArchive = archivedActive ? habit.archived : !habit.archived;
-
-        const filterSearch =
-            habit.title.toLowerCase().includes(searchVal.toLowerCase()) ||
-            habit.description.toLowerCase().includes(searchVal.toLowerCase()) ||
-            "";
-
-        const filterCategory = habit.category === filters || filters === "";
-
-        return filterArchive && filterSearch && filterCategory;
     });
+
+    const handleCreateHabit = useCallback(
+        async (title, description, category, icon, color) => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem("token");
+
+                const response = await axios.post(
+                    `${import.meta.env.VITE_RENDER_URL}/habit/createHabit`,
+                    {
+                        title,
+                        description,
+                        category,
+                        icon,
+                        color,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+
+                setCreateHabit(response.data);
+                setModeldata({
+                    isOpen: false,
+                    habit: null,
+                    mode: "create",
+                });
+            } catch (error) {
+                console.log(error.response?.data || error.message);
+            } finally {
+                setLoading(false);
+            }
+        },
+    );
+
+    const activeCount = useMemo(
+        () => habitdata.filter((habit) => !habit.archived).length,
+    );
+
+    const archivedCount = useMemo(
+        () => habitdata.filter((habit) => habit.archived).length,
+    );
+
+    const filteredHabits = useMemo(() =>
+        habitdata.filter((habit) => {
+            const filterArchive = archivedActive
+                ? habit.archived
+                : !habit.archived;
+
+            const filterSearch =
+                habit.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+                habit.description
+                    .toLowerCase()
+                    .includes(searchVal.toLowerCase()) ||
+                "";
+
+            const filterCategory = habit.category === filters || filters === "";
+
+            return filterArchive && filterSearch && filterCategory;
+        }),
+    );
 
     const fetchUserInfo = async () => {
         setLoading(true);
@@ -343,95 +348,14 @@ const Habits = () => {
                         </div>
 
                         <div className="habits-list px-2 flex flex-col gap-2 mt-6 min-h-[70vh]">
-                            {filteredHabits.map((habit, idx) => (
-                                <div
-                                    key={idx}
-                                    className="habit-card rounded-xl mx-4 px-4 flex items-center justify-between bg-white py-2"
-                                >
-                                    <div className="habit-info flex items-center gap-6">
-                                        <div
-                                            className={`habit-icon rounded p-1 text-2xl`}
-                                            style={{
-                                                backgroundColor: habit.color,
-                                            }}
-                                        >
-                                            {habit.icon}
-                                        </div>
-                                        <div className="habit-details flex flex-col">
-                                            <div className="habit-header flex items-center gap-4">
-                                                <h1 className=" habit-title habit-headertext-xl">
-                                                    {habit.title}
-                                                </h1>
-                                                <p className="habit-category bg-gray-300 rounded-2xl px-2">
-                                                    {habit.category}
-                                                </p>
-                                            </div>
-                                            <p className="habit-description font-light">
-                                                {habit.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="habit-actions flex items-center gap-6">
-                                        <div className=" habit-streak flex items-center">
-                                            <AiOutlineFire
-                                                fill="oklch(76.9% 0.188 70.08)"
-                                                size={25}
-                                            />
-                                            {habit.streak}
-                                        </div>
-                                        <div className=" habit-best-streak flex items-center">
-                                            <CiTrophy
-                                                size={30}
-                                                fill="oklch(76.9% 0.188 70.08)"
-                                            />
-                                            {habit.maxStreak}
-                                        </div>
-                                        <FaPencilAlt
-                                            className="habit-edit-btn"
-                                            size={20}
-                                            onClick={() =>
-                                                handleEditHabit(habit)
-                                            }
-                                        />
-                                        {habit.archived ? (
-                                            <BiSolidArchiveOut
-                                                className="habit-archive-btn cursor-pointer"
-                                                size={25}
-                                                onClick={() =>
-                                                    handleArchiveHabit(
-                                                        habit._id,
-                                                    )
-                                                }
-                                            />
-                                        ) : (
-                                            <BiSolidArchiveIn
-                                                className="habit-archive-btn cursor-pointer"
-                                                size={25}
-                                                onClick={() =>
-                                                    handleArchiveHabit(
-                                                        habit._id,
-                                                    )
-                                                }
-                                            />
-                                        )}
-
-                                        <MdDeleteOutline
-                                            fill="#fff"
-                                            className="habit-delete-btn bg-red-500 rounded-full p-1"
-                                            size={40}
-                                            onClick={() =>
-                                                handleDeleteHabit(habit._id)
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                            <FilteredHabitList
+                                filteredHabits={filteredHabits}
+                            />
                         </div>
                     </div>
                 </>
             ) : (
                 <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
-                
                     Loading...
                 </p>
             )}

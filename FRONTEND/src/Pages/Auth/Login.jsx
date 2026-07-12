@@ -12,11 +12,10 @@ const Login = () => {
     const [passwordHide, setPasswordHide] = useState(false);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-        const [loading, setLoading] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_RENDER_URL}/user/login`,
@@ -25,18 +24,14 @@ const Login = () => {
                     password,
                 },
             );
-
-            console.log(response);
-            
-
+            // console.log(response);
             localStorage.setItem("token", response.data.token);
 
             navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data || error.message);
-        }
-        finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -71,7 +66,7 @@ const Login = () => {
 
                     <input
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder="you@example.com (yagnaakv99@gmail.com)"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -85,7 +80,7 @@ const Login = () => {
                     <div className="flex items-center gap-2">
                         <input
                             type={`${passwordHide ? "password" : "text"}`}
-                            placeholder="At least 6 characters"
+                            placeholder="At least 6 characters (12345678)"
                             className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -103,10 +98,11 @@ const Login = () => {
                     className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
                     onClick={handleLogin}
                 >
-                    
-
-                    {loading ? <p>Loading</p> : <p>Sign In</p>}
-
+                    {loading ? (
+                        <p className="opacity-75">Loading...</p>
+                    ) : (
+                        <p>Sign In</p>
+                    )}
                 </button>
 
                 <p className="text-center text-sm text-gray-500 mt-5">

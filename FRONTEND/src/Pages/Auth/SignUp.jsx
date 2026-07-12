@@ -120,7 +120,11 @@ const SignUp = () => {
                     className="w-full mt-6 bg-orange-400 text-white font-semibold py-3 rounded-xl shadow-md cursor-pointer transition duration-300"
                     onClick={handleSignIn}
                 >
-                    {loading ? <p>Loading</p> : <p>Create account</p>}
+                    {loading ? (
+                        <p className="opacity-75">Loading...</p>
+                    ) : (
+                        <p>Create account</p>
+                    )}
                 </button>
 
                 <p className="text-center text-sm text-gray-500 mt-5">

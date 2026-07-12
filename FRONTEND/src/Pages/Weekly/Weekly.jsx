@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import NavBar from "../../Components/NavBar";
 import { SlCalender } from "react-icons/sl";
 import WeeklyHabitTracker from "./WeeklyHabitTracker";
@@ -27,21 +27,21 @@ const Weekly = () => {
         return monday;
     });
 
-    const handlePreviousWeek = () => {
+    const handlePreviousWeek = useCallback(() => {
         setCurrentWeek((prev) => {
             const newDate = new Date(prev);
             newDate.setDate(newDate.getDate() - 7);
             return newDate;
         });
-    };
+    }, []);
 
-    const handleNextWeek = () => {
+    const handleNextWeek = useCallback(() => {
         setCurrentWeek((prev) => {
             const newDate = new Date(prev);
             newDate.setDate(newDate.getDate() + 7);
             return newDate;
         });
-    };
+    }, []);
 
     const weekEnd = new Date(currentWeek);
     weekEnd.setDate(weekEnd.getDate() + 6);
@@ -53,6 +53,7 @@ const Weekly = () => {
         });
 
     const fetchHabitInfo = async () => {
+        setLoading(true)
         try {
             const token = localStorage.getItem("token");
 
@@ -90,6 +91,9 @@ const Weekly = () => {
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
+        finally{
+            setLoading(false)
+        }
     };
 
     // const createdDate = new Date(topHabit?.createdAt);
@@ -106,12 +110,16 @@ const Weekly = () => {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const totalTodayStreak = habitdata.filter((habit) => {
-        const lastDay = new Date(habit.lastCompletedDate);
-        lastDay.setHours(0, 0, 0, 0);
+    const totalTodayStreak = useMemo(
+        () =>
+            habitdata.filter((habit) => {
+                const lastDay = new Date(habit.lastCompletedDate);
+                lastDay.setHours(0, 0, 0, 0);
 
-        return lastDay.getTime() === today.getTime();
-    }).length;
+                return lastDay.getTime() === today.getTime();
+            }).length,
+        [habitdata],
+    );
 
     // console.log(totalTodayStreak);
 
@@ -122,35 +130,41 @@ const Weekly = () => {
     //           )
     //         : null;
 
-    const totalCompletedDates = habitdata.reduce(
-        (prev, curr) => prev + curr.completedDates.length,
-        0,
+    const totalCompletedDates = useMemo(
+        () =>
+            habitdata.reduce(
+                (prev, curr) => prev + curr.completedDates.length,
+                0,
+            ),
+        [habitdata],
     );
-    const totalStreakCount = habitdata.reduce(
-        (prev, curr) => prev + curr.streak,
-        0,
+    const totalStreakCount = useMemo(
+        () => habitdata.reduce((prev, curr) => prev + curr.streak, 0),
+        [habitdata],
     );
 
     // console.log(totalCompletedDates,totalStreakCount);
 
-    const dayCount = {};
-
-    habitdata.forEach((habit) => {
-        habit.completedDates.forEach((date) => {
-            const day = new Date(date).toLocaleDateString("en-US", {
-                weekday: "short",
+    const dayCount = useMemo(() => {
+        const counts = {};
+        habitdata.forEach((habit) => {
+            habit.completedDates.forEach((date) => {
+                const day = new Date(date).toLocaleDateString("en-US", {
+                    weekday: "short",
+                });
+                counts[day] = (counts[day] || 0) + 1;
             });
-
-            dayCount[day] = (dayCount[day] || 0) + 1;
         });
-    });
+        return counts;
+    }, [habitdata]);
 
-    const bestDay =
-        Object.keys(dayCount).length > 0
+    const bestDay = useMemo(() => {
+        return Object.keys(dayCount).length > 0
             ? Object.entries(dayCount).reduce((max, curr) =>
                   curr[1] > max[1] ? curr : max,
               )
             : ["N/A", 0];
+    }, [dayCount]);
 
     // console.log(dayCount);
     // console.log(bestDay);
@@ -274,7 +288,6 @@ const Weekly = () => {
                 </>
             ) : (
                 <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
-                
                     Loading...
                 </p>
             )}

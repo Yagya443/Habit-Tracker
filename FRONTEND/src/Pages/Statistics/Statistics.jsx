@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import NavBar from "../../Components/NavBar";
 import { FaGripfire } from "react-icons/fa";
@@ -15,6 +15,8 @@ const Statistics = () => {
     const [bestActiveStreak, setBestActiveStreak] = useState(0);
 
     const fetchHabitInfo = async () => {
+        setLoading(true);
+
         try {
             const token = localStorage.getItem("token");
 
@@ -30,17 +32,29 @@ const Statistics = () => {
             console.log(response.data);
         } catch (error) {
             console.log(error.response?.data || error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const bestStreak = habitdata
-        .filter((habit) => habit.streak > 0)
-        .toSorted((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    const bestStreak = useMemo(
+        () =>
+            habitdata
+                .filter((habit) => habit.streak > 0)
+                .toSorted(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+                ),
+        [habitdata],
+    );
 
     // console.log("best",bestStreak);
 
-    const longestStreak = habitdata.toSorted(
-        (a, b) => b.completedDates.length - a.completedDates.length,
+    const longestStreak = useMemo(
+        () =>
+            habitdata.toSorted(
+                (a, b) => b.completedDates.length - a.completedDates.length,
+            ),
+        [habitdata],
     );
 
     // const needAttention = habitdata.toSorted(
@@ -82,7 +96,7 @@ const Statistics = () => {
     //     return habitWithLowestRatio;
     // };
 
-    const needAttention = () => {
+    const needAttention = useMemo(() => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -98,12 +112,16 @@ const Statistics = () => {
             const ratio = habit.completedDates.length / totalDays;
 
             if (!lowest || ratio < lowest.ratio) {
-                return { habit, totalDays };
+                return {
+                    habit,
+                    totalDays,
+                    ratio,
+                };
             }
 
             return lowest;
         }, null);
-    };
+    }, [habitdata]);
 
     // console.log(ne);
     // console.log("longestStreak",longestStreak);
@@ -217,24 +235,23 @@ const Statistics = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-6 mt-4">
-                            <div className="bg-blue-200">
-                                <BarGraph />
-                            </div>
-                            <div className="bg-blue-200">
-                                <BarGraph2 />
-                            </div>
-                            <div className="bg-blue-200">
-                                <PieChart />
-                            </div>
-                            <div className="bg-blue-200">
-                                <Analysis />
-                            </div>
+                            {/* <div className="bg-blue-200"> */}
+                            <BarGraph habitdata={habitdata} />
+                            {/* </div> */}
+                            {/* <div className="bg-blue-200"> */}
+                            <BarGraph2 habitdata={habitdata} />
+                            {/* </div> */}
+                            {/* <div className="bg-blue-200"> */}
+                            <PieChart habitdata={habitdata} />
+                            {/* </div> */}
+                            {/* <div className="bg-blue-200"> */}
+                            <Analysis habitdata={habitdata} />
+                            {/* </div> */}
                         </div>
                     </div>
                 </>
             ) : (
                 <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
-                
                     Loading...
                 </p>
             )}

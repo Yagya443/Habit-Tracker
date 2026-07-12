@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BsStars } from "react-icons/bs";
 import { FaChevronDown, FaGripfire, FaPlus, FaTrophy } from "react-icons/fa";
 import NavBar from "../../Components/NavBar";
@@ -11,7 +11,6 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 import { CiTrophy } from "react-icons/ci";
 import { FaCalendarAlt } from "react-icons/fa";
 import axios from "axios";
-
 import BarGraph from "./BarGraph";
 import BarGraph2 from "./BarGraph2";
 import PieChart from "./PieChart";
@@ -22,7 +21,8 @@ const Insights = () => {
     const [topHabit, setTopHabit] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const fetchHabitInfo = async () => {
+    const fetchHabitInfo = useCallback(async () => {
+        setLoading(true);
         try {
             const token = localStorage.getItem("token");
 
@@ -59,19 +59,23 @@ const Insights = () => {
             // );
         } catch (error) {
             console.log(error.response?.data || error.message);
+        } finally {
+            setLoading(false);
         }
-    };
+    });
 
     const totalHabit = habitdata.length;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const totalTodayStreak = habitdata.filter((habit) => {
-        const lastDay = new Date(habit.lastCompletedDate);
-        lastDay.setHours(0, 0, 0, 0);
+    const totalTodayStreak = useMemo(() => {
+        return habitdata.filter((habit) => {
+            const lastDay = new Date(habit.lastCompletedDate);
+            lastDay.setHours(0, 0, 0, 0);
 
-        return lastDay.getTime() === today.getTime();
-    }).length;
+            return lastDay.getTime() === today.getTime();
+        }).length;
+    }, [habitdata, today]);
 
     // console.log(totalTodayStreak);
 
@@ -82,35 +86,42 @@ const Insights = () => {
     //           )
     //         : null;
 
-    const totalCompletedDates = habitdata.reduce(
-        (prev, curr) => prev + curr.completedDates.length,
-        0,
+    const totalCompletedDates = useMemo(
+        () =>
+            habitdata.reduce(
+                (prev, curr) => prev + curr.completedDates.length,
+                0,
+            ),
+        [habitdata],
     );
-    const totalStreakCount = habitdata.reduce(
-        (prev, curr) => prev + curr.streak,
-        0,
+
+    const totalStreakCount = useMemo(
+        () => habitdata.reduce((prev, curr) => prev + curr.streak, 0),
+        [habitdata],
     );
 
     // console.log(totalCompletedDates,totalStreakCount);
 
-    const dayCount = {};
-
-    habitdata.forEach((habit) => {
-        habit.completedDates.forEach((date) => {
-            const day = new Date(date).toLocaleDateString("en-US", {
-                weekday: "short",
+    const dayCount = useMemo(() => {
+        const counts = {};
+        habitdata.forEach((habit) => {
+            habit.completedDates.forEach((date) => {
+                const day = new Date(date).toLocaleDateString("en-US", {
+                    weekday: "short",
+                });
+                counts[day] = (counts[day] || 0) + 1;
             });
-
-            dayCount[day] = (dayCount[day] || 0) + 1;
         });
-    });
+        return counts;
+    }, [habitdata]);
 
-    const bestDay =
-        Object.keys(dayCount).length > 0
+    const bestDay = useMemo(() => {
+        return Object.keys(dayCount).length > 0
             ? Object.entries(dayCount).reduce((max, curr) =>
                   curr[1] > max[1] ? curr : max,
               )
             : ["N/A", 0];
+    }, [dayCount]);
 
     // console.log(dayCount);
     // console.log(bestDay);
@@ -127,20 +138,9 @@ const Insights = () => {
                     <NavBar />
                     <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
                         <div className="flex items-center justify-between">
-                            <div>
-                                <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
-                                    Weekly Insights
-                                </h1>
-                                <h3 className="mt-2">Apr 27-- May 3, 2026</h3>
-                            </div>
-                            <div className="flex gap-4">
-                                <button
-                                    className=" flex py-2 items-center gap-2 text-md text-nowrap rounded-xl font-semibold px-4 bg-white"
-                                    // onClick={() => setSuggestNewHabitModel(true)}
-                                >
-                                    <IoReload /> Suggest A Habit
-                                </button>
-                            </div>
+                            <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
+                                Weekly Insights
+                            </h1>
                         </div>
 
                         <div className="weekly-stats-grid grid grid-cols-4 gap-6 mt-4">
@@ -203,21 +203,6 @@ const Insights = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6 mt-4">
-                            <div className="bg-blue-200">
-                                <BarGraph />
-                            </div>
-                            <div className="bg-blue-200">
-                                <BarGraph2 />
-                            </div>
-                            <div className="bg-blue-200">
-                                <PieChart />
-                            </div>
-                            <div className="bg-blue-200">
-                                <Analysis />
-                            </div>
-                        </div>
-
                         <div className="bg-white mt-8 py-4 px-8 rounded-2xl">
                             <div className="flex items-center justify-between">
                                 <p className="font-bold">Active Streak</p>
@@ -240,7 +225,7 @@ const Insights = () => {
                                             {habit.icon}
                                         </div>
                                         <div>
-                                            <h1 className="font-semibold text-gray-800 ">
+                                            <h1 className="font-semibold text-gray-800 truncate w-44">
                                                 {habit.description}
                                             </h1>
 
@@ -252,11 +237,17 @@ const Insights = () => {
                                 ))}
                             </div>
                         </div>
+
+                        <div className="grid grid-cols-2 gap-6 mt-4">
+                            <BarGraph habitdata={habitdata} />
+                            <BarGraph2 habitdata={habitdata} />
+                            <PieChart habitdata={habitdata} />
+                            <Analysis habitdata={habitdata} />
+                        </div>
                     </div>
                 </>
             ) : (
                 <p className="flex items-center justify-center h-screen text-4xl font-semibold text-[#FF8904]">
-                
                     Loading...
                 </p>
             )}

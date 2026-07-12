@@ -10,6 +10,8 @@ const SuggestNewHabitModel = ({
     setHabitdata,
     habitdata,
 }) => {
+    const [loadingPara, setLoadingPara] = useState(false);
+
     const questions = [
         {
             question: "What are your goals right now?",
@@ -33,6 +35,7 @@ const SuggestNewHabitModel = ({
     });
 
     const getRecommendation = async () => {
+        setLoadingPara(true);
         try {
             const token = localStorage.getItem("token");
 
@@ -54,6 +57,8 @@ const SuggestNewHabitModel = ({
             setRecommendation(JSON.parse(response.data.recommendation));
         } catch (error) {
             console.log(error.response?.data || error.message);
+        } finally {
+            setLoadingPara(false);
         }
     };
 
@@ -164,7 +169,11 @@ const SuggestNewHabitModel = ({
                                     getRecommendation();
                                 }}
                             >
-                                Create
+                                {loadingPara ? (
+                                    <p className="opacity-75">Loading...</p>
+                                ) : (
+                                    <p>Create</p>
+                                )}
                             </button>
                         )}
                     </div>
