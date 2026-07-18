@@ -136,7 +136,7 @@ const Insights = () => {
             {!loading ? (
                 <>
                     <NavBar />
-                    <div className="insights-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+                    <div className="insights-container ml-68 pl-12 pr-22 py-6 bg-[#f6f2ec] min-h-screen">
                         <div className="flex items-center justify-between">
                             <h1 className="text-nowrap text-5xl font-semibold md:text-4xl">
                                 Weekly Insights

@@ -40,6 +40,12 @@ const getHabit = async (req, res) => {
                     (today - lastDate) / (1000 * 60 * 60 * 24),
                 );
 
+                if (lastDate.getTime() == today.getTime()) {
+                    habit.completed = true;
+                } else {
+                    habit.completed = false;
+                }
+
                 if (diffDays > 1) {
                     habit.streak = 0;
                 }
@@ -125,6 +131,7 @@ const archiveHabit = async (req, res) => {
 };
 
 const completeHabit = async (req, res) => {
+    ``;
     const habit = await Habit.findById(req.params.id);
 
     if (!habit) {

@@ -247,7 +247,7 @@ const Habits = () => {
                 <>
                     <NavBar />
 
-                    <div className="habits-page ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] ">
+                    <div className="habits-page ml-68 pl-12 pr-22 py-6 bg-[#f6f2ec] ">
                         <div className="habits-header flex items-center justify-between">
                             <div className="habits-header-content">
                                 <h1 className="text-5xl font-semibold ">
@@ -350,6 +350,10 @@ const Habits = () => {
                         <div className="habits-list px-2 flex flex-col gap-2 mt-6 min-h-[70vh]">
                             <FilteredHabitList
                                 filteredHabits={filteredHabits}
+                                handleArchiveHabit={handleArchiveHabit}
+                                handleSaveEditHabit={handleSaveEditHabit}
+                                handleEditHabit={handleEditHabit}
+                                handleDeleteHabit={handleDeleteHabit}
                             />
                         </div>
                     </div>

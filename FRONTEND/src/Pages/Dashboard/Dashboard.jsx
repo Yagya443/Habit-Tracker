@@ -214,6 +214,11 @@ const Dashboard = () => {
     // console.log('3', typeof recommendation)
 
     const getQuote = async () => {
+        const quote = sessionStorage.getItem("quote");
+        if (quote) {
+            setMotivation(quote);
+            return;
+        }
         setLoading(true);
 
         try {
@@ -230,6 +235,7 @@ const Dashboard = () => {
             );
 
             setMotivation(response.data.quote);
+            sessionStorage.setItem("quote", response.data.quote);
             // console.log(response.data.quote);
         } catch (error) {
             console.log(error.response?.data || error.message);
@@ -304,7 +310,7 @@ const Dashboard = () => {
             {!loading ? (
                 <>
                     <NavBar />
-                    <div className="dashboard-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec]">
+                    <div className="dashboard-container ml-68 pl-12 pr-22 py-6 bg-[#f6f2ec]">
                         <div className="dashboard-header flex items-center justify-between">
                             <div className="dashboard-greeting">
                                 <h1 className="text-5xl font-semibold">
@@ -371,7 +377,7 @@ const Dashboard = () => {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-semibold">
-                                        GOOD MORNING, {user?.name}
+                                        Welcome, {user?.name}
                                     </h2>
                                     {motivation ? (
                                         <p className="text-md font-semibold">

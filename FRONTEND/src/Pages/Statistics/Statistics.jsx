@@ -136,7 +136,7 @@ const Statistics = () => {
             {!loading ? (
                 <>
                     <NavBar />
-                    <div className="statistics-container ml-68 pl-12 pr-22 pt-6 bg-[#f6f2ec] min-h-screen">
+                    <div className="statistics-container ml-68 pl-12 pr-22 py-6 bg-[#f6f2ec] min-h-screen">
                         <div className="flex items-center justify-between">
                             <div>
                                 <h1 className="text-5xl font-semibold">
@@ -211,22 +211,22 @@ const Statistics = () => {
                                     <div
                                         className="statistics-needs-attention-icon p-2 rounded-xl text-xl"
                                         style={{
-                                            backgroundColor: `${needAttention()?.habit?.color}`,
+                                            backgroundColor: `${needAttention?.habit?.color}`,
                                         }}
                                     >
-                                        {needAttention()?.habit?.icon}
+                                        {needAttention?.habit?.icon}
                                     </div>
                                     <div className="statistics-needs-attention-details">
                                         <h1 className="font-semibold text-gray-800">
-                                            {needAttention()?.habit?.title}
+                                            {needAttention?.habit?.title}
                                         </h1>
 
                                         <p className="text-sm text-orange-500 font-medium">
                                             {
-                                                needAttention()?.habit
+                                                needAttention?.habit
                                                     .completedDates?.length
                                             }
-                                            /{needAttention()?.totalDays}
+                                            /{needAttention?.totalDays}
                                             days
                                         </p>
                                     </div>

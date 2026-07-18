@@ -7,6 +7,10 @@ import { MdDeleteOutline } from "react-icons/md";
 
 const FilteredHabitList = React.memo(function FilteredHabitList({
     filteredHabits,
+    handleSaveEditHabit,
+    handleArchiveHabit,
+    handleEditHabit,
+    handleDeleteHabit,
 }) {
     return (
         <>
